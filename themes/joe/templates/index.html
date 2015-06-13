@@ -1,0 +1,32 @@
+{% extends "_base.html" %}
+{%- block body_class %}home{%- endblock body_class -%}
+
+{%- block siteheader -%}
+    <div class="site-head wrapper cf">
+        <header role="banner" class="banner medium-float-left">
+        </header>
+        {%- include "partials/_nav.html" %}
+    </div>
+{% endblock siteheader -%}
+
+{% block content %}
+<div class="home-head wrapper">
+    <header role="banner" class="">
+        <h1 class="name small-caps"><a class="" href="{{ SITEURL }}">{{ SITENAME }}</a>
+            </h1>
+    </header>
+</div>
+{% if HOME_PAGE.content %}
+    {% for p in PAGES %}
+        {%- if p.title == HOME_PAGE.content %}
+            {{ p.content }}
+        {%- endif -%}
+    {% endfor %}
+{% endif %}
+<hr/>
+{% if HOME_PAGE.count > 0 %}
+    {% for article in articles_page.object_list[:HOME_PAGE.count] %}
+        {%- include "partials/_article_trunc.html" %}
+    {% endfor %}
+{% endif %}
+{% endblock content %}

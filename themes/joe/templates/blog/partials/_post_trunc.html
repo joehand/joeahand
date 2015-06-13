@@ -1,0 +1,30 @@
+<section class="post-full" data-id="{{post.id}}">
+        <header>
+            {%- if post.kind == 'article' -%}
+            <h2 class="title"><a href="{{url_for('blog.post', slug=post.slug)}}">{{post.title}}</a></h2>
+            {%- elif post.kind == 'note' -%}
+            <h3 class="title"><a href="{{url_for('blog.post', slug=post.slug)}}">{{post.title}}</a></h3>
+                {%- if post.link_url -%}
+                <h5 class="link_url">
+                    <a href="{{post.link_url}}"><span class="useicons">&#xe61e;</span><span class="link_url">{{post.link_url|get_domain}}</span></a>
+                </h5>
+                {%- endif -%}
+            {%- endif -%}
+            <h5 class="category small-caps"><a href="{{url_for('.category', category='note')}}">{{post.category}}</a></h5>
+        </header>
+        {%- if post.kind == 'article' -%}
+        <article class="content">
+            {% if post.content %}{{post.content|truncate(250)|markdown|safe}}{% endif %}
+        </article>
+        <footer class="post-footer">
+          <a class="small-caps"href="{{url_for('blog.post', slug=post.slug)}}"><span class="useicons">&#xe630;</span><span class="pub_date">{{post.pub_date.strftime('%B %Y')}}</span></a>
+        </footer>
+        {%- elif post.kind == 'note' -%}
+        <article class="content">
+            {% if post.content %}{{post.content|truncate(250)|markdown|safe}}{% endif %}
+        </article>
+        <footer class="post-footer">
+          <a class="small-caps" rel="bookmark" title="Permalink" href="{{url_for('blog.post', slug=post.slug)}}"><span class="useicons">&#xe630;</span><span class="pub_date">{{post.pub_date.strftime('%B %Y')}}</span></a>
+        </footer>
+        {%- endif -%}
+    </section>

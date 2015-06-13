@@ -1,0 +1,12 @@
+{% extends "_base.html" %}
+{% block title %}{{ page.title }} - {{SITENAME}}{% endblock title %}
+{% block content %}
+<section class="post-full">
+    <header>
+        <h1 class="title"><a href="{{ SITEURL }}/{{ page.url }}">{{page.title}}</a></h1>
+    </header>
+    <article class="content">
+        {{ page.content }}
+    </article>
+</section>
+{% endblock %}

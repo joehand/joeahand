@@ -1,0 +1,15 @@
+{% if DEFAULT_PAGINATION %}
+<div class="pagination small-caps">
+	{% if articles_page.has_previous() %}
+        {% set num = articles_page.previous_page_number() %}
+        <a class="page-link previous" href="{{ SITEURL }}/{{ page_name }}{{ num if num > 1 else '' }}"><span class="useicons">&#xe63d;</span> Newer</a>
+    {% else %}
+        <span class="previous disabled"><span class="useicons">&#xe63d;</span> Newer</span>
+    {% endif %}
+	{% if articles_page.has_next() %}
+        <a class="next page-link" href="{{ SITEURL }}/{{ page_name }}{{ articles_page.next_page_number() }}/">Older <span class="useicons">&#xe63e;</span></a>
+    {% else %}
+        <span class="next disabled">Older <span class="useicons">&#xe63e;</span></span>
+    {% endif %}
+</div>
+{% endif %}

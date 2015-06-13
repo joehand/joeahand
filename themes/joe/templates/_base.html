@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="ClearType" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- DNS prefetch -->
+        <link rel="dns-prefetch" href="//ajax.googleapis.com">
+        <link rel="dns-prefetch" href="//s3.amazonaws.com">
+
+        <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+        <meta name="description" content="{{ SITESUBTITLE }}">
+
+        <!-- Styles -->
+        <link href="{{ SITEURL }}/theme/main.min.css" rel="stylesheet" />
+
+        <!-- WebFonts -->
+        <script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.3/webfont.js"></script>
+        <script>
+          WebFont.load({
+            google: {
+              families:  [ 'EB+Garamond::latin', 'Open+Sans:400italic,400,700,300:latin' ]
+            }
+          });
+        </script>
+
+        {% if FEED_ALL_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
+        {% endif %}
+        {% if FEED_ALL_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed" />
+        {% endif %}
+        {% if FEED_ATOM %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Atom Feed" />
+        {% endif %}
+        {% if FEED_RSS %}
+        <link href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} RSS Feed" />
+        {% endif %}
+        {% if CATEGORY_FEED_ATOM and category %}
+        <link href="{{ FEED_DOMAIN }}/{{ CATEGORY_FEED_ATOM|format(category.slug) }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Categories Atom Feed" />
+        {% endif %}
+        {% if CATEGORY_FEED_RSS and category %}
+        <link href="{{ FEED_DOMAIN }}/{{ CATEGORY_FEED_RSS|format(category.slug) }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Categories RSS Feed" />
+        {% endif %}
+        {% if TAG_FEED_ATOM and tag %}
+        <link href="{{ FEED_DOMAIN }}/{{ TAG_FEED_ATOM|format(tag.slug) }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Tags Atom Feed" />
+        {% endif %}
+        {% if TAG_FEED_RSS and tag %}
+        <link href="{{ FEED_DOMAIN }}/{{ TAG_FEED_RSS|format(tag.slug) }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Tags RSS Feed" />
+        {% endif %}
+    </head>
+    <body class="{% block body_class %}{% endblock %}">
+        <div role="document" class="document">
+        {%- block siteheader -%}
+            <div class="site-head wrapper cf">
+                <header role="banner" class="banner medium-float-left">
+                    <h1 class="name small-caps"><a class="" href="{{ SITEURL }}">{{ SITENAME }}</a></h1>
+                </header>
+                {%- include "partials/_nav.html" %}
+            </div>
+            <div class="site-head-border strip"></div>
+        {% endblock siteheader -%}
+
+        {%- block main %}
+            <main role="main" class="main wrapper">
+                <div class="page-content">
+                {%- block content -%}
+                {%- endblock content %}
+                </div> <!-- .page-content  -->
+            </main> <!-- main  -->
+
+            {% block sitefooter %}
+            <footer role="contentinfo" class="footer">
+                <div class="bottom cf">
+                    {% include "partials/_social.html" %}
+                    <div class="wrapper">
+                        <span class="copyright medium-float-left">
+                        {% if COPYRIGHT_LINK %}
+                            <a href="{{COPYRIGHT_LINK}}">Copyright © 2015</a>
+                        {% else %}
+                            <span>Copyright © 2015</span>
+                        {% endif %}
+                            &nbsp;·&nbsp; {{AUTHOR}}
+                        </span>
+                        <span class="made medium-float-right">
+                            {% if ARCHIVES_URL %}
+                            <a href="{{ SITEURL }}/{{ARCHIVES_URL}}">Archive</a>
+                            {% elif ARCHIVES_SAVE_AS %}
+                            <a href="{{ SITEURL }}/{{ARCHIVES_SAVE_AS}}">Archive</a>
+                            {% endif %}
+                            {% if FEED_DOMAIN and FEED_ALL_ATOM %}}
+                            &nbsp;·&nbsp;<a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}">RSS</a>
+                            {% endif %}
+                            &nbsp;·&nbsp;<a href="{{ SITEURL }}">Made by <span class="useicons">&#xe635;</span></a>
+                        </span>
+                    </div>
+                </div>
+            </footer>
+            {%- endblock sitefooter %}
+        {%- endblock main %}
+        </div> <!-- document -->
+    <script src="{{ SITEURL }}/theme/instantclick.min.js"></script>
+    {% include 'partials/_analytics.html' %}
+    </body>
+</html>

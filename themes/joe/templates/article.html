@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+{% block title %}{{ article.title }} - {{SITENAME}}{% endblock title %}
+{% block content %}
+<section class="post-full">
+    <header>
+        <h1 class="title"><a href="{{ SITEURL }}/{{ article.url }}">{{article.title}}</a></h1>
+        <h5 class="category small-caps"><a href="{{ SITEURL }}/{{ article.category.url }}">{{article.category}}</a></h5>
+        {%- if article.link_url -%}
+            <h5 class="link_url">
+                <a href="{{article.link_url}}"><span class="useicons">&#xe61e;</span><span class="link_url">{{article.link_url|get_domain}}</span></a>
+            </h5>
+        {%- endif -%}
+    </header>
+    <article class="content">
+      {{ article.content }}
+    </article>
+
+    <footer class="post-footer">
+        <a class="small-caps" rel="bookmark" title="Permalink to {{ article.title|striptags }}" href="{{ SITEURL }}/{{ article.url }}">
+            <span class="useicons">&#xe630;</span>
+            <span class="pub_date">
+                <abbr class="published" title="{{ article.date.isoformat() }}">
+                  {{article.date.strftime('%B %Y')}}
+                </abbr>
+            </span>
+        </a>
+    </footer>
+</section>
+
+    {% if DISQUS_SITENAME %}
+        {%- include "partials/_disqus.html" %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,12 @@
+
+<nav role="navigation" class="site-nav medium-float-right ">
+    <ul class="small-caps">
+        {% for p in PAGES %}
+            {% if HOME_PAGE and p.title != HOME_PAGE.content %}
+            <li class="{% if p == page %}active{% endif %} nav-item">
+                <a href="{{ SITEURL }}/{{ p.url }}">{{ p.slug }}</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>

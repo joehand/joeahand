@@ -1,0 +1,26 @@
+{% extends "_base.html" %}
+{% block archclass %} class="active"{%endblock%}
+{% block title %}Archives{%endblock%}
+{% block content %}
+<div class="post-archive">
+    {% for year, articles_year in dates|groupby( 'date.year' )|sort(reverse=True) %}
+            <div class="year crossbars">{{year}}</div>
+
+            {% for article in articles_year %}
+            <div class="post-list">
+                    <div class="cf">
+                        <h4 class="title float-left">
+                            <a href="{{ SITEURL }}/{{ article.url }}">{{article.title}}</a>
+                        </h4>
+                        <a href="{{ SITEURL }}/{{ article.category.url }}" class="category float-right">
+                            {{article.category}}
+                        </a>
+                    </div>
+                    <div class="cf">
+                        <span class="pub_date float-left">{{article.date|strftime('%B %d')}}</span>
+                    </div>
+            </div>
+            {% endfor %}
+    {% endfor %}
+</div>
+{% endblock %}
