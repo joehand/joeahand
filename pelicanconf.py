@@ -16,7 +16,7 @@ JINJA_FILTERS = {'get_domain':get_domain}
 
 AUTHOR = u'Joe Hand'
 SITENAME = u'Joe Hand'
-SITEURL = 'joeahand.com'
+SITEURL = 'http://joeahand.com'
 
 THEME = 'themes/joe/'
 
