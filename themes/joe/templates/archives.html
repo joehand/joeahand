@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 {% block archclass %} class="active"{%endblock%}
-{% block title %}Archives{%endblock%}
+{% block title %}Archives | {{SITENAME}}{%endblock%}
 {% block content %}
 <div class="post-archive">
     {% for year, articles_year in dates|groupby( 'date.year' )|sort(reverse=True) %}

@@ -10,8 +10,12 @@
         <link rel="dns-prefetch" href="//ajax.googleapis.com">
         <link rel="dns-prefetch" href="//s3.amazonaws.com">
 
-        <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+        {%- if SITESUBTITLE -%}
+        <title>{% block title %}{{ SITENAME }} | {{ SITESUBTITLE }}{% endblock %}</title>
         <meta name="description" content="{{ SITESUBTITLE }}">
+        {%- else -%}
+        <title>{% block title %}{{ SITENAME }}{% endblock %}</title>
+        {%- endif -%}
 
         <!-- Styles -->
         <link href="{{ SITEURL }}/theme/main.min.css" rel="stylesheet" />
@@ -56,7 +60,9 @@
         {%- block siteheader -%}
             <div class="site-head wrapper cf">
                 <header role="banner" class="banner medium-float-left">
-                    <h1 class="name small-caps"><a class="" href="{{ SITEURL }}">{{ SITENAME }}</a></h1>
+                    <h1 class="name small-caps"><a class="" href="{{ SITEURL }}">{{ SITENAME }}</a> <br/>
+                        <small>{{ SITESUBTITLE }}</small>
+                    </h1>
                 </header>
                 {%- include "partials/_nav.html" %}
             </div>
@@ -93,7 +99,7 @@
                             {% if FEED_DOMAIN and FEED_ALL_ATOM %}
                             &nbsp;·&nbsp;<a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}">RSS</a>
                             {% endif %}
-                            &nbsp;·&nbsp;<a href="{{ SITEURL }}">Made by <span class="useicons">&#xe635;</span></a>
+                            &nbsp;·&nbsp;<a href="{{ SITEURL }}"><span class="useicons">&#xe635;</span></a>
                         </span>
                     </div>
                 </div>
