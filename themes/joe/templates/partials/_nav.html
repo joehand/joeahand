@@ -1,12 +1,15 @@
-
-<nav role="navigation" class="site-nav medium-float-right ">
-    <ul class="small-caps">
-        {% for p in PAGES %}
-            {% if HOME_PAGE and p.title != HOME_PAGE.content %}
-            <li class="{% if p == page %}active{% endif %} nav-item">
-                <a href="{{ SITEURL }}/{{ p.url }}">{{ p.slug }}</a>
-            </li>
-            {% endif %}
-        {% endfor %}
-    </ul>
-</nav>
+<ul role="navigation" class="pure-menu-list">
+    {% for p in PAGES %}
+        {% if HOME_PAGE and p.title != HOME_PAGE.content %}
+        <li class="pure-menu-item {% if p == page %}pure-menu-selected{% endif %}">
+            <a class="pure-menu-link" href="{{ SITEURL }}/{{ p.url }}">{{ p.slug | capitalize }}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+    <li class="pure-menu-item">
+        <a class="pure-menu-link" href="#">Blog</a>
+    </li>
+    <li class="pure-menu-item">
+        <a class="pure-menu-link" href="#">CV</a>
+    </li>
+</ul>

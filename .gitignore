@@ -1,6 +1,10 @@
 ###Pelican###
 output/
 cache/
+**/pure/
+**/bourbon/*
+plugins/assets/
+plugins/pelican-plugins/
 *.pid
 
 

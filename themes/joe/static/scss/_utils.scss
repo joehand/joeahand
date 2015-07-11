@@ -1,0 +1,27 @@
+/*
+Various Utility Classes
+*/
+.red {
+    color:$red;
+}
+
+.small-caps {
+    text-transform: uppercase;
+    letter-spacing: .125rem;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+small {
+    display: inline-block;
+    font-size: .875rem;
+    line-height: 1.333
+}
+
+.is-center {
+    text-align: center;
+}
+
+.justify {
+    text-align: justify;
+}

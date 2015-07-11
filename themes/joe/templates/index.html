@@ -1,32 +1,141 @@
 {% extends "_base.html" %}
 {%- block body_class %}home{%- endblock body_class -%}
 
-{%- block siteheader -%}
-    <div class="site-head wrapper cf">
-        <header role="banner" class="banner medium-float-left">
-        </header>
-        {%- include "partials/_nav.html" %}
-    </div>
-{% endblock siteheader -%}
+{%- block main %}
+    <main role="main" class="main pure-g">
+        <div class="page-content">
+            <div class="pure-g">
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+                <div class="pure-u-20-24 pure-u-md-3-5 pure-u-lg-1-2 justify">
+                {% if HOME_PAGE.content %}
+                    {% for p in PAGES %}
+                        {%- if p.title == HOME_PAGE.content %}
+                            {{ p.content }}
+                        {%- endif -%}
+                    {% endfor %}
+                {% endif %}
+                {% if HOME_PAGE.links %}
+                    <!-- <div class="home-links">
+                    {% for text, link in HOME_PAGE.links %}
+                        <a href="{{link}}" class="home-link small-caps">{{text}}</a>
+                    {% endfor %}
+                    </div> -->
+                {% endif %}
+                <hr/>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+            </div>
+            <!--
+            <div class="pure-g">
+                <div class="pure-u-1-1 pure-u-md-2-24"></div>
+                <div class="pure-u-1-1 pure-u-md-10-24">
+                    {% if GDOCS and gdocs_data.coffee %}
+                        <div class="ct-chart ct-major-twelfth" id="coffee">
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="pure-u-1-1 pure-u-md-10-24">
+                    {% if GDOCS and gdocs_data.steps %}
+                    <div class="ct-chart ct-major-twelfth" id="steps">
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="pure-u-1-1 pure-u-md-2-24"></div>
+            </div> -->
+            {% if GDOCS and gdocs_data.instagram %}
+                <h3 class="content-head is-center"><a href="{{AUTHOR_LINKS.INSTAGRAM}}">Instagram</a></h3>
+                <div class="pure-g">
+                    {% for row in gdocs_data.instagram[:8] | reverse %}
+                    <div class="pure-u-1-4 pure-u-md-1-8">
+                      <a class="" href="{{row.Instagram_URL}}" title="{{row.Caption}}">
+                        <img class="pure-img" src="{{row.Image_URL}}"/>
+                      </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="pure-g two-column">
+            {% if GDOCS and gdocs_data.tweets | reverse %}
+                <div class="pure-u-2-24 pure-u-md-1-24"></div>
+                <div class="pure-u-21-24 pure-u-md-10-24">
+                    <h3 class="content-head is-center"><a href="{{AUTHOR_LINKS.TWITTER}}">Tweets</a></h3>
+                    <div class="pure-g">
+                    {% for row in gdocs_data.tweets %}
+                      <div class="pure-u-1-1 gdoc-link">
+                            <a href="{{row.URL}}">{{row.Text}}
+                            <span class="time">{{row.Time.split('at')[0]}}</span>
+                            </a>
+                      </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+                <div class="pure-u-2-24 pure-u-md-2-24"></div>
+            {% if GDOCS and gdocs_data.articles | reverse %}
+                <div class="pure-u-21-24 pure-u-md-10-24 reading">
+                    <h3 class="content-head is-center"><a href="#">Reading</a></h3>
+                    <div class="pure-g articles">
+                        {% for row in gdocs_data.articles %}
+                        <div class="pure-u-1-1 gdoc-link">
+                            <a href="{{row.URL}}">{{row.Title}}
+                                <span class="domain">{{row.URL|get_domain}}</span>
+                            </a>
+                            <!--<br/> {{row.Time}} -->
+                        </div>
+                        <div class="pure-u-1-1 pure-u-md-1-4  gdoc-link">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-24"></div>
+            {% endif %}
+            </div>
 
-{% block content %}
-<div class="home-head wrapper">
-    <header role="banner" class="">
-        <h1 class="name small-caps"><a class="" href="{{ SITEURL }}">{{ SITENAME }}</a>
-            </h1>
-    </header>
-</div>
-{% if HOME_PAGE.content %}
-    {% for p in PAGES %}
-        {%- if p.title == HOME_PAGE.content %}
-            {{ p.content }}
-        {%- endif -%}
-    {% endfor %}
-{% endif %}
-<hr/>
-{% if HOME_PAGE.count > 0 %}
-    {% for article in articles_page.object_list[:HOME_PAGE.count] %}
-        {%- include "partials/_article_trunc.html" %}
-    {% endfor %}
-{% endif %}
-{% endblock content %}
+            {% if HOME_PAGE.count > 0 %}
+                <div class="pure-g">
+                {% for article in articles_page.object_list[:HOME_PAGE.count] %}
+                    {%- include "partials/_article_trunc.html" %}
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div> <!-- .page-content  -->
+    </main>
+{% endblock main %}
+
+
+{% block footer_scripts %}
+    <script>
+    {% if GDOCS and gdocs_data.steps %}
+        var steps_data = {
+                labels: [
+                    {% for row in gdocs_data.steps | reverse %}
+                       '{{row.Date}}',
+                    {% endfor %}
+                ],
+                series: [
+                    [
+                    {% for row in gdocs_data.steps | reverse %}
+                        {{row.TotalSteps}},
+                    {% endfor %}
+                    ]
+                ]
+        };
+    {% endif %}
+    {% if GDOCS and gdocs_data.coffee %}
+        var coffee_data = {
+                    labels: [
+                        {% for row in gdocs_data.coffee | reverse %}
+                           '{{row.Date_Time}}',
+                        {% endfor %}
+                    ],
+                    series: [
+                        [
+                        {% for row in gdocs_data.coffee | reverse %}
+                            1,
+                        {% endfor %}
+                        ]
+                    ]
+            };
+    {% endif %}
+    </script>
+{%- endblock footer_scripts %}
