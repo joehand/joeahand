@@ -37,7 +37,12 @@ class Gdocs_Sheet(object):
         self.name = name
         #github_url = GITHUB_API.format(self.gen.settings['GITHUB_USER'])
         try:
-            c = requests.get(url).content
+            r = requests.get(url)
+            c = r.text
+            print('\n')
+            print(r.encoding)
+            print('\n')
+            c = ''.join([i if ord(i) < 128 else ' ' for i in c]) # replace ascii chars
         except:
             logger.warning("unable to open {0}".format(url))
             return

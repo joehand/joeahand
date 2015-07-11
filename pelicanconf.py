@@ -32,6 +32,8 @@ AUTHOR_LINKS = {
 SITENAME = u'Joe Hand'
 SITESUBTITLE = u'Better cities with local data'
 
+NAV_PAGES = ['about', '']
+
 THEME = 'themes/joe/'
 
 PATH = 'content'

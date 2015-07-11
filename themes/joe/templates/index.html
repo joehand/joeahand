@@ -55,12 +55,12 @@
                 </div>
             {% endif %}
             <div class="pure-g two-column">
-            {% if GDOCS and gdocs_data.tweets | reverse %}
+            {% if GDOCS and gdocs_data.tweets %}
                 <div class="pure-u-2-24 pure-u-md-1-24"></div>
                 <div class="pure-u-21-24 pure-u-md-10-24">
                     <h3 class="content-head is-center"><a href="{{AUTHOR_LINKS.TWITTER}}">Tweets</a></h3>
                     <div class="pure-g">
-                    {% for row in gdocs_data.tweets %}
+                    {% for row in gdocs_data.tweets[-5:] | reverse %}
                       <div class="pure-u-1-1 gdoc-link">
                             <a href="{{row.URL}}">{{row.Text}}
                             <span class="time">{{row.Time.split('at')[0]}}</span>
@@ -71,16 +71,15 @@
                 </div>
             {% endif %}
                 <div class="pure-u-2-24 pure-u-md-2-24"></div>
-            {% if GDOCS and gdocs_data.articles | reverse %}
+            {% if GDOCS and gdocs_data.articles %}
                 <div class="pure-u-21-24 pure-u-md-10-24 reading">
                     <h3 class="content-head is-center"><a href="#">Reading</a></h3>
                     <div class="pure-g articles">
-                        {% for row in gdocs_data.articles %}
+                        {% for row in gdocs_data.articles[-5:] | reverse %}
                         <div class="pure-u-1-1 gdoc-link">
                             <a href="{{row.URL}}">{{row.Title}}
                                 <span class="domain">{{row.URL|get_domain}}</span>
                             </a>
-                            <!--<br/> {{row.Time}} -->
                         </div>
                         <div class="pure-u-1-1 pure-u-md-1-4  gdoc-link">
                         </div>
@@ -108,15 +107,15 @@
     {% if GDOCS and gdocs_data.steps %}
         var steps_data = {
                 labels: [
-                    {% for row in gdocs_data.steps | reverse %}
+                    {%- for row in gdocs_data.steps | reverse -%}
                        '{{row.Date}}',
-                    {% endfor %}
+                    {%- endfor -%}
                 ],
                 series: [
                     [
-                    {% for row in gdocs_data.steps | reverse %}
+                    {%- for row in gdocs_data.steps | reverse -%}
                         {{row.TotalSteps}},
-                    {% endfor %}
+                    {%- endfor -%}
                     ]
                 ]
         };
@@ -124,15 +123,15 @@
     {% if GDOCS and gdocs_data.coffee %}
         var coffee_data = {
                     labels: [
-                        {% for row in gdocs_data.coffee | reverse %}
+                        {%- for row in gdocs_data.coffee | reverse -%}
                            '{{row.Date_Time}}',
-                        {% endfor %}
+                        {%- endfor -%}
                     ],
                     series: [
                         [
-                        {% for row in gdocs_data.coffee | reverse %}
+                        {%- for row in gdocs_data.coffee | reverse -%}
                             1,
-                        {% endfor %}
+                        {%- endfor -%}
                         ]
                     ]
             };
