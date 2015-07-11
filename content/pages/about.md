@@ -15,9 +15,7 @@ SFI, the Gates Foundation, and Slum/Shack Dwellers International joined together
 As project manager I am leading the development of a data collection, analysis, and visualization platform to be used in informal settlements worldwide. I am also preparing data collected over the past ten years for further research and analysis.
 <hr>
 
-Previously, I have worked for [Periscopic](http://periscopic.com), a data visualization company, as a project manager and TextFlow Media, as an online textbook developer/project manager.
-
-While an undergrad at Reed College (and a bit after), I helped do research on the effects of peers on student learning.
+Previously, I spent seven and a half years biking and getting wet in [Portland, OR](http://www.youtube.com/watch?v=3PC5PDlKKIo).  I moved to Portland to attend [Reed College](http://reed.edu) where I majored in Economics and Math. I wrote my [thesis](https://s3.amazonaws.com/joehand_blog/Hand_ReedSeniorThesis_2009.pdf) on an economic model fueled by creative destruction, a topic that still interests me. More recently, I managed data visualization projects at [Periscopic](http://periscopic.com) with clients including the Unicef, Yahoo!, GE, the Economic Policy Institute, and the Hewlett Foundation.
 
 ####Education
 
