@@ -4,8 +4,6 @@ Date: 2014-02-09T00:00:00
 Slug: about
 Title: About Joe
 
-***A work in progress, just like life***
-
 #### Santa Fe Institute: <small>Program Manager</small>
 
 I joined the Santa Fe Institute as the project manager for the Informal Settlements Project led by Dr. Luis Bettencourt. I have always been fascinated with cities and recognize the importance of understanding the development of slums and cities for the future of humanity.
@@ -22,3 +20,5 @@ Previously, I spent seven and a half years biking and getting wet in [Portland, 
 **Reed College:** B.A. Economics-Mathematics *2009*
 
 [Research thesis](https://s3.amazonaws.com/joehand_blog/Hand_ReedSeniorThesis_2009.pdf) - *Creative Destruction in a Dynamic Stochastic General Equilibrium Framework: Evaluation Through Calibration and Simulation.*
+
+I spend my time [reading](https://www.goodreads.com/joehand), cooking, [writing Python](https://github.com/joehand), lifting kettlebells, and walking outside.
