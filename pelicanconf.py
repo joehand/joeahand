@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
-from __future__ import unicode_literals
-from urlparse import urlparse
 
 import time
+from urllib.parse import urlparse
 
 def get_domain(url):
         ''' Return just the domain (and subdomain!) for a url

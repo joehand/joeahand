@@ -24,7 +24,7 @@ import logging
 from operator import itemgetter
 import requests
 import time
-import urllib
+from urllib import request
 
 from PIL import Image
 
@@ -80,10 +80,12 @@ class Gdocs_Insta(Gdocs_Sheet):
             local_path = '{}/images/insta/{}'.format(
                                 self.gen.settings['PATH'], img_url.split('/')[-1])
             try:
-                urllib.urlretrieve(img_url,local_path)
-                im = Image.open(local_path)
+                print('downloading img')
+                im = Image.open(request.urlopen(img_url))
+                print('resize img')
                 im.thumbnail(size)
                 im.save(local_path, "JPEG")
+                print('save img')
             except IOError:
                 print("cannot create thumbnail for", local_path)
             item['Image_URL'] = local_path.split(self.gen.settings['PATH'])[1]
