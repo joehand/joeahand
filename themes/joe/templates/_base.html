@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript">
+        <script data-cfasync="false" type="text/javascript">
             var host = '{{ SITEURL | replace('https://', '') }}';
             if ((host == window.location.host) && (window.location.protocol != "https:"))
                 window.location.protocol = "https";
@@ -25,8 +25,8 @@
         {% endassets %}
 
         <!-- WebFonts -->
-        <script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.3/webfont.js"></script>
-        <script>
+        <script  data-cfasync="false" src="//ajax.googleapis.com/ajax/libs/webfont/1.5.3/webfont.js"></script>
+        <script data-cfasync="false" >
           WebFont.load({
             google: {
               families:  [ 'EB+Garamond::latin', 'Open+Sans:400italic,400,700,300:latin' ]
