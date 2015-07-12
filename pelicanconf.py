@@ -3,6 +3,8 @@
 from __future__ import unicode_literals
 from urlparse import urlparse
 
+import time
+
 def get_domain(url):
         ''' Return just the domain (and subdomain!) for a url
         '''
@@ -12,11 +14,25 @@ def get_domain(url):
 
         return domain
 
-JINJA_FILTERS = {'get_domain':get_domain}
 
-AUTHOR = u'Joe Hand'
-SITENAME = u'Joe Hand'
+JINJA_FILTERS = {
+    'get_domain':get_domain,
+}
+
+LAST_UPDATE = str(time.strftime('%m %Y'))
+YEAR = str(time.strftime('%Y'))
+
 SITEURL = ''
+AUTHOR = u'Joe Hand'
+AUTHOR_LINKS = {
+    'INSTAGRAM' : 'http://instagram.com/joeahand',
+    'GITHUB' : 'https://github.com/joehand',
+    'TWITTER' : 'http://twitter.com/joeahand/',
+}
+SITENAME = u'Joe Hand'
+SITESUBTITLE = u'Better cities with local data'
+
+NAV_PAGES = ['about', '']
 
 THEME = 'themes/joe/'
 
@@ -29,7 +45,38 @@ DEFAULT_DATE_FORMAT = '%Y-%B-%d'
 
 #DIRECT_TEMPLATES = (('index', 'archives', '404'))
 PLUGIN_PATHS = ["plugins", ]
-#PLUGINS = ["assets",]
+PLUGINS = [
+            'assets',
+            'pelican_gdocs',
+            ]
+# PLUGIN Settings
+GITHUB_USER = 'joehand'
+GDOCS = [
+    {
+        'name':'instagram',
+        'url':'http://docs.google.com/spreadsheets/d/16KHyJyTGvOIFKTR5uUHrXKWH3kf-UiucCwXfceFet0k/pub?gid=0&single=true&output=csv'
+    },
+    {
+        'name':'articles',
+        'url':'http://docs.google.com/spreadsheets/d/1Wav1nDxtOTRm3WMLL3RI0oqApxLjBxzTcPftWsCn6x4/pub?gid=0&single=true&output=csv'
+    },
+    {
+        'name':'fitbit_activity',
+        'url':'http://docs.google.com/spreadsheets/d/1AZRyvrcm-Stk0VlWoPEHD4sxe1PTOdEpU2MejRzHB7s/pub?gid=0&single=true&output=csv'
+    },
+    {
+        'name':'tweets',
+        'url':'http://docs.google.com/spreadsheets/d/1qRuICBJWHQQ34ujTXkY8jh7obJuVJ_quLbwMrBiQFyg/pub?gid=0&single=true&output=csv'
+    },
+    {
+        'name':'steps',
+        'url':'https://docs.google.com/spreadsheets/d/1AZRyvrcm-Stk0VlWoPEHD4sxe1PTOdEpU2MejRzHB7s/pub?gid=0&single=true&output=csv'
+    },
+    {
+        'name':'coffee',
+        'url':'https://docs.google.com/spreadsheets/d/1fsaSy8HJdoTr5iUX7p-iCxUwC-TFzZxnqNzt6mMP26s/pub?gid=0&single=true&output=csv'
+    },
+]
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
@@ -66,6 +113,11 @@ HOME_PAGE = {
     'content' : 'home',
     'count' : 0,
     'partial' : True,
+    'links' : [
+        ('Projects',SITEURL + '#test'),
+        ('Longer Bio',SITEURL + '/about/'),
+        ('Writing','http://medium.com/@joehand'),
+    ]
 }
 
 COPYRIGHT_LINK = 'http://creativecommons.org/licenses/by-nc-nd/4.0/'

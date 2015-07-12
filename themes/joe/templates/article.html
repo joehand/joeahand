@@ -7,7 +7,7 @@
         <h5 class="category small-caps"><a href="{{ SITEURL }}/{{ article.category.url }}">{{article.category}}</a></h5>
         {%- if article.link_url -%}
             <h5 class="link_url">
-                <a href="{{article.link_url}}"><span class="useicons">&#xe61e;</span><span class="link_url">{{article.link_url|get_domain}}</span></a>
+                <a href="{{article.link_url}}"><span class="useicons">&#xe601;</span><span class="link_url">{{article.link_url|get_domain}}</span></a>
             </h5>
         {%- endif -%}
     </header>
@@ -17,7 +17,7 @@
 
     <footer class="post-footer">
         <a class="small-caps" rel="bookmark" title="Permalink to {{ article.title|striptags }}" href="{{ SITEURL }}/{{ article.url }}">
-            <span class="useicons">&#xe630;</span>
+            <span class="useicons">&#xe602;</span>
             <span class="pub_date">
                 <abbr class="published" title="{{ article.date.isoformat() }}">
                   {{article.date.strftime('%B %Y')}}
