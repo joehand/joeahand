@@ -24,7 +24,7 @@ import logging
 from operator import itemgetter
 import requests
 import time
-import urllib
+from urllib import request
 
 from PIL import Image
 
@@ -80,7 +80,7 @@ class Gdocs_Insta(Gdocs_Sheet):
             local_path = '{}/images/insta/{}'.format(
                                 self.gen.settings['PATH'], img_url.split('/')[-1])
             try:
-                urllib.urlretrieve(img_url,local_path)
+                request.urlretrieve(img_url,local_path)
                 im = Image.open(local_path)
                 im.thumbnail(size)
                 im.save(local_path, "JPEG")
