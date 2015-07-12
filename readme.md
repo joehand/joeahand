@@ -1,7 +1,12 @@
 Pelican website with custom theme.
 
-http://jlord.us/blog/your-own-instagram.html
-http://codepen.io/hackthevoid/pen/AIoba/
-http://purecss.io/layouts/
-docs.getpelican.com
-http://gionkunz.github.io/chartist-js/index.html
+Resources: 
+
+* docs.getpelican.com
+* http://purecss.io/
+* http://gionkunz.github.io/chartist-js/index.html
+* http://jlord.us/blog/your-own-instagram.html
+* http://codepen.io/hackthevoid/pen/AIoba/
+* https://www.google.com/fonts
+
+

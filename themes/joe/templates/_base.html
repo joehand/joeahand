@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script type="text/javascript">
+            var host = {{ SITEURL | replace('https://', '') }};
+            if ((host == window.location.host) && (window.location.protocol != "https:"))
+                window.location.protocol = "https";
+        </script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="ClearType" content="true">
@@ -8,15 +13,15 @@
 
         <!-- DNS prefetch -->
         <link rel="dns-prefetch" href="//ajax.googleapis.com">
-        <link rel="dns-prefetch" href="//s3.amazonaws.com">
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+        <link rel="dns-prefetch" href="//scontent.cdninstagram.com">
 
         <title>{% block title %}{{ SITENAME }} {% if SITESUBTITLE %}| {{ SITESUBTITLE }}{% endif %}{% endblock %}</title>
         <meta name="description" content="{{ SITESUBTITLE }}">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
         {% assets filters="scss,cssmin", depends=('**/*.scss'), output="main.min.css", "scss/main.scss" %}
-            <link rel="stylesheet" href="{{ SITEURL }}/{{ ASSET_URL }}">
+            <link rel="stylesheet" href="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}">
         {% endassets %}
 
         <!-- WebFonts -->
@@ -112,9 +117,9 @@
         </div> <!-- document -->
     {%- block footer_scripts %}
     {%- endblock footer_scripts %}
-    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-    <script src="{{ SITEURL }}/theme/js/main.js"></script>
-    <script src="{{ SITEURL }}/theme/instantclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chartist/0.9.1/chartist.min.js"></script>
+    <script src="{{ SITEURL | replace('https://', '//') }}/theme/js/main.js"></script>
+    <script src="{{ SITEURL | replace('https://', '//') }}/theme/instantclick.min.js"></script>
     {% include 'partials/_analytics.html' %}
     </body>
 </html>
