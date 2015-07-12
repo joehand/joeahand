@@ -1,1 +1,1 @@
-web: make serve
+web: make serve PORT=80
