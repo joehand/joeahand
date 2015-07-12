@@ -44,10 +44,13 @@ DEFAULT_LANG = u'en'
 DEFAULT_DATE_FORMAT = '%Y-%B-%d'
 
 #DIRECT_TEMPLATES = (('index', 'archives', '404'))
-PLUGIN_PATHS = ["plugins", ]
+
+STATIC_PATHS = ['images']
+PLUGIN_PATHS = ["plugins", 'plugins/pelican-plugins']
 PLUGINS = [
             'assets',
             'pelican_gdocs',
+            'optimize_images'
             ]
 # PLUGIN Settings
 GITHUB_USER = 'joehand'

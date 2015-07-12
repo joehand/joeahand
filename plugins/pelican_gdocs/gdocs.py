@@ -24,7 +24,11 @@ import logging
 from operator import itemgetter
 import requests
 import time
+import urllib
 
+from PIL import Image
+
+size = (420, 420)
 
 from pelican import signals
 
@@ -59,6 +63,32 @@ class Gdocs_Sheet(object):
         header = [h.strip() for h in lines[0].split(',')] #trim header
         data = list(csv.DictReader(lines[1:], fieldnames=header))
         return data
+
+
+class Gdocs_Insta(Gdocs_Sheet):
+    """
+    Special processing for coffee sheet
+    """
+    def __init__(self, *args, **kwargs):
+        super(Gdocs_Insta, self).__init__(*args, **kwargs)
+
+    def process(self):
+        data = super(Gdocs_Insta, self).process()
+        for item in data:
+            print(item['Image_URL'])
+            img_url = item['Image_URL']
+            local_path = '{}/images/insta/{}'.format(
+                                self.gen.settings['PATH'], img_url.split('/')[-1])
+            try:
+                urllib.urlretrieve(img_url,local_path)
+                im = Image.open(local_path)
+                im.thumbnail(size)
+                im.save(local_path, "JPEG")
+            except IOError:
+                print("cannot create thumbnail for", local_path)
+            item['Image_URL'] = local_path.split(self.gen.settings['PATH'])[1]
+        return data
+
 
 class Gdocs_Coffee(Gdocs_Sheet):
     """
@@ -112,6 +142,10 @@ def initialize(gen):
                 gen.plugin_sheets.append(
                     (name,Gdocs_Coffee(gen, sheet['url'],name=name))
                 )
+            elif name == 'instagram':
+                gen.plugin_sheets.append(
+                    (name,Gdocs_Insta(gen, sheet['url'],name=name))
+                )
             else:
                 gen.plugin_sheets.append(
                     (name,Gdocs_Sheet(gen, sheet['url'],name=name))
@@ -125,5 +159,5 @@ def fetch(gen, metadata):
 
 
 def register():
-    signals.article_generator_init.connect(initialize)
-    signals.article_generator_context.connect(fetch)
+    signals.generator_init.connect(initialize)
+    signals.page_generator_context.connect(fetch)
