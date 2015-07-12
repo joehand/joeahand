@@ -44,10 +44,6 @@ html:hover[class^="ss-"] {
     display: none;
     content: ""
 }
-.ss-facebook:before,
-.ss-facebook.right:after {
-    content: ""
-}
 .ss-twitter:before,
 .ss-twitter.right:after {
     content: ""
@@ -60,37 +56,9 @@ html:hover[class^="ss-"] {
 .ss-googleplus.right:after {
     content: ""
 }
-.ss-appdotnet:before,
-.ss-appdotnet.right:after {
-    content: ""
-}
-.ss-zerply:before,
-.ss-zerply.right:after {
-    content: ""
-}
 .ss-reddit:before,
 .ss-reddit.right:after {
     content: ""
-}
-.ss-steam:before,
-.ss-steam.right:after {
-    content: ""
-}
-.ss-tumblr:before,
-.ss-tumblr.right:after {
-    content: ""
-}
-.ss-wordpress:before,
-.ss-wordpress.right:after {
-    content: ""
-}
-.ss-blogger:before,
-.ss-blogger.right:after {
-    content: ""
-}
-.ss-posterous:before,
-.ss-posterous.right:after {
-    content: ""
 }
 .ss-quora:before,
 .ss-quora.right:after {
@@ -107,10 +75,6 @@ html:hover[class^="ss-"] {
 .ss-vine:before,
 .ss-vine.right:after {
     content: ""
-}
-.ss-letterboxd:before,
-.ss-letterboxd.right:after {
-    content: ""
 }
 .ss-flickr:before,
 .ss-flickr.right:after {
@@ -132,33 +96,9 @@ html:hover[class^="ss-"] {
 .ss-pinterest.right:after {
     content: ""
 }
-.ss-svpply:before,
-.ss-svpply.right:after {
-    content: ""
-}
-.ss-readmill:before,
-.ss-readmill.right:after {
-    content: ""
-}
 .ss-dropbox:before,
 .ss-dropbox.right:after {
     content: ""
-}
-.ss-pinboard:before,
-.ss-pinboard.right:after {
-    content: ""
-}
-.ss-delicious:before,
-.ss-delicious.right:after {
-    content: ""
-}
-.ss-dribbble:before,
-.ss-dribbble.right:after {
-    content: ""
-}
-.ss-behance:before,
-.ss-behance.right:after {
-    content: ""
 }
 .ss-github:before,
 .ss-github.right:after {
@@ -172,10 +112,6 @@ html:hover[class^="ss-"] {
 .ss-stackoverflow.right:after {
     content: ""
 }
-.ss-paypal:before,
-.ss-paypal.right:after {
-    content: ""
-}
 .ss-kickstarter:before,
 .ss-kickstarter.right:after {
     content: ""
@@ -184,29 +120,9 @@ html:hover[class^="ss-"] {
 .ss-foursquare.right:after {
     content: ""
 }
-.ss-yelp:before,
-.ss-yelp.right:after {
-    content: ""
-}
 .ss-skype:before,
 .ss-skype.right:after {
     content: ""
-}
-.ss-rdio:before,
-.ss-rdio.right:after {
-    content: ""
-}
-.ss-spotify:before,
-.ss-spotify.right:after {
-    content: ""
-}
-.ss-lastfm:before,
-.ss-lastfm.right:after {
-    content: ""
-}
-.ss-soundcloud:before,
-.ss-soundcloud.right:after {
-    content: ""
 }
 .ss-link:before,
 .ss-link.right:after {
@@ -236,25 +152,9 @@ html:hover[class^="ss-"] {
 .ss-apple.right:after {
     content: ""
 }
-.ss-microsoft:before,
-.ss-microsoft.right:after {
-    content: ""
-}
-.ss-windows:before,
-.ss-windows.right:after {
-    content: ""
-}
 .ss-android:before,
 .ss-android.right:after {
     content: ""
-}
-.ss-blackberry:before,
-.ss-blackberry.right:after {
-    content: ""
-}
-.ss-fivehundredpx:before,
-.ss-fivehundredpx.right:after {
-    content: ""
 }
 a.ss-icon.twitter:hover {
     color: #14b0f2 !important
@@ -271,157 +171,41 @@ a.ss-icon.googleplus:hover {
 a.ss-icon.instagram:hover {
     color: #517fa4 !important
 }
-@font-face{font-family:"icomoon";src:url(/theme/fonts/icomoon.eot);src:url(/theme/fonts/icomoon.eot?#iefix) format("embedded-opentype"),
-url(/theme/fonts/icomoon.woff) format("woff"),
-url(/theme/fonts/icomoon.ttf) format("truetype"),
-url(/theme/fonts/icomoon.svg#icomoon) format("svg");
-font-weight:normal;
-font-style:normal
+
+@font-face {
+    font-family: 'icomoon';
+    src:url('fonts/icomoon.eot?abpmn1');
+    src:url('fonts/icomoon.eot?#iefixabpmn1') format('embedded-opentype'),
+        url('fonts/icomoon.ttf?abpmn1') format('truetype'),
+        url('fonts/icomoon.woff?abpmn1') format('woff'),
+        url('fonts/icomoon.svg?abpmn1#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
-[class^="icon-"],
-[class*=" icon-"] {
-    font-family:"icomoon";
-    speak:none;
-    font-style:normal;
-    font-weight:normal;
-    font-variant:normal;
-    text-transform:none;
-    line-height:1;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale
+
+[class^="icon-"], [class*=" icon-"] {
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
-.icon-home:before {
-    content:""
-}
-.icon-pencil:before {
-    content:""
-}
-.icon-pencil2:before {
-    content:""
-}
-.icon-newspaper:before {
-    content:""
-}
-.icon-image:before {
-    content:""
-}
-.icon-images:before {
-    content:""
-}
-.icon-music:before {
-    content:""
-}
-.icon-play:before {
-    content:""
-}
-.icon-book:before {
-    content:""
-}
-.icon-file:before {
-    content:""
-}
-.icon-file2:before {
-    content:""
-}
-.icon-tags:before {
-    content:""
-}
-.icon-disk:before {
-    content:""
-}
-.icon-bubble:before {
-    content:""
-}
-.icon-bubbles:before {
-    content:""
-}
-.icon-bubbles2:before {
-    content:""
-}
-.icon-bubble2:before {
-    content:""
-}
-.icon-spinner:before {
-    content:""
-}
-.icon-spinner2:before {
-    content:""
-}
-.icon-spinner3:before {
-    content:""
-}
-.icon-spinner4:before {
-    content:""
-}
-.icon-expand:before {
-    content:""
-}
-.icon-contract:before {
-    content:""
-}
-.icon-cog:before {
-    content:""
-}
-.icon-cog2:before {
-    content:""
-}
-.icon-remove:before {
-    content:""
-}
-.icon-remove2:before {
-    content:""
-}
-.icon-list:before {
-    content:""
-}
-.icon-numbered-list:before {
-    content:""
-}
-.icon-cloud-upload:before {
-    content:""
+
+.icon-coffee:before {
+    content: "\e600";
 }
 .icon-link:before {
-    content:""
+    content: "\e601";
 }
-.icon-attachment:before {
-    content:""
+.icon-bookmark:before {
+    content: "\e602";
 }
-.icon-contrast:before {
-    content:""
-}
-.icon-star:before {
-    content:""
-}
-.icon-star2:before {
-    content:""
-}
-.icon-warning:before {
-    content:""
-}
-.icon-notification:before {
-    content:""
-}
-.icon-cancel-circle:before {
-    content:""
-}
-.icon-checkmark-circle:before {
-    content:""
-}
-.icon-radio-unchecked:before {
-    content:""
-}
-.icon-radio-checked:before {
-    content:""
-}
-.icon-bold:before {
-    content:""
-}
-.icon-underline:before {
-    content:""
-}
-.icon-italic:before {
-    content:""
-}
-.icon-code:before {
-    content:""
+.icon-hand:before {
+    content: "\e603";
 }

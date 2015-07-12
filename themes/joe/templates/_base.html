@@ -15,7 +15,6 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-        <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         {% assets filters="scss,cssmin", depends=('**/*.scss'), output="main.min.css", "scss/main.scss" %}
             <link rel="stylesheet" href="{{ SITEURL }}/{{ ASSET_URL }}">
         {% endassets %}
@@ -105,7 +104,7 @@
                     </span>
                     &nbsp;·&nbsp;-->
                     <span>
-                        <a href="{{ SITEURL }}/made-with/">Made By <span class="useicons">&#xe635;</span></a>
+                        <a href="{{ SITEURL }}/about/#about-site">Made By <span class="useicons">&#xe603;</span></a>
                     </span>
                 </div>
             </footer>
@@ -113,6 +112,7 @@
         </div> <!-- document -->
     {%- block footer_scripts %}
     {%- endblock footer_scripts %}
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
     <script src="{{ SITEURL }}/theme/js/main.js"></script>
     <script src="{{ SITEURL }}/theme/instantclick.min.js"></script>
     {% include 'partials/_analytics.html' %}
