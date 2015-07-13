@@ -85,9 +85,9 @@ class Gdocs_Insta(Gdocs_Sheet):
                 im = Image.open(local_path)
                 im.thumbnail(size)
                 im.save(local_path, "JPEG")
+                item['Local_Image_URL'] = local_path.split(self.gen.settings['PATH'])[1]
             except IOError:
                 print("cannot create thumbnail for", local_path)
-            item['Image_URL'] = local_path.split(self.gen.settings['PATH'])[1]
         return data
 
 
