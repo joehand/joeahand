@@ -20,7 +20,7 @@
         <meta name="description" content="{{ SITESUBTITLE }}">
 
         <!-- Styles -->
-        {% assets filters="scss,cssmin", depends=('**/*.scss'), output="main.min.css", "scss/main.scss" %}
+        {% assets filters="pyscss,cssmin", depends=('**/*.scss'), output="main.min.css", "scss/main.scss" %}
             <link rel="stylesheet" href="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}">
         {% endassets %}
 
