@@ -48,8 +48,7 @@ STATIC_PATHS = ['images']
 PLUGIN_PATHS = ["plugins", 'plugins/pelican-plugins']
 PLUGINS = [
             'assets',
-            'pelican_gdocs',
-            'optimize_images'
+            'pelican_gdocs'
             ]
 # PLUGIN Settings
 GITHUB_USER = 'joehand'

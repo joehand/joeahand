@@ -10,6 +10,13 @@ import sys
 sys.path.append(os.curdir)
 from pelicanconf import *
 
+PUBLISH = True
+PLUGINS = [
+            'assets',
+            'pelican_gdocs',
+            'optimize_images'
+            ]
+
 SITEURL = 'https://joeahand.com'
 RELATIVE_URLS = False
 
