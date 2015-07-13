@@ -97,7 +97,7 @@
                     {% for row in gdocs_data.instagram[-8:] | reverse %}
                     <div class="pure-u-1-4 pure-u-md-1-8">
                       <a class="" href="{{row.Instagram_URL}}" title="{{row.Caption}}">
-                      {% if Local_Image_URL in row %}
+                      {% if row.Local_Image_URL %}
                         <img class="pure-img" src="{{ SITEURL | replace('https://', '//') }}{{row.Local_Image_URL}}"/>
                       {% else %}
                         <img class="pure-img" src="{{row.Image_URL}}"/>

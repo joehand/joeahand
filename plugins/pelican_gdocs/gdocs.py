@@ -74,7 +74,7 @@ class Gdocs_Insta(Gdocs_Sheet):
         super(Gdocs_Insta, self).__init__(*args, **kwargs)
 
     def process(self):
-        data = super(Gdocs_Insta, self).process()
+        data = super(Gdocs_Insta, self).process()[-8:]
         for item in data:
             print(item['Image_URL'])
             img_url = item['Image_URL']
@@ -88,6 +88,7 @@ class Gdocs_Insta(Gdocs_Sheet):
                 item['Local_Image_URL'] = local_path.split(self.gen.settings['PATH'])[1]
             except IOError:
                 print("cannot create thumbnail for", local_path)
+            print(item)
         return data
 
 
