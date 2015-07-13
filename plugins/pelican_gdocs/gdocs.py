@@ -21,6 +21,7 @@
 import csv
 from datetime import datetime, date
 import logging
+import io
 from operator import itemgetter
 import requests
 import time
@@ -80,7 +81,7 @@ class Gdocs_Insta(Gdocs_Sheet):
             local_path = '{}/images/insta/{}'.format(
                                 self.gen.settings['PATH'], img_url.split('/')[-1])
             try:
-                im = Image.open(request.urlopen(img_url))
+                im = Image.open(io.BytesIO(request.urlopen(img_url).read()))
                 im.thumbnail(size)
                 im.save(local_path, "JPEG")
             except IOError:
