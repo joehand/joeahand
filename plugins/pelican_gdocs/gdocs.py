@@ -81,7 +81,8 @@ class Gdocs_Insta(Gdocs_Sheet):
             local_path = '{}/images/insta/{}'.format(
                                 self.gen.settings['PATH'], img_url.split('/')[-1])
             try:
-                im = Image.open(io.BytesIO(request.urlopen(img_url).read()))
+                request.urlretrieve(img_url,local_path)
+                im = Image.open(local_path)
                 im.thumbnail(size)
                 im.save(local_path, "JPEG")
             except IOError:
