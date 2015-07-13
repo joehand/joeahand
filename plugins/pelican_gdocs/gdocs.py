@@ -82,6 +82,7 @@ class Gdocs_Insta(Gdocs_Sheet):
                                 self.gen.settings['PATH'], img_url.split('/')[-1])
             try:
                 request.urlretrieve(img_url,local_path)
+                print('img written to {}'.format(local_path))
                 # im = Image.open(local_path)
                 # im.thumbnail(size)
                 # im.save(local_path, "JPEG")
