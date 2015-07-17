@@ -162,7 +162,9 @@ h6,
     padding-top:86px;
 }
 
-
+.twitter.ss-icon, .instagram.ss-icon {
+    display:none;
+}
 
 /*
  * -- TABLET (AND UP) MEDIA QUERIES --
@@ -187,6 +189,10 @@ h6,
         ul {
             float: right;
         }
+    }
+
+    .twitter.ss-icon, .instagram.ss-icon {
+        display:inline;
     }
 
 }
