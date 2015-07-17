@@ -27,6 +27,8 @@ AUTHOR_LINKS = {
     'INSTAGRAM' : 'http://instagram.com/joeahand',
     'GITHUB' : 'https://github.com/joehand',
     'TWITTER' : 'http://twitter.com/joeahand/',
+    # use html entities to obfuscate for spammers (http://stackoverflow.com/questions/748780/best-way-to-obfuscate-an-e-mail-address-on-a-website)
+    'EMAIL' : '&#106;&#111;&#101;&#064;&#106;&#111;&#101;&#097;&#104;&#097;&#110;&#100;&#046;&#099;&#111;&#109;'
 }
 SITENAME = u'Joe Hand'
 SITESUBTITLE = u'Better cities with local data'
