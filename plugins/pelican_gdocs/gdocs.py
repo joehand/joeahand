@@ -36,7 +36,7 @@ from PIL import Image
 from pelican import signals
 
 from .settings import * # Set AWS credentials here
-from .img_upload import _thumbnail_s3
+from .img_upload import thumbnail_s3
 
 logger = logging.getLogger(__name__)
 
