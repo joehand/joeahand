@@ -132,9 +132,9 @@
                 <div class="pure-u-2-24 pure-u-md-2-24"></div>
             {% if GDOCS and gdocs_data.articles %}
                 <div class="pure-u-21-24 pure-u-md-10-24 reading">
-                    <h3 class="content-head is-center"><a href="#">Reading</a></h3>
+                    <h3 class="content-head is-center"><a href="{{ SITEURL }}/reading/">Reading</a></h3>
                     <div class="pure-g articles">
-                        {% for row in gdocs_data.articles[-5:] | reverse %}
+                        {% for row in gdocs_data.articles[-6:] | reverse %}
                         <div class="pure-u-1-1 gdoc-link">
                             <a href="{{row.URL}}">{{row.Title}}
                                 <span class="domain">{{row.URL|get_domain}}</span>
