@@ -98,7 +98,7 @@
                     <div class="pure-u-1-4 pure-u-md-1-8">
                       <a class="" href="{{row.Instagram_URL}}" title="{{row.Caption}}">
                       {% if row.S3_Image_URL %}
-                        <img class="pure-img" src="{{row.S3_Image_URL | replace('http://', '//') }}"/>
+                        <img class="pure-img" src="//cdn.joeahand.com/{{row.S3_Image_URL }}"/>
                       {% else %}
                         <img class="pure-img" src="{{row.Image_URL}}"/>
                       {% endif %}

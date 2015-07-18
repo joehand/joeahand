@@ -83,7 +83,7 @@ class Gdocs_Insta(Gdocs_Sheet):
         for item in data:
             img_url = item['Image_URL']
             try:
-                item['S3_Image_URL'] = thumbnail_s3(img_url, 'joeahand')
+                item['S3_Image_URL'] = thumbnail_s3(img_url, AWS_STORAGE_BUCKET_NAME)
             except IOError:
                 print("cannot create thumbnail for", local_path)
         return data

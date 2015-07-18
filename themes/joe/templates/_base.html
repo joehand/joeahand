@@ -12,9 +12,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- DNS prefetch -->
-        <link rel="dns-prefetch" href="//ajax.googleapis.com">
         <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
-        <link rel="dns-prefetch" href="//joeahand.s3.amazonaws.com">
+        <link rel="dns-prefetch" href="//cdn.joeahand.com">
 
         <title>{% block title %}{{ SITENAME }} {% if SITESUBTITLE %}| {{ SITESUBTITLE }}{% endif %}{% endblock %}</title>
         <meta name="description" content="{{ SITESUBTITLE }}">
@@ -25,7 +24,7 @@
         {% endassets %}
 
         <!-- WebFonts -->
-        <script  data-cfasync="false" src="//ajax.googleapis.com/ajax/libs/webfont/1.5.3/webfont.js"></script>
+        <script  data-cfasync="false" src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.4/webfontloader.js"></script>
         <script data-cfasync="false" >
           WebFont.load({
             google: {
@@ -116,7 +115,7 @@
             {%- endblock sitefooter %}
         </div> <!-- document -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/chartist/0.9.1/chartist.min.js"></script>
-    <script src="{{ SITEURL | replace('https://', '//') }}/theme/instantclick.min.js"></script>
+    <script data-no-instant src="//cdnjs.cloudflare.com/ajax/libs/instantclick/3.0.1/instantclick.min.js"></script>
     {%- block footer_scripts %}
     {%- endblock footer_scripts %}
     {% include 'partials/_analytics.html' %}
