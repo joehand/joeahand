@@ -80,6 +80,34 @@
                                     {% endfor %}
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr class="coffee-spacer">
+                                    <td colspan="31"><span></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="y-label total">
+                                        <span>total</span>
+                                    </td>
+                                    {% for j in gdocs_data.coffee.data | reverse %}
+                                    {% set cups = gdocs_data.coffee.data[j] |sum() %}
+                                    {% set per_max = cups/8 %}
+                                    {% if cups > 0 %}
+                                    <td data-tooltip="{{cups}} cups"
+                                        class="coffee-cell has-cups" style="background:rgba(58, 65, 69,{{per_max}})">
+                                        <span>{{cups}}</span>
+                                    </td>
+                                    {% elif j in gdocs_data.coffee.no_data %}
+                                    <td data-tooltip="No data"
+                                         class="coffee-cell no-data">
+                                    </td>
+                                    {% else %}
+                                    <td data-tooltip="{{cups}} cups"
+                                         class="coffee-cell no-cups">
+                                    </td>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tr>
+                            </tfoot>
                         </table>
                     {% endif %}
                 </div>
@@ -178,6 +206,7 @@
 
 {% block footer_scripts %}
     <script>
+    console.log({{gdocs_data.coffee}});
     {% if GDOCS and gdocs_data.steps %}
         var steps_data = {
                 labels: [
