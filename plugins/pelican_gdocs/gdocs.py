@@ -25,16 +25,21 @@ import io
 from operator import itemgetter
 import requests
 import time
+import sys
 from urllib import request
 
+
+from boto.s3.connection import S3Connection
+from boto.exception import S3ResponseError
+from boto.s3.key import Key
 from PIL import Image
-
-size = (420, 420)
-
 from pelican import signals
 
+from .settings import * # Set AWS credentials here
+from .img_upload import thumbnail_s3
 
 logger = logging.getLogger(__name__)
+
 
 class Gdocs_Sheet(object):
     """
@@ -75,19 +80,12 @@ class Gdocs_Insta(Gdocs_Sheet):
 
     def process(self):
         data = super(Gdocs_Insta, self).process()[-8:]
-        # for item in data:
-        #     print(item['Image_URL'])
-        #     img_url = item['Image_URL']
-        #     local_path = '{}/images/insta/{}'.format(
-        #                         self.gen.settings['PATH'], img_url.split('/')[-1])
-        #     try:
-        #         request.urlretrieve(img_url,local_path)
-        #         im = Image.open(local_path)
-        #         im.thumbnail(size)
-        #         im.save(local_path, "JPEG")
-        #         item['Local_Image_URL'] = local_path.split(self.gen.settings['PATH'])[1]
-        #     except IOError:
-        #         print("cannot create thumbnail for", local_path)
+        for item in data:
+            img_url = item['Image_URL']
+            try:
+                item['S3_Image_URL'] = thumbnail_s3(img_url, AWS_STORAGE_BUCKET_NAME)
+            except IOError:
+                print("cannot create thumbnail for", local_path)
         return data
 
 

@@ -87,3 +87,5 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+plugins/pelican_gdocs/settings.py
