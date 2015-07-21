@@ -1,5 +1,5 @@
 
-.home {
+.home, .reading {
 
     .page-content {
         margin-bottom:50px;
@@ -49,6 +49,10 @@
       border-right: 0;
       font-size: 1.05em;
       &:after {
+        .reading & {
+          content:'∞';
+          font-size: 1.15em;
+        }
         content:'JH';
         color: $lightgrey;
         font-family: "EB Garamond", serif;
@@ -118,6 +122,10 @@
         margin:0 auto 2em;
         position: relative;
 
+        tbody {
+          position: relative;
+        }
+
         &:hover {
             &:before, &:after {
                 opacity:0;
@@ -132,7 +140,7 @@
             display:block;
             width:15px;
             height:24px;
-            margin-top:-12px;
+            margin-top:-30px;
             top:50%;
             @include transform(rotate(-90deg));
             font-size:0.65em;
@@ -143,11 +151,11 @@
             @include transition(all 0.35s ease-in);
             content:'Days Ago';
             position:absolute;
-            bottom:0px;
+            bottom:24px;
             display:block;
             width:46px;
             height:15px;
-            margin-left:-23px;
+            margin-left:-10px;
             left:50%;
             font-size:0.65em;
             color:$mediumgrey;
@@ -199,14 +207,20 @@
             span {
                 top:0;
                 position:absolute;
+                font-variant: small-caps;
             }
             font-size:0.65em;
             color:$mediumgrey;
             @include transition(all 0.65s ease-out);
+
+            &.total {
+              opacity:1;
+              line-height: 35px;
+            }
         }
 
         .x-label span {
-            margin-top:-5px;
+            margin-top:0px;
             text-align: center;
             left:0;
             width:100%;
@@ -223,6 +237,16 @@
             .x-label, .y-label {
                 opacity: 1;
             }
+        }
+
+        tr.coffee-spacer td{
+          padding-top:10px;
+          opacity:0;
+          border:0;
+          background:none;
+          z-index:-1;
+          height:0;
+          width:0;
         }
     }
 }
