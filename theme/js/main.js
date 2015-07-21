@@ -1,5 +1,3 @@
-console.log(steps_data);
-
 var bar_options = {
   seriesBarDistance: 15,
   axisX: {
