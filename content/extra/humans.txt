@@ -11,10 +11,13 @@
 # TECHNOLOGY COLOPHON
 
     Pelican (Python Static Site Generator)
+    Custom Google-Docs Plugin
     PureCSS
     Chartist.js
     Google Fonts (Garamond and Open Sans)
-    IFTTT-Powered Data
+    IFTTT-Powered Data (via Google Docs)
 
 ## Source Code Here: 
-    github.com/joehand/joehand
+    github.com/joehand/joeahand
+
+# Have a good day!!
