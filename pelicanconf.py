@@ -44,7 +44,9 @@ TIMEZONE = 'US/Mountain'
 DEFAULT_LANG = u'en'
 DEFAULT_DATE_FORMAT = '%Y-%B-%d'
 
-#DIRECT_TEMPLATES = (('index', 'archives', '404'))
+DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives','sitemap')
+
+SITEMAP_SAVE_AS = 'sitemap.xml'
 
 STATIC_PATHS = []
 PLUGIN_PATHS = ["plugins", 'plugins/pelican-plugins']

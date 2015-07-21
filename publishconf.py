@@ -20,12 +20,17 @@ PLUGINS = [
 SITEURL = 'https://joeahand.com'
 RELATIVE_URLS = False
 
-#FEED_ALL_ATOM = 'feeds/all.atom.xml'
+FEED_ALL_ATOM = 'feeds/all.atom.xml'
 
 DELETE_OUTPUT_DIRECTORY = True
 
-STATIC_PATHS = ['extra/CNAME']
-EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
+STATIC_PATHS = ['extra/CNAME','extra/favicon.ico','extra/robots.txt','extra/humans.txt']
+EXTRA_PATH_METADATA = {
+        'extra/CNAME': {'path': 'CNAME'},
+        'extra/favicon.ico': {'path': 'favicon.ico'},
+        'extra/robots.txt': {'path': 'robots.txt'},
+        'extra/humans.txt': {'path': 'humans.txt'},
+}
 
 # Following items are often useful when publishing
 
