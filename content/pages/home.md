@@ -1,7 +1,7 @@
 Status: published
 Date: 2014-03-15T00:00:00
 Title: home
-Slug: h
+Slug: home
 
 I am a developer, researcher, and open data enthusiast. I've worked with international communities, open source developers, researchers, and data visualiaztion & mapping experts to create community data and open source technology to solve local problems.
 
