@@ -2,7 +2,7 @@
     {% for p in PAGES %}
         {% if HOME_PAGE and p.slug in NAV_PAGES %}
         <li class="pure-menu-item {% if p == page %}pure-menu-selected{% endif %}">
-            <a class="pure-menu-link" href="{{ SITEURL }}/{{ p.url }}">{{ p.slug | capitalize }}</a>
+            <a class="pure-menu-link small" href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a>
         </li>
         {% endif %}
     {% endfor %}
