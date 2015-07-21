@@ -24,10 +24,21 @@ RELATIVE_URLS = False
 
 DELETE_OUTPUT_DIRECTORY = True
 
-STATIC_PATHS = ['extra/CNAME','extra/favicon.ico','extra/robots.txt','extra/humans.txt']
+STATIC_PATHS = [
+    'extra/CNAME',
+    'extra/favicon.ico',
+    'extra/favicon-16x16.png',
+    'extra/favicon-32x32.png',
+    'extra/favicon-96x96.png',
+    'extra/robots.txt',
+    'extra/humans.txt'
+]
 EXTRA_PATH_METADATA = {
         'extra/CNAME': {'path': 'CNAME'},
         'extra/favicon.ico': {'path': 'favicon.ico'},
+        'extra/favicon-16x16.png': {'path': 'favicon-16x16.png'},
+        'extra/favicon-32x32.png': {'path': 'favicon-32x32.png'},
+        'extra/favicon-96x96.png': {'path': 'favicon-96x96.png'},
         'extra/robots.txt': {'path': 'robots.txt'},
         'extra/humans.txt': {'path': 'humans.txt'},
 }

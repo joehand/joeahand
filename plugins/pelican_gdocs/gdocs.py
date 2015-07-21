@@ -73,7 +73,7 @@ class Gdocs_Sheet(object):
 
 class Gdocs_Insta(Gdocs_Sheet):
     """
-    Special processing for coffee sheet
+    Special processing for instagram sheet
     """
     def __init__(self, *args, **kwargs):
         super(Gdocs_Insta, self).__init__(*args, **kwargs)
