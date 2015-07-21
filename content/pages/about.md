@@ -10,6 +10,8 @@ This page needs to be updated. For now please see my [CV]({filename}/pages/cv.md
 
 I am interested in open data, community driven-development, maps, biking, and a few other things.
 
+Denver > Portland > Santa Fe > Denver
+
 * Spent seven and a half years biking and getting wet in [Portland, OR](http://www.youtube.com/watch?v=3PC5PDlKKIo). 
 * I managed data visualization projects at [Periscopic](http://periscopic.com) with clients including the Unicef, Yahoo!, GE, the Economic Policy Institute, and the Hewlett Foundation. 
 * Originally, I moved to Portland to attend [Reed College](http://reed.edu) where I majored in Economics and Math. 
