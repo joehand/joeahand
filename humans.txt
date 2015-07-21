@@ -1,0 +1,20 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+    Hi Fellow Human! Thanks for stopping by and being human.
+
+    Joe Hand
+    joe@joeahand.com
+    @joeahand
+    github.com/joehand
+
+# TECHNOLOGY COLOPHON
+
+    Pelican (Python Static Site Generator)
+    PureCSS
+    Chartist.js
+    Google Fonts (Garamond and Open Sans)
+    IFTTT-Powered Data
+
+## Source Code Here: 
+    github.com/joehand/joehand
