@@ -1,5 +1,5 @@
 
-.home {
+.home, .reading {
 
     .page-content {
         margin-bottom:50px;
@@ -49,6 +49,10 @@
       border-right: 0;
       font-size: 1.05em;
       &:after {
+        .reading & {
+          content:'∞';
+          font-size: 1.15em;
+        }
         content:'JH';
         color: $lightgrey;
         font-family: "EB Garamond", serif;
