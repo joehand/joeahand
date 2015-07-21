@@ -33,7 +33,7 @@ AUTHOR_LINKS = {
 SITENAME = u'Joe Hand'
 SITESUBTITLE = u'Better cities with local data'
 
-NAV_PAGES = ['about', '']
+NAV_PAGES = ['about', 'cv']
 
 THEME = 'themes/joe/'
 
