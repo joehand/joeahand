@@ -9,11 +9,14 @@
 @import 'variables';
 @import 'utils';
 
-// Site Sections
-@import 'blog';
+// Special Site Pages
 @import 'home';
 @import 'cv';
 @import 'reading';
+
+// General Layouts
+@import 'page';
+@import 'blog';
 
 /***************
 **** BODY ******
