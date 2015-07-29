@@ -1,5 +1,6 @@
 {% extends "_base.html" %}
-{%- block body_class %}cv{%- endblock body_class -%}
+{%- block body_class %}cv page{%- endblock body_class -%}
+{% block title %}{{ page.title }} | {{SITENAME}}{% endblock title %}
 
 {%- block main %}
     <main role="main" class="main pure-g">
