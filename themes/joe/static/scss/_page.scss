@@ -6,5 +6,41 @@
                 text-decoration: underline;
             }
         }
+        hr {
+          margin: 1em auto;
+          width:75%;
+          text-align: center;
+          line-height: 1px;
+          height: 1px;
+          background: $lightgrey;
+          border: 15px solid $bg;
+          border-left: 0;
+          border-right: 0;
+          font-size: 1.05em;
+          &:after {
+            content:'JH';
+            color: $lightgrey;
+            font-family: "EB Garamond", serif;
+            display: inline;
+            background: $bg;
+            padding: .2em .3em;
+            border: 1px solid $bg;
+            border-radius: 100px;
+            transition: .3s ease all;
+          }
+          &:before {
+            position: absolute;
+            content: '';
+            background: transparent;
+            border-spacing: 10px;
+            margin-top: -14px;
+            @include transform( scale(.5));
+            margin-left: 1px;
+            width: 29px;
+            height: 29px;
+            transition: .3s ease-out all;
+            border-radius: 100px;
+          }
+        }
     }
 }
