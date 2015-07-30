@@ -9,11 +9,14 @@
 @import 'variables';
 @import 'utils';
 
-// Site Sections
-@import 'blog';
+// Special Site Pages
 @import 'home';
 @import 'cv';
 @import 'reading';
+
+// General Layouts
+@import 'page';
+@import 'blog';
 
 /***************
 **** BODY ******
@@ -180,7 +183,7 @@ h6,
         font-size: 16px;
     }
     /* We want to give the content area some more padding */
-    .content {
+    .page-content {
         padding: 1em;
     }
 

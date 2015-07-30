@@ -19,7 +19,7 @@
         <meta name="description" content="Better cities with local data">
 
         <!-- Styles -->
-            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?f4ad458d">
+            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?a119852b">
 
         <!-- WebFonts -->
         <script  data-cfasync="false" src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.4/webfontloader.js"></script>
@@ -32,7 +32,7 @@
         </script>
 
     </head>
-    <body class="">
+    <body class="page">
         <div role="document" class="document"><div class="header">
             <div class="site-header pure-menu pure-menu-horizontal pure-menu-fixed">
                 <a class="pure-menu-heading small-caps" href="https://joeahand.com">Joe Hand</a><ul role="navigation" class="pure-menu-list">
@@ -58,24 +58,38 @@
     </header>
     <article class="content">
         <p>This page needs to be updated. For now please see my <a href="https://joeahand.com/cv/">CV</a>.</p>
+<!-- <hr>
+
+I am interested in open data, community driven-development, maps, biking, and a few other things.
+
+Denver > Portland > Santa Fe > Denver
+
+* Spent seven and a half years biking and getting wet in [Portland, OR](http://www.youtube.com/watch?v=3PC5PDlKKIo). 
+* I managed data visualization projects at [Periscopic](http://periscopic.com) with clients including the Unicef, Yahoo!, GE, the Economic Policy Institute, and the Hewlett Foundation. 
+* Originally, I moved to Portland to attend [Reed College](http://reed.edu) where I majored in Economics and Math. 
+* I wrote my [senior thesis](https://s3.amazonaws.com/joehand_blog/Hand_ReedSeniorThesis_2009.pdf) on an economic model fueled by creative destruction, a topic that still interests me today.
+
+I spend my time [reading](https://www.goodreads.com/joehand), cooking, [writing Python](https://github.com/joehand), lifting kettlebells, and walking outside. -->
+
 <hr>
 
-<p>I am interested in open data, community driven-development, maps, biking, and a few other things.</p>
-<p>Denver &gt; Portland &gt; Santa Fe &gt; Denver</p>
-<ul>
-<li>Spent seven and a half years biking and getting wet in <a href="http://www.youtube.com/watch?v=3PC5PDlKKIo">Portland, OR</a>. </li>
-<li>I managed data visualization projects at <a href="http://periscopic.com">Periscopic</a> with clients including the Unicef, Yahoo!, GE, the Economic Policy Institute, and the Hewlett Foundation. </li>
-<li>Originally, I moved to Portland to attend <a href="http://reed.edu">Reed College</a> where I majored in Economics and Math. </li>
-<li>I wrote my <a href="https://s3.amazonaws.com/joehand_blog/Hand_ReedSeniorThesis_2009.pdf">senior thesis</a> on an economic model fueled by creative destruction, a topic that still interests me.</li>
-</ul>
-<p>I spend my time <a href="https://www.goodreads.com/joehand">reading</a>, cooking, <a href="https://github.com/joehand">writing Python</a>, lifting kettlebells, and walking outside.</p>
-<hr>
-
-<h2>About This Website<a name="about-site"></a></h2>
-<p>This site runs on <a href="http://docs.getpelican.com">Pelican</a>, <a href="https://github.com/joehand/joeahand">see the code on GitHub</a>. It is served on GitHub Pages, via <a href="https://www.cloudflare.com/">CloudFare</a> (<a href="https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/">with easy &amp; free SSL</a>).</p>
-<p><strong>Homepage</strong>: Most of the homepage data is stored in Google Docs (via <a href="http://ifttt.com">IFTTT</a>, <a href="http://jlord.us/blog/your-own-instagram.html">this tutorial</a>, and <a href="https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs">a custom Pelican plugin</a>). Data is processed on the server (so I hope the website is fast). I have a cron job to generate the site daily (and get my GitHub streak up).</p>
-<p><strong>Charts</strong>: Coffee chart is made using a <code>&lt;table&gt;</code>, CSS, and lots of Joe. Daily Steps chart is made with the <a href="http://gionkunz.github.io/chartist-js/index.html">Chartist.js</a> library.</p>
-<p><strong>Design</strong>: The Fonts are Garamond and Open Sans, served from Google. I used <a href="http://purecss.io/layouts/">Pure CSS</a> as my css foundation.</p>
+<h1>About This Website<a name="about-site"></a></h1>
+<p>This site runs on the <a href="https://www.python.org/">Python</a>-Powered <a href="http://docs.getpelican.com">Pelican</a> static site generator. 
+You can explore the code <a href="https://github.com/joehand/joeahand">on GitHub</a>. 
+It is served on <a href="https://pages.github.com/">GitHub Pages</a>, via <a href="https://www.cloudflare.com/">CloudFare</a> (<a href="https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/">with easy &amp; free SSL</a>).</p>
+<p><strong>Homepage</strong>: 
+The homepage data is stored in Google Docs (via <a href="http://ifttt.com">IFTTT</a>) and visualized with Python (<a href="https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs">my Pelican gdocs plugin</a> and <a href="http://jlord.us/blog/your-own-instagram.html">similar tutorial</a> for JS version). 
+Data is processed on my shiny <a href="https://www.digitalocean.com/?refcode=94657bdeab0c">Digital Ocean server</a>. 
+I use a <a href="http://crontab.org/">cron job</a> to get new data and regenerate the site daily (at the strike of midnight).</p>
+<p><strong>Charts</strong>: 
+Coffee chart is made using a <code>&lt;table&gt;</code>, CSS, and lots of Joe. 
+Daily steps chart is made with the <a href="http://gionkunz.github.io/chartist-js/index.html">Chartist.js</a> library.</p>
+<p><strong>Design</strong>: 
+I designed the site with a lot of inspiration from others.
+Thank you others.
+The fonts are <a href="https://www.google.com/fonts/specimen/EB+Garamond">EB Garamond</a> and <a href="https://www.google.com/fonts/specimen/Open+Sans">Open Sans</a>, served from Google. 
+I used <a href="http://purecss.io/layouts/">Pure CSS</a> as my css foundation.</p>
+<p><em>It is amazing how many people did great work so I could build a website. Pretty cool.</em></p>
 <h4><a href="https://github.com/joehand/joeahand">View it all on GitHub</a></h4>
     </article>
 </section>
