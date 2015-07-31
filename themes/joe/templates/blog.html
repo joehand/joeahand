@@ -14,9 +14,9 @@
                                 <a href="{{article.link_url}}"><span class="useicons">&#xe601;</span><span class="link_url">{{article.link_url|get_domain}}</span></a>
                             </h5>
                         {%- endif -%}
-                        {%- if not category_page -%}
+                        <!-- {%- if not category_page -%}
                         <h5 class="category small-caps"><a href="{{ SITEURL }}/{{ article.category.url }}">{{article.category}}</a></h5>
-                        {%- endif -%}
+                        {%- endif -%} -->
                     </header>
                     <article class="content">
                         <div class="entry-content"> {{ article.content }} </div><!-- entry-content -->

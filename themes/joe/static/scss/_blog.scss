@@ -240,11 +240,13 @@ sub {
 blockquote {
     border-color: #c0392b
 }
-p a {
+p a, li a {
     text-decoration: underline
 }
 .post-full {
-    position: relative
+    position: relative;
+    max-width:575px;
+    margin:0 auto;
 }
 .post-full header {
     margin-bottom: 2rem
