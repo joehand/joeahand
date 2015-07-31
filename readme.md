@@ -1,4 +1,4 @@
-*** A dynamic static website running on Pelican (Python) with data visualizations via IFTTT/GoogleDocs.***
+**A dynamic static website running on Pelican (Python) with data visualizations via IFTTT/GoogleDocs.**
 
 ## Intro
 
