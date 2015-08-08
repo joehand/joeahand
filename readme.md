@@ -4,7 +4,7 @@
 
 This site runs on [Pelican](http://docs.getpelican.com), a Python powered static site generator. It is served on GitHub Pages, via [CloudFare](https://www.cloudflare.com/) ([with easy & free SSL](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)).
 
-**Homepage**: The hompage content changes regularly. The data is stored in Google Docs (via [IFTTT](http://ifttt.com), [this tutorial](http://jlord.us/blog/your-own-instagram.html), and [a custom Pelican plugin](https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs)). Data is processed on my server (or computer). I have a cron job to generate the site daily.
+**Homepage**: The homepage content changes regularly. The data is stored in Google Docs (via [IFTTT](http://ifttt.com), [this tutorial](http://jlord.us/blog/your-own-instagram.html), and [a custom Pelican plugin](https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs)). Data is processed on my server (or computer). I have a cron job to generate the site daily.
 
 ![Coffee Drinking Chart](https://dl.dropboxusercontent.com/u/34000599/imgs/coffee_chart.png "Coffee Drinking")
 

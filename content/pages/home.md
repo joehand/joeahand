@@ -4,7 +4,7 @@ Title: home
 Slug: home
 
 I am a developer, researcher, and open data enthusiast. 
-I work with international communities, open source developers, scientists, and data visualiaztion & mapping experts to enable communities to solve problems.
+I work with international communities, open source developers, scientists, and data visualization & mapping experts to enable communities to solve problems.
 
 Over the last several years with the [Santa Fe Institute](http://santafe.edu/research/informal-settlements/), I organized an effort to transform the data collection practices of [Slum/Shack Dwellers International](http://www.sdinet.org/). 
 Now, slum communities worldwide are collecting census data about themselves to help drive development and inform global knowledge through research.

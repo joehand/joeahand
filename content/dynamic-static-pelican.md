@@ -7,7 +7,7 @@ Summary:
 
 Static websites seem all the rage right now, and for good reason. A static site is a website that does not have a server creating pages on every request. They are easy to host (for free), fast, and help you offload all the server's work onto the computers visiting your site (d'oh!).
 
-Static websites also have some serious downsides. Foremost, the content is static - only updated when you take action. If you want *dynamic* content on the site, you have to rely on APIs and Javascript, adding to the page size and load times. In this tradeoff, you are passing the work on to the user rather than doing it on the server, perhaps an unwise tradeoff.
+Static websites also have some serious downsides. Foremost, the content is static - only updated when you take action. If you want *dynamic* content on the site, you have to rely on APIs and Javascript, adding to the page size and load times. In this trade off, you are passing the work on to the user rather than doing it on the server, perhaps an unwise trade off.
 
 Don't panic! You can have both! If you visit my [homepage](https://joeahand.com) you will notice dynamic content (twitters, fitbit steps, cups of joe drunk) - yet there are no API calls. How is this possible? It must be Magic! Not here, sorry.
 
@@ -15,7 +15,7 @@ The answer is Python, of course. You can [fly with Python](https://xkcd.com/353/
 
 ### Quickstart (how I did it):
 
-1. Set up [IFTTT](https://ifttt.com) (If This Then That) and start sending data to Google Spreadsheets ([sample recipie](https://ifttt.com/recipes/112226-save-your-tweets-in-a-google-spreadsheet)).
+1. Set up [IFTTT](https://ifttt.com) (If This Then That) and start sending data to Google Spreadsheets ([sample recipe](https://ifttt.com/recipes/112226-save-your-tweets-in-a-google-spreadsheet)).
 2. Grab the data with a custom [Pelican](http://getpelican.com) [plugin](https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs), process it, and output to templates.
 3. Make the data pretty.
 4. Create a cron job to update data & regenerate site regularly (mine runs once daily).
@@ -103,7 +103,7 @@ Using Jinja, outputting to a javascript object is fairly easy. For example, here
             ]
     };
 
-The label/series organization is how Chartist.js likes data. But you can mke it whatever kind of js object you like.
+The label/series organization is how Chartist.js likes data. But you can make it whatever kind of js object you like.
 
 My coffee visualization uses a table created with Jinja loops. There are probably some other options depending on what kind of data you want to visualize.
 
