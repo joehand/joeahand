@@ -19,7 +19,7 @@
         <meta name="description" content="Better cities with local data">
 
         <!-- Styles -->
-            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?a0dcd0fe">
+            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?e3c29f61">
 
         <!-- WebFonts -->
         <script  data-cfasync="false" src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.4/webfontloader.js"></script>
@@ -58,12 +58,12 @@
         <!-- <h5 class="category small-caps"><a href="https://joeahand.com/category/programming/">programming</a></h5> --></header>
     <article class="content">
       <p>Static websites seem all the rage right now, and for good reason. A static site is a website that does not have a server creating pages on every request. They are easy to host (for free), fast, and help you offload all the server's work onto the computers visiting your site (d'oh!).</p>
-<p>Static websites also have some serious downsides. Foremost, the content is static - only updated when you take action. If you want <em>dynamic</em> content on the site, you have to rely on APIs and Javascript, adding to the page size and load times. In this tradeoff, you are passing the work on to the user rather than doing it on the server, perhaps an unwise tradeoff.</p>
+<p>Static websites also have some serious downsides. Foremost, the content is static - only updated when you take action. If you want <em>dynamic</em> content on the site, you have to rely on APIs and Javascript, adding to the page size and load times. In this trade off, you are passing the work on to the user rather than doing it on the server, perhaps an unwise trade off.</p>
 <p>Don't panic! You can have both! If you visit my <a href="https://joeahand.com">homepage</a> you will notice dynamic content (twitters, fitbit steps, cups of joe drunk) - yet there are no API calls. How is this possible? It must be Magic! Not here, sorry.</p>
 <p>The answer is Python, of course. You can <a href="https://xkcd.com/353/">fly with Python</a> and make dynamic-static websites! <em>(You can build this with other languages, but you can't fly with them... In fact, I am flying as we speak! Probably thanks to Python.)</em></p>
 <h3>Quickstart (how I did it):</h3>
 <ol>
-<li>Set up <a href="https://ifttt.com">IFTTT</a> (If This Then That) and start sending data to Google Spreadsheets (<a href="https://ifttt.com/recipes/112226-save-your-tweets-in-a-google-spreadsheet">sample recipie</a>).</li>
+<li>Set up <a href="https://ifttt.com">IFTTT</a> (If This Then That) and start sending data to Google Spreadsheets (<a href="https://ifttt.com/recipes/112226-save-your-tweets-in-a-google-spreadsheet">sample recipe</a>).</li>
 <li>Grab the data with a custom <a href="http://getpelican.com">Pelican</a> <a href="https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs">plugin</a>, process it, and output to templates.</li>
 <li>Make the data pretty.</li>
 <li>Create a cron job to update data &amp; regenerate site regularly (mine runs once daily).</li>
@@ -139,7 +139,7 @@
 </pre></div>
 
 
-<p>The label/series organization is how Chartist.js likes data. But you can mke it whatever kind of js object you like.</p>
+<p>The label/series organization is how Chartist.js likes data. But you can make it whatever kind of js object you like.</p>
 <p>My coffee visualization uses a table created with Jinja loops. There are probably some other options depending on what kind of data you want to visualize.</p>
 <h2>4. Automatically Updating the Site</h2>
 <p>One of the biggest downsides to static sites is the fact they only update when you change the content (and then usually push the site somehow). To get around this, you need a process to run automatically on a schedule and update the website. This is exactly what <a href="http://crontab.org/">cron job</a> are for.</p>
