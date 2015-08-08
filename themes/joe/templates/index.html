@@ -29,55 +29,55 @@
             <div class="pure-g">
                 <div class="pure-u-1-1 pure-u-md-3-24"></div>
                 <div class="pure-u-1-1 pure-u-md-18-24">
-                    {% if GDOCS and gdocs_data.coffee %}<!--
+                    {%- if GDOCS and gdocs_data.coffee -%}<!--
                         <div class="ct-chart ct-major-twelfth" id="coffee">
                         </div> -->
                         <h5 class="content-head is-center">Cups of Joe Consumed By Joe</h5>
                         <table class="pure-table pure-table-bordered coffee-table">
                             <tbody>
-                                {% for interval in gdocs_data.coffee.intervals %}
-                                {% set row_num = (loop.index - 1) %}
+                                {%- for interval in gdocs_data.coffee.intervals -%}
+                                {%- set row_num = (loop.index - 1) -%}
                                 <tr>
                                     <td class="y-label">
-                                        {% if loop.first %}
+                                        {%- if loop.first -%}
                                             <span class="">{{interval[0]}} am</span>
-                                        {% elif loop.last %}
+                                        {%- elif loop.last -%}
                                             <span class=""></span>
-                                        {% elif loop.cycle(true,false) %}
+                                        {%- elif loop.cycle(true,false) -%}
                                             <span class="">{{interval[0]}}</span>
-                                        {% endif %}
+                                        {%- endif -%}
                                     </td>
-                                    {% for j in gdocs_data.coffee.data | reverse %}
-                                    {% set cups = gdocs_data.coffee.data[j][row_num] %}
-                                    {% set per_max = gdocs_data.coffee.data[j][row_num]/gdocs_data.coffee.max %}
-                                    {% if cups > 0 %}
+                                    {%- for j in gdocs_data.coffee.data | reverse -%}
+                                    {%- set cups = gdocs_data.coffee.data[j][row_num] -%}
+                                    {%- set per_max = gdocs_data.coffee.data[j][row_num]/gdocs_data.coffee.max -%}
+                                    {%- if cups > 0 -%}
                                     <td data-tooltip="{{cups}} cups"
                                         class="coffee-cell has-cups" style="background:rgba(192, 57, 43,{{per_max}})">
                                         <span>{{cups}}</span>
                                     </td>
-                                    {% elif j in gdocs_data.coffee.no_data %}
+                                    {%- elif j in gdocs_data.coffee.no_data -%}
                                     <td data-tooltip="No data"
                                          class="coffee-cell no-data">
                                     </td>
-                                    {% else %}
+                                    {%- else -%}
                                     <td data-tooltip="{{cups}} cups"
                                          class="coffee-cell no-cups">
                                     </td>
-                                    {% endif %}
-                                    {% endfor %}
+                                    {%- endif -%}
+                                    {%- endfor -%}
                                 </tr>
-                                {% endfor %}
+                                {%- endfor -%}
                                 <tr>
                                     <td class="y-label"><span>{{gdocs_data.coffee.intervals[-1:][0][1]}}</span></td>
-                                    {% for i in gdocs_data.coffee.data | reverse %}
-                                    {% if i == 0 %}
+                                    {%- for i in gdocs_data.coffee.data | reverse -%}
+                                    {%- if i == 0 -%}
                                     <td class="x-label"><span>Today</span></td>
-                                    {% elif loop.index % 5 == 1 %}
+                                    {%- elif loop.index % 5 == 1 -%}
                                     <td class="x-label"><span>{{i}}</span></td>
-                                    {% else %}
+                                    {%- else -%}
                                     <td class="x-label"></td>
-                                    {% endif %}
-                                    {% endfor %}
+                                    {%- endif -%}
+                                    {%- endfor -%}
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -88,28 +88,28 @@
                                     <td class="y-label total">
                                         <span>total</span>
                                     </td>
-                                    {% for j in gdocs_data.coffee.data | reverse %}
-                                    {% set cups = gdocs_data.coffee.data[j] |sum() %}
-                                    {% set per_max = cups/8 %}
-                                    {% if cups > 0 %}
+                                    {%- for j in gdocs_data.coffee.data | reverse -%}
+                                    {%- set cups = gdocs_data.coffee.data[j] |sum() -%}
+                                    {%- set per_max = cups/8 -%}
+                                    {%- if cups > 0 -%}
                                     <td data-tooltip="{{cups}} cups"
                                         class="coffee-cell has-cups" style="background:rgba(58, 65, 69,{{per_max}})">
                                         <span>{{cups}}</span>
                                     </td>
-                                    {% elif j in gdocs_data.coffee.no_data %}
+                                    {%- elif j in gdocs_data.coffee.no_data -%}
                                     <td data-tooltip="No data"
                                          class="coffee-cell no-data">
                                     </td>
-                                    {% else %}
+                                    {%- else -%}
                                     <td data-tooltip="{{cups}} cups"
                                          class="coffee-cell no-cups">
                                     </td>
-                                    {% endif %}
-                                    {% endfor %}
+                                    {%- endif -%}
+                                    {%- endfor -%}
                                 </tr>
                             </tfoot>
                         </table>
-                    {% endif %}
+                    {%- endif -%}
                 </div>
                 <div class="pure-u-1-1 pure-u-md-3-24"></div>
                 <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
@@ -118,21 +118,21 @@
                 </div>
                 <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
             </div>
-            {% if GDOCS and gdocs_data.instagram %}
+            {% if GDOCS and gdocs_data.instagram -%}
             <div class="instagram">
                 <h3 class="content-head is-center"><a href="{{AUTHOR_LINKS.INSTAGRAM}}">Instagram</a></h3>
                 <div class="pure-g">
                     {% for row in gdocs_data.instagram[-8:] | reverse %}
                     <div class="pure-u-1-4 pure-u-md-1-8">
                       <a class="" href="{{row.Instagram_URL}}" title="{{row.Caption}}">
-                      {% if row.S3_Image_URL %}
+                      {%- if row.S3_Image_URL -%}
                         <img class="pure-img" src="//cdn.joeahand.com/{{row.S3_Image_URL }}"/>
-                      {% else %}
+                      {%- else -%}
                         <img class="pure-img" src="{{row.Image_URL}}"/>
-                      {% endif %}
+                      {%- endif -%}
                       </a>
                     </div>
-                    {% endfor %}
+                    {%- endfor -%}
                 </div>
             </div>
             {% endif %}

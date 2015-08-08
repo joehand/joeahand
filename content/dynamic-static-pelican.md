@@ -1,4 +1,4 @@
-Title: Dynamic Static Website with Pelican & IFTTT
+Title: Building a Dynamic Static Website with Pelican & IFTTT
 Slug: dynamic-site-pelican-ifttt
 Date: 2015-07-31 08:58:30
 Tags: pelican, python, ifttt
