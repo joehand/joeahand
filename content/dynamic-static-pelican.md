@@ -67,7 +67,7 @@ Now we will create a Python list, with each item in the list being a row of the 
 
     :::python
     import csv
-    lines = content.splitlines() # Create a list item for each line
+    lines = content.splitlines()
     header = [h.strip() for h in lines[0].split(',')]
     data = list(csv.DictReader(lines[1:], fieldnames=header))
 
