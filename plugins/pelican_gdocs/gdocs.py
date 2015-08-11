@@ -118,6 +118,8 @@ class Gdocs_Coffee(Gdocs_Sheet):
             delta = date.today() - \
                 datetime.strptime(item['Date_Time'], date_fmt).date()
             days_ago = delta.days
+            if days_ago > 30:
+                continue
             hour = (float(time.strftime("%H", date_time)) +
                     float(time.strftime("%M", date_time))/60)
 
