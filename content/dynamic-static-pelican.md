@@ -1,4 +1,4 @@
-Title: Building a Dynamic Static Website with Pelican & IFTTT
+Title: Building a Dynamic yet Static Website with Pelican & IFTTT
 Slug: dynamic-site-pelican-ifttt
 Date: 2015-07-31 08:58:30
 Tags: pelican, python, ifttt
@@ -109,9 +109,9 @@ My coffee visualization uses a table created with Jinja loops. There are probabl
 
 ## 4. Automatically Updating the Site
 
-One of the biggest downsides to static sites is the fact they only update when you change the content (and then usually push the site somehow). To get around this, you need a process to run automatically on a schedule and update the website. This is exactly what [cron job](http://crontab.org/) are for.
+One of the biggest downsides to static sites is the fact they only update when you change the content (and then usually push the site somehow). To get around this, you need a process to run automatically on a schedule and update the website. This is exactly what [cron jobs](http://crontab.org/) are for.
 
-Pelican also makes it fairly easy to push content with a single command. Check out the make script. For my site, I use `make github` which grabs all the latest data, rebuilds the site, and pushes it to Github Pages. A similar process should work for the other `make` commands.
+Pelican also makes it fairly easy to push content with a single command (check out the make script). For my site, I use `make github` which grabs all the latest data, rebuilds the site, and pushes it to Github Pages. A similar process should work for the other `make` commands.
 
 In my case, here is what I did:
 
