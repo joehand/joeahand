@@ -276,7 +276,9 @@ p a, li a {
 }
 .post-full img {
     margin: 1rem auto;
-    border-radius: 5px
+    border-radius: 5px;
+    display:block;
+    max-width:600px;
 }
 .post-full figure img {
     margin-top: .5rem
