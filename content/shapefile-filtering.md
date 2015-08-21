@@ -36,7 +36,7 @@ In this case, we know our field and know the value we want to filter. We just ne
     :::python
     from osgeo import ogr
 
-    def create_filtered_shapefile(filter_field, value, in_shapefile):
+    def create_filtered_shapefile(value, filter_field, in_shapefile):
         input_layer = ogr.Open(in_shapefile).GetLayer()
         out_shapefile = 'out_shapefile.shp'
 
@@ -72,6 +72,8 @@ If we want to create a shapefile for each value in some field, first we need to 
             values.append(feature.GetField(0))
         return values 
 
+## Creating Many Filtered Shapefiles
+
 Finally, we will put the last two functions together with a loop. First, we  get all the possible values from some field and then loop over the values and create a shapefile for each one. This can be pretty slow depending on how many shapefiles you need to create. 
 
     :::python
@@ -87,7 +89,7 @@ Finally, we will put the last two functions together with a loop. First, we  get
                 # Don't overwrite existing files
                 pass
             else:
-                out_file = create_filtered_shapefile(val)
+                out_file = create_filtered_shapefile(val, filter_field, in_shapefile)
             out_files.append(out_file)
         return out_files
 
