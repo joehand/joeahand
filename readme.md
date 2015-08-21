@@ -22,15 +22,27 @@ All of my data comes through Google Spreadsheets. The plugin (`pelican_gdocs`) h
 
 ## Development
 
-Interesting in using this site to make something of your own? Great! Feel free to open an issue if you have a question.
+Interesting in using this site to make something of your own? Great!
+
+**I'm trying to make this theme more fork-friendly. Please let me know what issues you run into!**
 
 Things you'll need (not in this order):
 
-* Python
-* Pelican
+* A Python
+* A Pelican
 * A Computer
+* More animals (Pythons and Pelicans need company)
 
-You can copy my theme, but it will break without the GDocs plugin as well.
+### Installing Stuff
+
+* Install Python dependencies with pip (`pip install -r requirements.txt`)
+* Install css libraries with bower (`bower install`)
+
+## Licenses
+
+* Writing: Creative Commons Attribution Non-Commercial No-Derivatives ([CC BY-NC-ND 4.0](http://creativecommons.org/licenses/by-nc-nd/4.0/)) 
+* Theme/Plugin/Etc.: MIT
+* Social Icons: [Please buy those here.](https://symbolset.com/icons/social-circle)
 
 ## Resources & Thanks
 
