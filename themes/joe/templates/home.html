@@ -1,0 +1,214 @@
+{% extends "_base.html" %}
+{%- block body_class %}home{%- endblock body_class -%}
+
+{%- block main %}
+    <main role="main" class="main pure-g">
+        <div class="page-content">
+            <div class="pure-g">
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+                <div class="pure-u-20-24 pure-u-md-3-5 pure-u-lg-1-2 justify">
+                {{ page.content }}
+                <hr/>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+            </div>
+
+            <div class="pure-g">
+                <div class="pure-u-1-1 pure-u-md-3-24"></div>
+                <div class="pure-u-1-1 pure-u-md-18-24">
+                    {%- if GDOCS and gdocs_data.coffee -%}<!--
+                        <div class="ct-chart ct-major-twelfth" id="coffee">
+                        </div> -->
+                        <h5 class="content-head is-center">Cups of Joe Consumed By Joe</h5>
+                        <table class="pure-table pure-table-bordered coffee-table">
+                            <tbody>
+                                {%- for interval in gdocs_data.coffee.intervals -%}
+                                {%- set row_num = (loop.index - 1) -%}
+                                <tr>
+                                    <td class="y-label">
+                                        {%- if loop.first -%}
+                                            <span class="">{{interval[0]}} am</span>
+                                        {%- elif loop.last -%}
+                                            <span class=""></span>
+                                        {%- elif loop.cycle(true,false) -%}
+                                            <span class="">{{interval[0]}}</span>
+                                        {%- endif -%}
+                                    </td>
+                                    {%- for j in gdocs_data.coffee.data | reverse -%}
+                                    {%- set cups = gdocs_data.coffee.data[j][row_num] -%}
+                                    {%- set per_max = gdocs_data.coffee.data[j][row_num]/gdocs_data.coffee.max -%}
+                                    {%- if cups > 0 -%}
+                                    <td data-tooltip="{{cups}} cups"
+                                        class="coffee-cell has-cups" style="background:rgba(192, 57, 43,{{per_max}})">
+                                        <span>{{cups}}</span>
+                                    </td>
+                                    {%- elif j in gdocs_data.coffee.no_data -%}
+                                    <td data-tooltip="No data"
+                                         class="coffee-cell no-data">
+                                    </td>
+                                    {%- else -%}
+                                    <td data-tooltip="{{cups}} cups"
+                                         class="coffee-cell no-cups">
+                                    </td>
+                                    {%- endif -%}
+                                    {%- endfor -%}
+                                </tr>
+                                {%- endfor -%}
+                                <tr>
+                                    <td class="y-label"><span>{{gdocs_data.coffee.intervals[-1:][0][1]}}</span></td>
+                                    {%- for i in gdocs_data.coffee.data | reverse -%}
+                                    {%- if i == 0 -%}
+                                    <td class="x-label"><span>Today</span></td>
+                                    {%- elif loop.index % 5 == 1 -%}
+                                    <td class="x-label"><span>{{i}}</span></td>
+                                    {%- else -%}
+                                    <td class="x-label"></td>
+                                    {%- endif -%}
+                                    {%- endfor -%}
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="coffee-spacer">
+                                    <td colspan="31"><span></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="y-label total">
+                                        <span>total</span>
+                                    </td>
+                                    {%- for j in gdocs_data.coffee.data | reverse -%}
+                                    {%- set cups = gdocs_data.coffee.data[j] |sum() -%}
+                                    {%- set per_max = cups/8 -%}
+                                    {%- if cups > 0 -%}
+                                    <td data-tooltip="{{cups}} cups"
+                                        class="coffee-cell has-cups" style="background:rgba(58, 65, 69,{{per_max}})">
+                                        <span>{{cups}}</span>
+                                    </td>
+                                    {%- elif j in gdocs_data.coffee.no_data -%}
+                                    <td data-tooltip="No data"
+                                         class="coffee-cell no-data">
+                                    </td>
+                                    {%- else -%}
+                                    <td data-tooltip="{{cups}} cups"
+                                         class="coffee-cell no-cups">
+                                    </td>
+                                    {%- endif -%}
+                                    {%- endfor -%}
+                                </tr>
+                            </tfoot>
+                        </table>
+                    {%- endif -%}
+                </div>
+                <div class="pure-u-1-1 pure-u-md-3-24"></div>
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+                <div class="pure-u-20-24 pure-u-md-3-5 pure-u-lg-1-2">
+                    <hr class="icon-coffee coffee"/>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+            </div>
+            {% if GDOCS and gdocs_data.instagram -%}
+            <div class="instagram">
+                <h3 class="content-head is-center"><a href="{{AUTHOR_LINKS.INSTAGRAM}}">Instagram</a></h3>
+                <div class="pure-g">
+                    {% for row in gdocs_data.instagram[-8:] | reverse %}
+                    <div class="pure-u-1-4 pure-u-md-1-8">
+                      <a class="" href="{{row.Instagram_URL}}" title="{{row.Caption}}">
+                      {%- if row.S3_Image_URL -%}
+                        <img class="pure-img" src="//cdn.joeahand.com/{{row.S3_Image_URL }}"/>
+                      {%- else -%}
+                        <img class="pure-img" src="{{row.Image_URL}}"/>
+                      {%- endif -%}
+                      </a>
+                    </div>
+                    {%- endfor -%}
+                </div>
+            </div>
+            {% endif %}
+            <div class="pure-g two-column">
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+                <div class="pure-u-20-24 pure-u-md-3-5 pure-u-lg-1-2">
+                    <hr class="icon-hand hand"/>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+            {% if GDOCS and gdocs_data.tweets %}
+                <div class="pure-u-2-24 pure-u-md-1-24"></div>
+                <div class="pure-u-21-24 pure-u-md-10-24">
+                    <h3 class="content-head is-center"><a href="{{AUTHOR_LINKS.TWITTER}}">Tweets</a></h3>
+                    <div class="pure-g">
+                    {% for row in gdocs_data.tweets[-5:] | reverse %}
+                      <div class="pure-u-1-1 gdoc-link">
+                            <a href="{{row.URL}}">{{row.Text}}
+                            <span class="time">{{row.Time.split('at')[0]}}</span>
+                            </a>
+                      </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+                <div class="pure-u-2-24 pure-u-md-2-24"></div>
+            {% if GDOCS and gdocs_data.articles %}
+                <div class="pure-u-21-24 pure-u-md-10-24 reading">
+                    <h3 class="content-head is-center"><a href="{{ SITEURL }}/reading/">Reading</a></h3>
+                    <div class="pure-g articles">
+                        {% for row in gdocs_data.articles[-6:] | reverse %}
+                        <div class="pure-u-1-1 gdoc-link">
+                            <a href="{{row.URL}}">{{row.Title}}
+                                <span class="domain">{{row.URL|get_domain}}</span>
+                            </a>
+                        </div>
+                        <div class="pure-u-1-1 pure-u-md-1-4  gdoc-link">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-24"></div>
+            {% endif %}
+            </div>
+            <div class="pure-g">
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+                <div class="pure-u-20-24 pure-u-md-3-5 pure-u-lg-1-2">
+                    <hr class=""/>
+                </div>
+                <div class="pure-u-2-24 pure-u-md-1-5 pure-u-lg-1-4"></div>
+                <div class="pure-u-1-1 pure-u-md-3-24"></div>
+                <div class="pure-u-1-1 pure-u-md-18-24">
+                    <h5 class="content-head is-center">Foot Steps Taken By Hand</h5>
+                    {% if GDOCS and gdocs_data.steps %}
+                    <div class="ct-chart ct-double-octave"id="steps">
+                    <div class="axis-label" data-y-axis='Steps' data-x-axis="Days"></div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="pure-u-1-1 pure-u-md-3-24"></div>
+            </div>
+            {% if HOME_PAGE.count > 0 %}
+                <div class="pure-g">
+                {% for article in articles_page.object_list[:HOME_PAGE.count] %}
+                    {%- include "partials/_article_trunc.html" %}
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div> <!-- .page-content  -->
+    </main>
+{% endblock main %}
+
+{% block footer_scripts %}
+    <script>
+    {% if GDOCS and gdocs_data.steps %}
+        var steps_data = {
+                labels: [
+                    {%- for row in gdocs_data.steps | reverse -%}
+                       '{{row.Date}}',
+                    {%- endfor -%}
+                ],
+                series: [
+                    [
+                    {%- for row in gdocs_data.steps | reverse -%}
+                        {{row.TotalSteps}},
+                    {%- endfor -%}
+                    ]
+                ]
+        };
+    {% endif %}
+    </script>
+    <script src="{{ SITEURL | replace('https://', '//') }}/theme/js/main.js"></script>
+{%- endblock footer_scripts %}
