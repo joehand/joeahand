@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script data-cfasync="false" type="text/javascript">
-            var host = 'joeahand.com';
-            if ((host == window.location.host) && (window.location.protocol != "https:"))
-                window.location.protocol = "https";
-        </script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta http-equiv="ClearType" content="true">
@@ -19,7 +14,7 @@
         <meta name="description" content="Better cities with local data">
 
         <!-- Styles -->
-            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?af5401ae">
+            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?250fcd74">
 
         <!-- WebFonts -->
         <script  data-cfasync="false" src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.4/webfontloader.js"></script>
@@ -42,12 +37,6 @@
         <li class="pure-menu-item ">
             <a class="pure-menu-link small" href="https://joeahand.com/cv/">CV</a>
         </li>
-    <!-- <li class="pure-menu-item">
-        <a class="pure-menu-link" href="#">Blog</a>
-    </li>
-    <li class="pure-menu-item">
-        <a class="pure-menu-link" href="#">CV</a>
-    </li> -->
 </ul>            </div>
         </div>
             <main role="main" class="main pure-g">
@@ -55,7 +44,7 @@
                 <div class="page-content pure-u-20-24 pure-u-lg-3-5"><section class="post-full">
     <header>
         <h1 class="title"><a href="https://joeahand.com/archive/filtering-a-shapefile-with-python/">Filtering a Shapefile with Python</a></h1>
-        <!-- <h5 class="category small-caps"><a href="https://joeahand.com/category/programming/">programming</a></h5> --></header>
+        <!-- <h5 class="category small-caps"><a href="https://joeahand.com/">programming</a></h5> --></header>
     <article class="content">
       <p>Recently I've been using Python more to work with shapefiles. Frequently I have to create a shapefile by filtering a set of features of a larger shapefile, for instance I wanted to get a shapefile for blocks in New York City from a shapefile of the whole country. While this isn't very difficult in QGIS (and probably ArcGIS), it gets a bit annoying to do over and over. In the last project, I wanted to create files for over 900 cities in the US - so I definitely wasn't going to do that by hand.</p>
 <h3>Quickstart</h3>
@@ -79,7 +68,7 @@
 <p>In this case, we know our field and know the value we want to filter. We just need to create a single shapefile from the larger one. First, we will open our larger input file and use OGR's filter function to get the filtered features. Then we can create a new shapefile by copying the filtered input file:</p>
 <div class="highlight"><pre><span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">ogr</span>
 
-<span class="k">def</span> <span class="nf">create_filtered_shapefile</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">create_filtered_shapefile</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">):</span>
     <span class="n">input_layer</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">in_shapefile</span><span class="p">)</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">()</span>
     <span class="n">out_shapefile</span> <span class="o">=</span> <span class="s">&#39;out_shapefile.shp&#39;</span>
 
@@ -115,6 +104,7 @@
 </pre></div>
 
 
+<h2>Creating Many Filtered Shapefiles</h2>
 <p>Finally, we will put the last two functions together with a loop. First, we  get all the possible values from some field and then loop over the values and create a shapefile for each one. This can be pretty slow depending on how many shapefiles you need to create. </p>
 <div class="highlight"><pre><span class="k">def</span> <span class="nf">create_all_shapefiles</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Returns list of new shapefiles</span>
@@ -128,7 +118,7 @@
             <span class="c"># Don&#39;t overwrite existing files</span>
             <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">out_file</span> <span class="o">=</span> <span class="n">create_filtered_shapefile</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">out_file</span> <span class="o">=</span> <span class="n">create_filtered_shapefile</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">)</span>
         <span class="n">out_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out_files</span>
 </pre></div>
