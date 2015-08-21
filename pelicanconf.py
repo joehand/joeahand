@@ -35,6 +35,10 @@ PAGE_SAVE_AS = '{slug}/index.html'
 ARCHIVES_URL = 'archive/'
 ARCHIVES_SAVE_AS = 'archive/index.html'
 SITEMAP_SAVE_AS = 'sitemap.xml'
+TAG_URL = ''
+TAG_SAVE_AS = ''
+CATEGORY_URL = ''
+CATEGORY_SAVE_AS = ''
 
 # Nicer pagination
 # (e.g. site.com/blog/1/ instead of site.com/blog/1.html)
