@@ -6,10 +6,6 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', '{{GOOGLE_ANALYTICS}}', 'auto');
-
-    InstantClick.on('change', function() {
-        ga('send', 'pageview', location.pathname + location.search);
-    });
-    InstantClick.init();
+    ga('send', 'pageview');
 </script>
 {% endif %}
