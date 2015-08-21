@@ -1,4 +1,4 @@
-Template: cv
+Template: custom/cv
 Title: CV
 slug: cv
 

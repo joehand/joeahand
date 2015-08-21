@@ -1,0 +1,22 @@
+{
+  "name": "joeahand",
+  "version": "0.0.0",
+  "homepage": "https://github.com/joehand/joeahand",
+  "authors": [
+    "Joe Hand <joe@joeahand.com>"
+  ],
+  "description": "Website. Built with Pelican, Python, and Coffee",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "pure": "~0.6.0",
+    "bourbon": "~4.2.4",
+    "chartist": "~0.9.4"
+  }
+}

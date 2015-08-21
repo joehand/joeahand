@@ -1,23 +1,28 @@
 // Libraries
-@import 'bourbon/bourbon';
-@import 'pure/pure';
-@import 'pure/grids-responsive';
-@import 'icons';
-@import 'chartist';
+$bowerdir: 'external';
+@import '#{$bowerdir}/bourbon/app/assets/stylesheets/bourbon';
+@import '#{$bowerdir}/chartist/dist/scss/chartist';
+// Plain CSS imports don't work with pyscss 1.3.4 =(
+// These will be added via pelican assets plugin (see _base.html header)
+// @import '#{$bowerdir}/pure/pure';
+// @import '#{$bowerdir}/pure/grids-responsive';
+
+// Icons
+@import 'scss/icons';
 
 // Utils
-@import 'variables';
-@import 'utils';
+@import 'scss/variables';
+@import 'scss/utils';
 
-// Special Site Pages
-@import 'home';
-@import 'cv';
-@import 'reading';
+// Special Site Pages2
+@import 'scss/home';
+@import 'scss/cv';
+@import 'scss/reading';
 
 // General Layouts
-@import 'page';
-@import 'blog';
-@import 'code';
+@import 'scss/page';
+@import 'scss/blog';
+@import 'scss/code';
 
 
 /***************

@@ -2,6 +2,9 @@ Status: published
 Date: 2015-07-29 17:32:30
 Title: home
 Slug: home
+body_class: home
+Template: home
+save_as: index.html
 
 I am a developer, researcher, and open data enthusiast. 
 I work with international communities, open source developers, scientists, and data visualization & mapping experts to enable communities to solve problems.

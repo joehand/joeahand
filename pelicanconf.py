@@ -46,6 +46,7 @@ DEFAULT_DATE_FORMAT = '%Y-%B-%d'
 
 DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives','sitemap')
 
+INDEX_SAVE_AS = 'blog/index.html'
 SITEMAP_SAVE_AS = 'sitemap.xml'
 
 STATIC_PATHS = []

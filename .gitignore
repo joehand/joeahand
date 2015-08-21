@@ -5,6 +5,8 @@ plugins/assets/
 plugins/pelican-plugins/
 *.pid
 
+## Bower Folder
+themes/joe/static/external/
 
 ###Python###
 
