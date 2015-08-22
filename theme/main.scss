@@ -1,0 +1,229 @@
+// Libraries
+$bowerdir: 'external';
+@import '#{$bowerdir}/bourbon/app/assets/stylesheets/bourbon';
+@import '#{$bowerdir}/chartist/dist/scss/chartist';
+// Plain CSS imports don't work with pyscss 1.3.4 =(
+// These will be added via pelican assets plugin (see _base.html header)
+// @import '#{$bowerdir}/pure/pure';
+// @import '#{$bowerdir}/pure/grids-responsive';
+
+// Icons
+@import 'scss/icons';
+
+// Utils
+@import 'scss/variables';
+@import 'scss/utils';
+
+// Special Site Pages2
+@import 'scss/home';
+@import 'scss/cv';
+@import 'scss/reading';
+
+// General Layouts
+@import 'scss/page';
+@import 'scss/blog';
+@import 'scss/code';
+
+
+/***************
+**** BODY ******
+****************/
+html {
+    overflow-y: scroll;
+    min-height: 100%;
+    font-size: 100%;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    color: $primary-color;
+    font-size: 14px;
+    line-height: 1.7em;
+}
+/*
+http://purecss.io/grids/#using-grids-with-custom-fonts
+W/ Pure Grids use specific font stacks to
+ensure the greatest OS/browser compatibility.
+*/
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+    font-family: "Open Sans", sans-serif;
+}
+
+.document {
+    border-bottom: 3px solid $black;
+}
+
+/***************
+**** LINKS *****
+****************/
+
+a {
+    color: $primary-color;
+    transition: all 150ms ease-out;
+    text-decoration: none;
+
+    &:hover {
+        color: $red;
+        text-decoration: none;
+    }
+
+    &:focus {
+        outline: 1px dotted $black;
+    }
+}
+
+/****************
+**** HEADERS ****
+****************/
+
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+    color: $black;
+    font-weight: 700;
+    font-family: "EB Garamond", serif;
+}
+
+
+/*****************************
+**** SITE HEADER & FOOTER ****
+******************************/
+
+.site-header {
+    font-family: "EB Garamond", serif;
+    padding: 0.5em;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0,0,0, 0.10);
+    border-top: 3px solid $black;
+    background:#fff;
+
+    .pure-menu-heading {
+        color: $black;
+        font-weight: 400;
+        font-size: 120%;
+    }
+
+    .pure-menu-selected a {
+        color: $red;
+    }
+    a {
+        color: $black;
+        &:hover {
+            color: $red;
+        }
+    }
+
+    li a:hover,
+    li a:focus {
+        // background: none;
+        // border: none;
+        // color: #AECFE5;
+    }
+}
+.pure-menu.pure-menu-fixed {
+    /* Fixed menus normally have a border at the bottom. */
+    border-bottom: none;
+    z-index: 4;
+}
+
+.site-footer, .site-footer.pure-g {
+    span {
+        font-family: "EB Garamond", serif;
+    }
+    font-family: "EB Garamond", serif;
+    font-size:0.90em;
+    padding: 0.5em;
+    text-align: center;
+    box-shadow: 0 -1px 1px rgba(0,0,0, 0.10);
+    background:#fff;
+
+    a {
+        color: $black;
+        &:hover {
+            color: $red;
+        }
+    }
+
+    .copyright {
+        color: $mediumgrey;
+        letter-spacing: 1px;
+    }
+    .hand {
+        font-size: 2em;
+        line-height: 1rem;
+        vertical-align: text-bottom;
+    }
+    .s-icons {
+        font-size: 1.5em;
+        line-height: 1em;
+
+        .useicons {
+            padding:0 3px;
+            vertical-align: middle;
+        }
+    }
+}
+
+
+
+/*********************
+**** MAIN CONTENT ****
+**********************/
+.main {
+    padding-top:86px;
+}
+
+.twitter.useicons, .instagram.useicons {
+    display:none;
+}
+
+/*
+ * -- TABLET (AND UP) MEDIA QUERIES --
+ * On tablets and other medium-sized devices, we want to customize some
+ * of the mobile styles.
+ */
+@media (min-width: 48em) {
+
+    /* We increase the body font size */
+    body {
+        font-size: 16px;
+    }
+    /* We want to give the content area some more padding */
+    .page-content {
+        padding: 1em;
+    }
+
+    /* We can align the menu header to the left, but float the
+    menu items to the right. */
+    .site-header {
+        text-align: left;
+        ul {
+            float: right;
+        }
+    }
+
+    .twitter.useicons, .instagram.useicons {
+        display:inline;
+    }
+
+}
+
+/*
+ * -- DESKTOP (AND UP) MEDIA QUERIES --
+ * On desktops and other large devices, we want to over-ride some
+ * of the mobile and tablet styles.
+ */
+@media (min-width: 78em) {
+
+}
