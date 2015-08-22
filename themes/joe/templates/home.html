@@ -208,7 +208,15 @@
                     ]]};
     {%- endif -%}
     </script>
-    <script>function init(){for(var t=document.getElementsByTagName("img"),e=0;e<t.length;e++)t[e].getAttribute("data-src")&&t[e].setAttribute("src",t[e].getAttribute("data-src"))}window.onload=init;</script>
+    <script>
+        function init() {
+        var imgDefer = document.getElementsByTagName('img');
+        for (var i=0; i<imgDefer.length; i++) {
+        if(imgDefer[i].getAttribute('data-src')) {
+        imgDefer[i].setAttribute('src',imgDefer[i].getAttribute('data-src'));
+        } } }
+        window.onload = init;
+    </script>
     {%- assets filters="rjsmin",
             depends=('**/*.js'), output="main.min.js",
             "external/chartist/dist/chartist.js","js/main.js" %}
