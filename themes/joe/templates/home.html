@@ -186,26 +186,21 @@
 
 {% block footer_scripts %}
     <script>
-    {% if GDOCS and gdocs_data.steps %}
-        var steps_data = {
-                labels: [
+    {%- if GDOCS and gdocs_data.steps -%}
+        var steps_data = {labels: [
                     {%- for row in gdocs_data.steps | reverse -%}
                        '{{row.Date}}',
                     {%- endfor -%}
-                ],
-                series: [
-                    [
+                    ],series: [[
                     {%- for row in gdocs_data.steps | reverse -%}
                         {{row.TotalSteps}},
                     {%- endfor -%}
-                    ]
-                ]
-        };
-    {% endif %}
+                    ]]};
+    {%- endif -%}
     </script>
-    {% assets filters="rjsmin",
+    {%- assets filters="rjsmin",
             depends=('**/*.js'), output="main.min.js",
             "external/chartist/dist/chartist.js","js/main.js" %}
         <script src="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}"></script>
-    {% endassets %}
+    {%- endassets -%}
 {%- endblock footer_scripts %}

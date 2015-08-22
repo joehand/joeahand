@@ -41,8 +41,7 @@ Things you'll need (not in this order):
 ## Licenses
 
 * Writing: Creative Commons Attribution Non-Commercial No-Derivatives ([CC BY-NC-ND 4.0](http://creativecommons.org/licenses/by-nc-nd/4.0/)) 
-* Theme/Plugin/Etc.: MIT
-* Social Icons: [Please buy those here.](https://symbolset.com/icons/social-circle)
+* Theme & Gdocs Plugin: MIT
 
 ## Resources & Thanks
 
@@ -53,5 +52,7 @@ Things you'll need (not in this order):
 * [CodePen Thing](http://codepen.io/hackthevoid/pen/AIoba/)
 * [Google Fonts](https://www.google.com/fonts)
 * [SSL w/ GitHub Pages & Cloudfare](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)
+* [Font Squirrel](http://www.fontsquirrel.com/)
+* [Better font loading w/ woff](http://bdadam.com/blog/better-webfont-loading-with-localstorage-and-woff2.html)
 
 

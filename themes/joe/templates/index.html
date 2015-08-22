@@ -11,7 +11,7 @@
                         <h2 class="title"><a href="{{ SITEURL }}/{{ article.url }}" rel="bookmark" title="Permalink to {{ article.title|striptags }}">{{ article.title }}</a></h2>
                         {%- if article.link_url -%}
                             <h5 class="link_url">
-                                <a href="{{article.link_url}}"><span class="useicons">&#xe601;</span><span class="link_url">{{article.link_url|get_domain}}</span></a>
+                                <a href="{{article.link_url}}"><span class="useicons">&#58881;</span><span class="link_url">{{article.link_url|get_domain}}</span></a>
                             </h5>
                         {%- endif -%}
                         <!-- {%- if not category_page -%}
@@ -21,7 +21,7 @@
                     <article class="content">
                         <div class="entry-content"> {{ article.content }} </div><!-- entry-content -->
                         <footer class="post-footer">
-                          <a class="small-caps"href="{{ SITEURL }}/{{ article.url }}"><span class="useicons">&#xe602;</span><span class="pub_date">{{article.date|strftime('%B %Y')}}</span></a>
+                          <a class="small-caps"href="{{ SITEURL }}/{{ article.url }}"><span class="useicons">&#58882;</span><span class="pub_date">{{article.date|strftime('%B %Y')}}</span></a>
                         </footer>
                     </article>
             </section>

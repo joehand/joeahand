@@ -38,8 +38,17 @@ html {
 body {
     font-family: "Open Sans", sans-serif;
     color: $primary-color;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7em;
+}
+/*
+http://purecss.io/grids/#using-grids-with-custom-fonts
+W/ Pure Grids use specific font stacks to
+ensure the greatest OS/browser compatibility.
+*/
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+    font-family: "Open Sans", sans-serif;
 }
 
 .document {
@@ -150,16 +159,17 @@ h6,
         color: $mediumgrey;
         letter-spacing: 1px;
     }
-    .useicons {
+    .hand {
         font-size: 2em;
         line-height: 1rem;
-        vertical-align: text-top;
+        vertical-align: text-bottom;
     }
-    .ss-icons {
+    .s-icons {
         font-size: 1.5em;
-        line-height: 1.5em;
+        line-height: 1em;
 
-        .ss-icon {
+        .useicons {
+            padding:0 3px;
             vertical-align: middle;
         }
     }
@@ -174,7 +184,7 @@ h6,
     padding-top:86px;
 }
 
-.twitter.ss-icon, .instagram.ss-icon {
+.twitter.useicons, .instagram.useicons {
     display:none;
 }
 
@@ -203,7 +213,7 @@ h6,
         }
     }
 
-    .twitter.ss-icon, .instagram.ss-icon {
+    .twitter.useicons, .instagram.useicons {
         display:inline;
     }
 

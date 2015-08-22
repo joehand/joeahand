@@ -17,6 +17,8 @@
   "dependencies": {
     "pure": "~0.6.0",
     "bourbon": "~4.2.4",
-    "chartist": "~0.9.4"
+    "chartist": "~0.9.4",
+    "open-sans-fontface": "~1.4.2",
+    "ebgaramond": "https://bitbucket.org/georgd/eb-garamond/downloads/EBGaramond-0.016-web.zipEBGaramond-0.016-web.zip"
   }
 }
