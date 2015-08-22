@@ -54,5 +54,6 @@ Things you'll need (not in this order):
 * [Font Squirrel](http://www.fontsquirrel.com/)
 * [Better font loading w/ woff](http://bdadam.com/blog/better-webfont-loading-with-localstorage-and-woff2.html)
 * [Defer images for faster loading](https://varvy.com/pagespeed/defer-images.html)
+* [loadCSS](https://github.com/filamentgroup/loadCSS)
 
 

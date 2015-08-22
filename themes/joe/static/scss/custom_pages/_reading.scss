@@ -1,4 +1,4 @@
-.reading-page {
+.reading-page, .reading {
     .articles {
         display:flex;
         align-items:stretch;
@@ -17,6 +17,14 @@
         margin-bottom:50px;
     }
 
+    .domain, .time {
+        color:$mediumgrey;
+        font-size:0.75em;
+        font-weight:600;
+        font-variant: small-caps;
+        display:block;
+    }
+
     // http://codepen.io/allizad/pen/bBsod
     hr {
       margin: 1em auto;
@@ -30,11 +38,8 @@
       border-right: 0;
       font-size: 1.05em;
       &:after {
-        .reading-page & {
-          content:'∞';
-          font-size: 1.15em;
-        }
-        content:'JH';
+        content:'∞' !important;
+        font-size: 1.15em !important;
         color: $lightgrey;
         font-family: "EB Garamond", serif;
         display: inline;
