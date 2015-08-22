@@ -53,5 +53,6 @@ Things you'll need (not in this order):
 * [SSL w/ GitHub Pages & Cloudfare](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)
 * [Font Squirrel](http://www.fontsquirrel.com/)
 * [Better font loading w/ woff](http://bdadam.com/blog/better-webfont-loading-with-localstorage-and-woff2.html)
+* [Defer images for faster loading](https://varvy.com/pagespeed/defer-images.html)
 
 
