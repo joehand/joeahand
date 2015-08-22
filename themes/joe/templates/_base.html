@@ -18,16 +18,7 @@
 
         {%- block critical_css %}
         <style>
-        {%- assets filters="pyscss,cssmin",
-            depends=('**/*.scss'), output="../../themes/joe/templates/blog.min.css",
-            "external/pure/base.css",
-            "external/pure/menus-core.css",
-            "external/pure/menus-horizontal.css",
-            "external/pure/menus-skin.css",
-            "external/pure/tables.css",
-            "external/pure/grids.css",
-            "external/pure/grids-responsive.css",
-            "critical_blog.scss" %}
+        {%- assets "blog" %}
             {% include 'blog.min.css' %}
         {%- endassets %}
         </style>

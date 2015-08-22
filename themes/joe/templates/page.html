@@ -3,16 +3,7 @@
 {%- block body_class %}page{%- endblock body_class -%}
 {%- block critical_css %}
 <style>
-{%- assets filters="pyscss,cssmin",
-    depends=('**/*.scss'), output="../../themes/joe/templates/page.min.css",
-    "external/pure/base.css",
-    "external/pure/menus-core.css",
-    "external/pure/menus-horizontal.css",
-    "external/pure/menus-skin.css",
-    "external/pure/tables.css",
-    "external/pure/grids.css",
-    "external/pure/grids-responsive.css",
-    "critical_page.scss" %}
+{%- assets "page" %}
     {% include 'page.min.css' %}
 {%- endassets %}
 </style>

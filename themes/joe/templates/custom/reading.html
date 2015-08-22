@@ -1,5 +1,12 @@
 {% extends "_base.html" %}
 {%- block body_class %}reading-page{%- endblock body_class -%}
+{%- block critical_css %}
+<style>
+{%- assets "page" %}
+    {% include 'page.min.css' %}
+{%- endassets %}
+</style>
+{%- endblock critical_css -%}
 
 {%- block main %}
     <main role="main" class="main pure-g">

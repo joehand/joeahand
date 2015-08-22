@@ -2,16 +2,7 @@
 {%- block body_class %}home{%- endblock body_class -%}
 {%- block critical_css %}
 <style>
-{%- assets filters="pyscss,cssmin",
-    depends=('**/*.scss'), output="../../themes/joe/templates/home.min.css",
-    "external/pure/base.css",
-    "external/pure/menus-core.css",
-    "external/pure/menus-horizontal.css",
-    "external/pure/menus-skin.css",
-    "external/pure/tables.css",
-    "external/pure/grids.css",
-    "external/pure/grids-responsive.css",
-    "critical_home.scss" %}
+{%- assets "home" %}
     {% include 'home.min.css' %}
 {%- endassets %}
 </style>
@@ -217,18 +208,10 @@
                     ]]};
     {%- endif -%}
     </script>
-    <script>
-        function init() {
-        var imgDefer = document.getElementsByTagName('img');
-        for (var i=0; i<imgDefer.length; i++) {
-        if(imgDefer[i].getAttribute('data-src')) {
-        imgDefer[i].setAttribute('src',imgDefer[i].getAttribute('data-src'));
-        } } }
-        window.onload = init;
-    </script>
+    <script>function init(){for(var t=document.getElementsByTagName("img"),e=0;e<t.length;e++)t[e].getAttribute("data-src")&&t[e].setAttribute("src",t[e].getAttribute("data-src"))}window.onload=init;</script>
     {%- assets filters="rjsmin",
             depends=('**/*.js'), output="main.min.js",
             "external/chartist/dist/chartist.js","js/main.js" %}
-        <script src="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}"></script>
+        <script src="{{ SITEURL }}/{{ ASSET_URL }}"></script>
     {%- endassets -%}
 {%- endblock footer_scripts %}

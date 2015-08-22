@@ -112,6 +112,51 @@ GDOCS = [
 
 COPYRIGHT_LINK = 'http://creativecommons.org/licenses/by-nc-nd/4.0/'
 
+home_bundle = [
+        "external/pure/base.css",
+        "external/pure/menus-core.css",
+        "external/pure/menus-horizontal.css",
+        "external/pure/menus-skin.css",
+        "external/pure/tables.css",
+        "external/pure/grids.css",
+        "external/pure/grids-responsive.css",
+        'critical_home.scss'
+        ]
+
+blog_bundle = [
+        "external/pure/base.css",
+        "external/pure/menus-core.css",
+        "external/pure/menus-horizontal.css",
+        "external/pure/menus-skin.css",
+        "external/pure/tables.css",
+        "external/pure/grids.css",
+        "external/pure/grids-responsive.css",
+        'critical_blog.scss'
+        ]
+
+page_bundle = [
+        "external/pure/base.css",
+        "external/pure/menus-core.css",
+        "external/pure/menus-horizontal.css",
+        "external/pure/menus-skin.css",
+        "external/pure/tables.css",
+        "external/pure/grids.css",
+        "external/pure/grids-responsive.css",
+        'critical_page.scss'
+        ]
+
+ASSET_BUNDLES = (
+    ('home', home_bundle,
+        {'filters':"pyscss,cssmin",
+        'output':"../../themes/joe/templates/home.min.css"}),
+    ('blog',blog_bundle ,
+        {'filters':"pyscss,cssmin",
+        'output':"../../themes/joe/templates/blog.min.css"}),
+    ('page',page_bundle,
+        {'filters':"pyscss,cssmin",
+        'output':"../../themes/joe/templates/page.min.css"}),
+)
+
 ###############################
 ##### Nice Things to Have #####
 ###############################
@@ -127,3 +172,4 @@ def get_domain(url):
 JINJA_FILTERS = {
     'get_domain': get_domain,
 }
+
