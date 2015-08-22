@@ -1,0 +1,382 @@
+/*
+ * -- OLD Blog Styling --
+ * Placeholder for updated styling.
+ * This is from the old css file.
+ */
+blockquote {
+    padding-left: 1.125rem;
+    border-left: .375rem solid #ecf0f1;
+    font-style: italic;
+    font-size: 1.333rem;
+    font-family: "Times New Roman", serif
+}
+blockquote p {
+    margin: 0
+}
+blockquote p+p {
+    margin-top: 1.125rem
+}
+blockquote cite {
+    color: #34495e;
+    font-style: italic;
+    font-size: .75rem;
+    font-family: "Open Sans", sans-serif;
+}
+blockquote cite:before {
+    content: "— ";
+}
+blockquote cite a {
+    color: #34495e
+}
+.crossbars {
+    position: relative;
+    display: table;
+    margin: 0 auto .75rem;
+    padding: 0 1.125rem;
+    width: auto;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .125rem;
+    font-size: 1.125rem;
+    line-height: 1.125
+}
+.crossbars:before,
+.crossbars:after {
+    position: absolute;
+    top: 50%;
+    display: block;
+    overflow: hidden;
+    margin-top: -.5rem;
+    width: 9999%;
+    height: 1.125rem;
+    background: #bdc3c7;
+    content: " "
+}
+.crossbars:before {
+    left: -9999%
+}
+.crossbars:after {
+    right: -9999%
+}
+ol {
+    list-style: decimal
+}
+ol ol {
+    list-style: upper-alpha
+}
+ol ol ol {
+    list-style: lower-roman
+}
+ol ol ol ol {
+    list-style: lower-alpha
+}
+ol ol,
+ol ul,
+ul ul,
+ul ol {
+    margin-bottom: 0
+}
+.run-in {
+    float: left;
+    margin: 0;
+    margin-right: .317rem;
+    color: #222;
+    text-transform: uppercase;
+    letter-spacing: .125rem;
+    font-weight: 700;
+    font-size: 1.125rem
+}
+small {
+    display: inline-block;
+    font-size: .875rem;
+    line-height: 1.333
+}
+.small-caps {
+    text-transform: uppercase;
+    letter-spacing: .125rem;
+    font-weight: 700;
+    font-size: 1.125rem;
+    font-family: inherit;
+    line-height: inherit
+}
+sub,
+sup {
+    font-size: .75rem
+}
+sup {
+    top: -.475rem
+}
+sub {
+    bottom: -.238rem
+}
+.text-left {
+    text-align: left
+}
+.text-right {
+    text-align: right
+}
+.text-center {
+    text-align: center
+}
+.text-justify {
+    text-align: justify
+}
+@media only screen and (min-width: 600px) {
+    .medium-text-left {
+        text-align: left
+    }
+    .medium-text-right {
+        text-align: right
+    }
+    .medium-text-center {
+        text-align: center
+    }
+    .medium-text-justify {
+        text-align: justify
+    }
+}
+@media only screen and (min-width: 960px) {
+    .large-text-left {
+        text-align: left
+    }
+    .large-text-right {
+        text-align: right
+    }
+    .large-text-center {
+        text-align: center
+    }
+    .large-text-justify {
+        text-align: justify
+    }
+}
+.strip {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style: none
+}
+.strip .wrapper {
+    padding: 1rem 0;
+}
+.strip .wrapper>*:last-child {
+    margin-bottom: 0
+}
+@media only screen and (min-width: 600px) {
+    .strip .wrapper {
+        padding: 2rem 0
+    }
+}
+.wrapper {
+    margin: 0 auto;
+    max-width: 64rem;
+    width: 90%
+}
+.float-left {
+    float: left
+}
+.float-right {
+    float: right
+}
+.float-none {
+    float: none
+}
+@media only screen and (min-width: 600px) {
+    .medium-float-left {
+        float: left
+    }
+    .medium-float-right {
+        float: right
+    }
+    .medium-float-none {
+        float: none
+    }
+}
+@media only screen and (min-width: 960px) {
+    .large-float-left {
+        float: left
+    }
+    .large-float-right {
+        float: right
+    }
+    .large-float-none {
+        float: none
+    }
+}
+.clear {
+    display: block;
+    visibility: hidden;
+    clear: both;
+    overflow: hidden;
+    width: 0;
+    height: 0
+}
+.cf:before,
+.cf:after {
+    display: table;
+    content: " ";
+}
+.cf:after {
+    clear: both
+}
+.visuallyhidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    margin: -.0625rem;
+    padding: 0;
+    width: .0625rem;
+    height: .0625rem;
+    border: 0;
+}
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    position: static;
+    overflow: visible;
+    clip: auto;
+    margin: 0;
+    width: auto;
+    height: auto
+}
+blockquote {
+    border-color: #c0392b
+}
+p a, li a {
+    text-decoration: underline
+}
+.post-full {
+    position: relative;
+    max-width:700px;
+    margin:0 auto;
+}
+.post-full header {
+    margin-bottom: 2rem
+}
+.post-full .title {
+    line-height: 1
+}
+.post-full .title a {
+    color: #222
+}
+.post-full .category {
+    font-size: 1.125rem
+}
+.post-full .category a {
+    color: #bdc3c7
+}
+.post-full .link_url {
+    font-size: 1rem
+}
+.post-full .link_url a {
+    color: #bdc3c7
+}
+.post-full .link_url .useicons {
+    font-size: 75%;
+    vertical-align: middle;
+    padding-right: .5rem
+}
+.post-full img {
+    margin: 1rem auto;
+    border-radius: 5px;
+    display:block;
+    max-width:600px;
+}
+.post-full figure img {
+    margin-top: .5rem
+}
+.post-full .post-footer {
+    margin: 1rem 0 4rem
+}
+.post-full .post-footer a {
+    font-size: .844rem;
+    text-decoration: none
+}
+.post-full .post-footer a .useicons {
+    padding-right: .5rem;
+    vertical-align: middle;
+    color: #c0392b
+}
+.post-full .post-footer a .pub_date {
+    transition: all 150ms ease-out;
+    color: #95a5a6;
+    font-family: "EB Garamond", serif
+}
+.post-full .post-footer a:hover .pub_date {
+    color: #c0392b
+}
+@media only screen and (min-width: 960px) {
+    .post-full .category {
+        position: absolute;
+        right: 100%;
+        top: 0;
+        margin-right: 1rem
+    }
+}
+.pagination {
+    text-align: center
+}
+.pagination .page-link {
+    color: #222;
+    padding: 0 1rem
+}
+.pagination .disabled {
+    padding: 0 .5rem;
+    color: #ecf0f1
+}
+.pagination .useicons {
+    color: #ecf0f1
+}
+.post-archive {
+    position: relative;
+    overflow: hidden
+}
+.post-archive .post-list {
+    margin: 0 0 2rem 0
+}
+.post-archive .year,
+.post-archive .pub_date,
+.post-archive .category {
+    text-transform: uppercase;
+    letter-spacing: .125rem
+}
+.post-archive .category {
+    font-weight: bold;
+    color: #95a5a6
+}
+.post-archive .category,
+.post-archive .pub_date {
+    font-size: .844rem
+}
+.post-archive .pub_date,
+.post-archive .year {
+    font-family: "EB Garamond", serif
+}
+.post-archive .pub_date {
+    color: #95a5a6;
+    font-weight: bold
+}
+.post-archive .title {
+    margin: 0;
+    max-width: 500px
+}
+.post-archive .title a {
+    color: #222
+}
+.post-archive .year {
+    font-size: 1.777rem;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    color: #222
+}
+.post-archive .year:first-child {
+    margin-top: 0
+}
+.post-archive .crossbars:before,
+.post-archive .crossbars:after {
+    background-color: #c0392b;
+    height: 2px;
+    margin-top: 0
+}
+.category-header {
+    margin-bottom: 2rem;
+    color: #bdc3c7
+}

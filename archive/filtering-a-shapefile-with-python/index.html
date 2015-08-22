@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script data-cfasync="false" type="text/javascript">
+            var host = 'joeahand.com';
+            if ((host == window.location.host) && (window.location.protocol != "https:"))
+                window.location.protocol = "https";
+        </script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="ClearType" content="true">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- DNS prefetch -->
+        <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+        <link rel="dns-prefetch" href="//cdn.joeahand.com">
+
+        <title>Filtering a Shapefile with Python - Joe Hand</title>
+        <meta name="description" content="Better cities with local data">
+
+        <!-- Styles -->
+            <link rel="stylesheet" href="//joeahand.com/theme/main.min.css?af5401ae">
+
+        <!-- WebFonts -->
+        <script  data-cfasync="false" src="//cdnjs.cloudflare.com/ajax/libs/webfont/1.6.4/webfontloader.js"></script>
+        <script data-cfasync="false" >
+          WebFont.load({
+            google: {
+              families:  [ 'EB+Garamond::latin', 'Open+Sans:400italic,400,700,300:latin' , 'Roboto+Mono::latin' ]
+            }
+          });
+        </script>
+
+    </head>
+    <body class="">
+        <div role="document" class="document"><div class="header">
+            <div class="site-header pure-menu pure-menu-horizontal pure-menu-fixed">
+                <a class="pure-menu-heading small-caps" href="https://joeahand.com">Joe Hand</a><ul role="navigation" class="pure-menu-list">
+        <li class="pure-menu-item ">
+            <a class="pure-menu-link small" href="https://joeahand.com/about/">About Joe</a>
+        </li>
+        <li class="pure-menu-item ">
+            <a class="pure-menu-link small" href="https://joeahand.com/cv/">CV</a>
+        </li>
+    <!-- <li class="pure-menu-item">
+        <a class="pure-menu-link" href="#">Blog</a>
+    </li>
+    <li class="pure-menu-item">
+        <a class="pure-menu-link" href="#">CV</a>
+    </li> -->
+</ul>            </div>
+        </div>
+            <main role="main" class="main pure-g">
+                <div class="pure-u-2-24 pure-u-lg-1-5"></div>
+                <div class="page-content pure-u-20-24 pure-u-lg-3-5"><section class="post-full">
+    <header>
+        <h1 class="title"><a href="https://joeahand.com/archive/filtering-a-shapefile-with-python/">Filtering a Shapefile with Python</a></h1>
+        <!-- <h5 class="category small-caps"><a href="https://joeahand.com/category/programming/">programming</a></h5> --></header>
+    <article class="content">
+      <p>Recently I've been using Python more to work with shapefiles. Frequently I have to create a shapefile by filtering a set of features of a larger shapefile, for instance I wanted to get a shapefile for blocks in New York City from a shapefile of the whole country. While this isn't very difficult in QGIS (and probably ArcGIS), it gets a bit annoying to do over and over. In the last project, I wanted to create files for over 900 cities in the US - so I definitely wasn't going to do that by hand.</p>
+<h3>Quickstart</h3>
+<p>I'll walk through the three main steps to do this in Python:</p>
+<ol>
+<li>Creating a shapefile when <code>my_field = my_value</code> from a large shapefile.</li>
+<li>Finding all values in <code>my_field</code> from your large shapefile.</li>
+<li>Putting 1 &amp; 2 together to create many shapefiles for every value in <code>my_field</code>.</li>
+</ol>
+<p><strong><em> If you want to see how it all comes together, <a href="https://gist.github.com/joehand/498a1656e028c6163aa9">see the full code here</a>.</em></strong></p>
+<p>There are a few Python-based shapefile libraries. The most extensive is <a href="http://www.gdal.org/">GDAL</a> with <a href="https://pypi.python.org/pypi/GDAL/">Python bindings</a>. I decided to use GDAL because of the speed (some of the other libraries are pure Python, thus slower). The only downside is that it can be a pain to install (especially in a virtual environment).</p>
+<h3>Command Line Filtering</h3>
+<p>If you want to filter a shapefile by a specific field/value OGR has a attribute filter function. If you just need to do this once, I recommend using the command line:</p>
+<div class="highlight"><pre>ogr2ogr -f <span class="s2">&quot;ESRI Shapefile&quot;</span> -where <span class="se">\</span>
+    <span class="s2">&quot;my_field = some_value&quot;</span> new_shapefile.shp source_shapefile.shp
+</pre></div>
+
+
+<p>But I needed to filter many times and in the context of another program, so let's look at the Python version of this command.</p>
+<h2>Creating a Single Shapefile for a Known Filter Value</h2>
+<p>In this case, we know our field and know the value we want to filter. We just need to create a single shapefile from the larger one. First, we will open our larger input file and use OGR's filter function to get the filtered features. Then we can create a new shapefile by copying the filtered input file:</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">ogr</span>
+
+<span class="k">def</span> <span class="nf">create_filtered_shapefile</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">):</span>
+    <span class="n">input_layer</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">in_shapefile</span><span class="p">)</span><span class="o">.</span><span class="n">GetLayer</span><span class="p">()</span>
+    <span class="n">out_shapefile</span> <span class="o">=</span> <span class="s">&#39;out_shapefile.shp&#39;</span>
+
+    <span class="c"># Filter by our query</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="s">&#39;&quot;{}&quot; = &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="n">input_layer</span><span class="o">.</span><span class="n">SetAttributeFilter</span><span class="p">(</span><span class="n">query_str</span><span class="p">)</span>
+
+    <span class="c"># Copy Filtered Layer and Output File</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s">&#39;ESRI Shapefile&#39;</span><span class="p">)</span>
+    <span class="n">out_ds</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">CreateDataSource</span><span class="p">(</span><span class="n">out_shapefile</span><span class="p">)</span>
+    <span class="n">out_layer</span> <span class="o">=</span> <span class="n">out_ds</span><span class="o">.</span><span class="n">CopyLayer</span><span class="p">(</span><span class="n">input_layer</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+    <span class="k">del</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">out_layer</span><span class="p">,</span> <span class="n">out_ds</span>
+    <span class="k">return</span> <span class="n">out_shapefile</span>
+</pre></div>
+
+
+<p>Great! We have a filtered shapefile. But what if we want to do this for every value in some field? </p>
+<h2>Getting All Values for a Field</h2>
+<p>If we want to create a shapefile for each value in some field, first we need to figure out all the values for <code>my_field</code>. Luckily, OGR allows you to execute SQL queries on the shapefiles. So we can get our values with some simple SQL: <code>SELECT DISTINCT 'my_field' FROM 'my_shapefile'</code>. And putting it in a function:</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">get_unique_values</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return unique values of filter from source shapefile.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sql</span> <span class="o">=</span> <span class="s">&#39;SELECT DISTINCT &quot;{}&quot; FROM {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">)</span>
+    <span class="n">layer</span> <span class="o">=</span> <span class="n">ogr</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">in_shapefile</span><span class="p">)</span><span class="o">.</span><span class="n">ExecuteSQL</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c"># Unfortunately, you have to loop</span>
+    <span class="c"># over every feature to get the values. </span>
+    <span class="c"># This seems common in dealing w/ Shapefiles</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">layer</span><span class="p">:</span>
+        <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">feature</span><span class="o">.</span><span class="n">GetField</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">values</span>
+</pre></div>
+
+
+<p>Finally, we will put the last two functions together with a loop. First, we  get all the possible values from some field and then loop over the values and create a shapefile for each one. This can be pretty slow depending on how many shapefiles you need to create. </p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">create_all_shapefiles</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Returns list of new shapefiles</span>
+<span class="sd">        Creates shapefiles for filtered data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">out_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="n">get_unique_values</span><span class="p">(</span><span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+        <span class="n">out_file</span> <span class="o">=</span> <span class="s">&#39;{}.shp&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">out_file</span><span class="p">):</span>
+            <span class="c"># Don&#39;t overwrite existing files</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_file</span> <span class="o">=</span> <span class="n">create_filtered_shapefile</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+        <span class="n">out_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out_files</span>
+</pre></div>
+
+
+<p>That's it! We now have a shapefile for each value in <code>my_field</code>. I've written this up as a full Python <code>class</code> you can plug into your own projects. <strong><em><a href="https://gist.github.com/joehand/498a1656e028c6163aa9">Check that code out here</a>.</em></strong></p>
+<p>Let me know if you have questions or found this useful! You can <a href="http://twitter.com/joeahand">find me on Twitter</a>.</p>
+    </article>
+
+    <footer class="post-footer">
+        <a class="small-caps" rel="bookmark" title="Permalink to Filtering a Shapefile with Python" href="https://joeahand.com/archive/filtering-a-shapefile-with-python/">
+            <span class="useicons">&#xe602;</span>
+            <span class="pub_date">
+                <abbr class="published" title="2015-08-11T19:39:12-06:00">
+                  August 2015
+                </abbr>
+            </span>
+        </a>
+    </footer>
+</section>
+
+                </div> <!-- .page-content  -->
+                <div class="pure-u-2-24 pure-u-lg-1-5"></div>
+            </main> <!-- main  -->
+            <footer role="contentinfo" class="site-footer l-box pure-g is-center">
+                <div class="pure-u-2-5 pure-u-md-1-3">
+                    <span class="copyright">
+                        Joe Hand &nbsp;·&nbsp;
+                            <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">© 2015</a>
+                    </span>
+                </div>
+                <div class="pure-u-1-5 pure-u-md-1-3"><div class="ss-icons">
+    <a class="mail ss-icon ss-circle" href="mailto:&#106;&#111;&#101;&#064;&#106;&#111;&#101;&#097;&#104;&#097;&#110;&#100;&#046;&#099;&#111;&#109;" rel="me">Email</a>
+    <a class="twitter ss-icon ss-circle" href="http://twitter.com/joeahand/" rel="me">Twitter</a>
+    <a class="instagram ss-icon ss-circle" href="http://instagram.com/joeahand" rel="me">Instagram</a>
+    <a class="github ss-icon ss-circle" href="https://github.com/joehand" rel="me">GitHubOctocat</a>
+</div></div>
+                <div class="pure-u-2-5 pure-u-md-1-3">
+                    <!-- <span>
+                    <a href="https://joeahand.com/archive/">Archive</a>
+                    </span>
+                    &nbsp;·&nbsp;-->
+                    <span>
+                        <a href="https://joeahand.com/about/#about-site">Made By <span class="useicons">&#xe603;</span></a>
+                    </span>
+                </div>
+            </footer>        </div> <!-- document -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/chartist/0.9.1/chartist.min.js"></script>
+    <script data-no-instant src="//cdnjs.cloudflare.com/ajax/libs/instantclick/3.0.1/instantclick.min.js"></script><script type="text/javascript" data-no-instant data-cfasync="false">
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-37465100-3', 'auto');
+
+    InstantClick.on('change', function() {
+        ga('send', 'pageview', location.pathname + location.search);
+    });
+    InstantClick.init();
+</script>
+    </body>
+</html>
