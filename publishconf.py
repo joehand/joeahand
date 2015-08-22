@@ -12,9 +12,10 @@ from pelicanconf import *
 
 PUBLISH = True
 PLUGINS = [
-            'assets',
             'pelican_gdocs',
-            'optimize_images'
+            'assets',
+            #'optimize_images',
+            'minify',
             ]
 
 SITEURL = 'https://joeahand.com'
