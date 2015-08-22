@@ -38,8 +38,17 @@ html {
 body {
     font-family: "Open Sans", sans-serif;
     color: $primary-color;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.7em;
+}
+/*
+http://purecss.io/grids/#using-grids-with-custom-fonts
+W/ Pure Grids use specific font stacks to
+ensure the greatest OS/browser compatibility.
+*/
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+    font-family: "Open Sans", sans-serif;
 }
 
 .document {
