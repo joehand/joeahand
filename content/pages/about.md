@@ -40,7 +40,7 @@ Daily steps chart is made with the [Chartist.js](http://gionkunz.github.io/chart
 **Design**: 
 I designed the site with a lot of inspiration from others.
 Thank you others.
-The fonts are [EB Garamond](https://www.google.com/fonts/specimen/EB+Garamond) and [Open Sans](https://www.google.com/fonts/specimen/Open+Sans), served from Google. 
+The fonts are [EB Garamond](https://www.google.com/fonts/specimen/EB+Garamond) and [Open Sans](https://www.google.com/fonts/specimen/Open+Sans), served using [base64 encoding](http://bdadam.com/blog/better-webfont-loading-with-localstorage-and-woff2.html). 
 I used [Pure CSS](http://purecss.io/layouts/) as my css foundation.
 
 *It is amazing how many people did great work so I could build a website. Pretty cool.*
