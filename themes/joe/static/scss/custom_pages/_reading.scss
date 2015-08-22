@@ -13,6 +13,69 @@
             }
         }
     }
+    .page-content {
+        margin-bottom:50px;
+    }
 
+    // http://codepen.io/allizad/pen/bBsod
+    hr {
+      margin: 1em auto;
+      width:75%;
+      text-align: center;
+      line-height: 1px;
+      height: 1px;
+      background: $lightgrey;
+      border: 15px solid $bg;
+      border-left: 0;
+      border-right: 0;
+      font-size: 1.05em;
+      &:after {
+        .reading-page & {
+          content:'∞';
+          font-size: 1.15em;
+        }
+        content:'JH';
+        color: $lightgrey;
+        font-family: "EB Garamond", serif;
+        display: inline;
+        background: $bg;
+        padding: .2em .3em;
+        border: 1px solid $bg;
+        border-radius: 100px;
+        transition: .3s ease all;
+      }
+      &:before {
+        position: absolute;
+        content: '';
+        background: transparent;
+        border-spacing: 10px;
+        margin-top: -14px;
+        @include transform( scale(.5));
+        margin-left: 1px;
+        width: 29px;
+        height: 29px;
+        transition: .3s ease-out all;
+        border-radius: 100px;
+      }
+      &:not(.heart):hover {
+        &:after {
+          //border: 1px solid lighten($lightgrey,10%);
+        }
+        &:before{
+          @include transform(scale(1));
+          background: $lightgrey;
+          transition: 3s cubic-bezier(.5,-0.74,.79,1.53) all;
+          @include animation(out .3s cubic-bezier(.5,-0.74,.79,1.53) 3.2s forwards);
+        }
+      }
+    }
 
+    /*
+     * -- TABLET (AND UP) MEDIA QUERIES --
+     */
+    @media (min-width: 48em) {
+        .page-content {
+          padding:1em 0;
+        }
+    }
 }

@@ -8,3 +8,53 @@ $bowerdir: 'external';
 
 // General Layouts
 @import 'scss/footer';
+
+
+/* Non critical home stuff (needs to come after chartist library) */
+
+/* Use this selector to override bar styles on bar charts. Bars are also strokes so you have maximum freedom in styling them. */
+.ct-series-a .ct-bar {
+  /* Colour of your bars */
+  stroke: $red;
+}
+.ct-grid {
+  stroke: lighten($blue,25%);
+}
+
+.ct-chart {
+    position: relative;
+
+    .axis-label{
+        position: absolute;
+        width:100%;
+        height:100%;
+    }
+
+    [data-x-axis]:after {
+      content: attr(data-x-axis);
+      width:100%;
+      bottom:10px;
+      position: absolute;
+      text-align: center;
+        font-size:0.65em;
+        color:$mediumgrey;
+        font-variant: small-caps;
+    }
+
+    @media screen and (min-width: 35.5em) {
+        //only show y axis on bigger screens
+        [data-y-axis]:before {
+          content: attr(data-y-axis);
+          position: absolute;
+          left:-5px;
+          top:50%;
+          height:15px;
+          margin-top:-30px;
+          @include transform(rotate(-90deg));
+          font-size:0.65em;
+          color:$mediumgrey;
+          font-variant: small-caps;
+        }
+    }
+
+}
