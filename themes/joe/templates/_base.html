@@ -16,12 +16,14 @@
         <!-- Fonts -->
         {%- include "partials/_font_loader.html" %}
 
-        <!-- Styles -->
-        {%- assets filters="pyscss,cssmin",
-            depends=('**/*.scss'), output="main.min.css",
-            "external/pure/pure.css", "external/pure/grids-responsive.css","main.scss" %}
-            <link rel="stylesheet" href="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}">
+        {%- block critical_css %}
+        <style>
+        {%- assets "blog" %}
+            {% include 'blog.min.css' %}
         {%- endassets %}
+        </style>
+        {%- endblock critical_css -%}
+        {%- include "partials/_css_loader.html" %}
 
         {%- block head_scripts %}
         {%- endblock %}

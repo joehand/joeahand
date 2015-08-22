@@ -1,5 +1,5 @@
 
-.home, .reading {
+.home {
 
     .page-content {
         margin-bottom:50px;
@@ -31,12 +31,6 @@
         display:block;
     }
 
-    .two-column {
-        .l-box {
-            //padding:0 15px;
-        }
-    }
-
     // http://codepen.io/allizad/pen/bBsod
     hr {
       margin: 1em auto;
@@ -50,10 +44,6 @@
       border-right: 0;
       font-size: 1.05em;
       &:after {
-        .reading-page & {
-          content:'∞';
-          font-size: 1.15em;
-        }
         content:'JH';
         color: $lightgrey;
         font-family: "EB Garamond", serif;
@@ -116,7 +106,6 @@
 .home {
     .charts {
         margin:1.5em 0;
-
     }
 
     .coffee-table {
@@ -260,56 +249,6 @@
     }
 }
 
-/* Use this selector to override bar styles on bar charts. Bars are also strokes so you have maximum freedom in styling them. */
-.ct-series-a .ct-bar {
-  /* Colour of your bars */
-  stroke: $red;
-}
-.ct-grid {
-  stroke: lighten($blue,25%);
-}
-
-.ct-chart {
-    position: relative;
-
-
-
-    .axis-label{
-        position: absolute;
-        width:100%;
-        height:100%;
-    }
-
-    [data-x-axis]:after {
-      content: attr(data-x-axis);
-      width:100%;
-      bottom:10px;
-      position: absolute;
-      text-align: center;
-        font-size:0.65em;
-        color:$mediumgrey;
-        font-variant: small-caps;
-    }
-
-    @media screen and (min-width: 35.5em) {
-        //only show y axis on bigger screens
-
-        [data-y-axis]:before {
-          content: attr(data-y-axis);
-          position: absolute;
-          left:-5px;
-          top:50%;
-          height:15px;
-          margin-top:-30px;
-          @include transform(rotate(-90deg));
-          font-size:0.65em;
-          color:$mediumgrey;
-          font-variant: small-caps;
-        }
-    }
-
-}
-
 /*****************
 **** Twitter / Articles *****
 ****************/
@@ -329,14 +268,6 @@
 ****************/
 
 .articles {
-
-    div {
-
-    }
-
-    .article-title {
-
-    }
 }
 
 

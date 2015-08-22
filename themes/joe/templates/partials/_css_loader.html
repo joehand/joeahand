@@ -1,0 +1,16 @@
+<!-- Styles -->
+{%- assets filters="pyscss,cssmin",
+    depends=('**/*.scss'), output="non_critical.min.css",
+    "non_critical.scss" %}
+<script id="loadcss">
+{#/*
+loadCSS: load a CSS file asynchronously.
+[c]2014 @scottjehl, Filament Group, Inc.
+Licensed MIT
+*/#}
+function loadCSS(e,n,o,t){"use strict";var d=window.document.createElement("link"),l=n||window.document.getElementsByTagName("script")[0],s=window.document.styleSheets;return d.rel="stylesheet",d.href=e,d.media="only x",t&&(d.onload=t),l.parentNode.insertBefore(d,l),d.onloadcssdefined=function(e){for(var n,o=0;o<s.length;o++)s[o].href&&s[o].href===d.href&&(n=!0);n?e():setTimeout(function(){d.onloadcssdefined(e)})},d.onloadcssdefined(function(){d.media=o||"all"}),d}loadCSS("{{ SITEURL }}/{{ ASSET_URL }}",document.getElementById("loadcss"));
+</script>
+<noscript>
+    <link href="{{ SITEURL }}/{{ ASSET_URL }}" rel="stylesheet">
+</noscript>
+{%- endassets %}

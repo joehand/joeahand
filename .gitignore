@@ -91,3 +91,9 @@ Temporary Items
 .apdisk
 
 plugins/pelican_gdocs/settings.py
+
+themes/joe/templates/page.min.css
+
+themes/joe/templates/home.min.css
+
+themes/joe/templates/blog.min.css

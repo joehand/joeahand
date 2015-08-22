@@ -1,6 +1,13 @@
 {% extends "_base.html" %}
 {% block title %}{{ page.title }} | {{SITENAME}}{% endblock title %}
 {%- block body_class %}page{%- endblock body_class -%}
+{%- block critical_css %}
+<style>
+{%- assets "page" %}
+    {% include 'page.min.css' %}
+{%- endassets %}
+</style>
+{%- endblock critical_css -%}
 {% block content %}
 <section class="post-full">
     <header>

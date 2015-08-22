@@ -1,5 +1,13 @@
 {% extends "_base.html" %}
 {%- block body_class %}cv page{%- endblock body_class -%}
+{%- block critical_css %}
+<style>
+{%- assets "page" %}
+    {% include 'page.min.css' %}
+{%- endassets %}
+</style>
+{%- endblock critical_css -%}
+
 {% block title %}{{ page.title }} | {{SITENAME}}{% endblock title %}
 
 {%- block main %}

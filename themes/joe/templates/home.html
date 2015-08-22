@@ -1,5 +1,12 @@
 {% extends "_base.html" %}
 {%- block body_class %}home{%- endblock body_class -%}
+{%- block critical_css %}
+<style>
+{%- assets "home" %}
+    {% include 'home.min.css' %}
+{%- endassets %}
+</style>
+{%- endblock critical_css -%}
 
 {%- block main %}
     <main role="main" class="main pure-g">
@@ -213,6 +220,6 @@
     {%- assets filters="rjsmin",
             depends=('**/*.js'), output="main.min.js",
             "external/chartist/dist/chartist.js","js/main.js" %}
-        <script src="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}"></script>
+        <script src="{{ SITEURL }}/{{ ASSET_URL }}"></script>
     {%- endassets -%}
 {%- endblock footer_scripts %}
