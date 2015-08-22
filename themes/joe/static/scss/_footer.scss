@@ -1,0 +1,51 @@
+
+.site-footer, .site-footer.pure-g {
+    span {
+        font-family: "EB Garamond", serif;
+    }
+    font-family: "EB Garamond", serif;
+    font-size:0.90em;
+    padding: 0.5em;
+    text-align: center;
+    box-shadow: 0 -1px 1px rgba(0,0,0, 0.10);
+    background:#fff;
+
+    a {
+        color: $black;
+        &:hover {
+            color: $red;
+        }
+    }
+
+    .copyright {
+        color: $mediumgrey;
+        letter-spacing: 1px;
+    }
+    .hand {
+        font-size: 2em;
+        line-height: 1rem;
+        vertical-align: text-bottom;
+    }
+    .s-icons {
+        font-size: 1.5em;
+        line-height: 1em;
+
+        .useicons {
+            padding:0 5px;
+            vertical-align: middle;
+        }
+    }
+}
+
+.twitter.useicons, .instagram.useicons {
+    display:none;
+}
+
+
+@media (min-width: 48em) {
+
+    .twitter.useicons, .instagram.useicons {
+        display:inline;
+    }
+
+}

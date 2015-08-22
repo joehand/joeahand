@@ -31,12 +31,6 @@
         display:block;
     }
 
-    .two-column {
-        .l-box {
-            //padding:0 15px;
-        }
-    }
-
     // http://codepen.io/allizad/pen/bBsod
     hr {
       margin: 1em auto;
@@ -116,7 +110,6 @@
 .home {
     .charts {
         margin:1.5em 0;
-
     }
 
     .coffee-table {
@@ -272,8 +265,6 @@
 .ct-chart {
     position: relative;
 
-
-
     .axis-label{
         position: absolute;
         width:100%;
@@ -293,7 +284,6 @@
 
     @media screen and (min-width: 35.5em) {
         //only show y axis on bigger screens
-
         [data-y-axis]:before {
           content: attr(data-y-axis);
           position: absolute;
@@ -329,14 +319,6 @@
 ****************/
 
 .articles {
-
-    div {
-
-    }
-
-    .article-title {
-
-    }
 }
 
 

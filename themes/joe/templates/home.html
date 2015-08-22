@@ -1,5 +1,21 @@
 {% extends "_base.html" %}
 {%- block body_class %}home{%- endblock body_class -%}
+{%- block critical_css %}
+<style>
+{%- assets filters="pyscss,cssmin",
+    depends=('**/*.scss'), output="../../themes/joe/templates/home.min.css",
+    "external/pure/base.css",
+    "external/pure/menus-core.css",
+    "external/pure/menus-horizontal.css",
+    "external/pure/menus-skin.css",
+    "external/pure/tables.css",
+    "external/pure/grids.css",
+    "external/pure/grids-responsive.css",
+    "critical_home.scss" %}
+    {% include 'home.min.css' %}
+{%- endassets %}
+</style>
+{%- endblock critical_css -%}
 
 {%- block main %}
     <main role="main" class="main pure-g">

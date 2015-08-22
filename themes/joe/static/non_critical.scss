@@ -1,0 +1,10 @@
+// Libraries
+$bowerdir: 'external';
+@import '#{$bowerdir}/bourbon/app/assets/stylesheets/bourbon';
+@import '#{$bowerdir}/chartist/dist/scss/chartist';
+
+// Utils
+@import 'scss/variables';
+
+// General Layouts
+@import 'scss/footer';

@@ -16,12 +16,23 @@
         <!-- Fonts -->
         {%- include "partials/_font_loader.html" %}
 
-        <!-- Styles -->
+        {%- block critical_css %}
+        <style>
         {%- assets filters="pyscss,cssmin",
-            depends=('**/*.scss'), output="main.min.css",
-            "external/pure/pure.css", "external/pure/grids-responsive.css","main.scss" %}
-            <link rel="stylesheet" href="{{ SITEURL | replace('https://', '//') }}/{{ ASSET_URL }}">
+            depends=('**/*.scss'), output="../../themes/joe/templates/blog.min.css",
+            "external/pure/base.css",
+            "external/pure/menus-core.css",
+            "external/pure/menus-horizontal.css",
+            "external/pure/menus-skin.css",
+            "external/pure/tables.css",
+            "external/pure/grids.css",
+            "external/pure/grids-responsive.css",
+            "critical_blog.scss" %}
+            {% include 'blog.min.css' %}
         {%- endassets %}
+        </style>
+        {%- endblock critical_css -%}
+        {%- include "partials/_css_loader.html" %}
 
         {%- block head_scripts %}
         {%- endblock %}
