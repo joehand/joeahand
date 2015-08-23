@@ -121,7 +121,7 @@
                       <a class="" href="{{row.Instagram_URL}}" title="{{row.Caption}}">
                       {%- if row.S3_Image_URL -%}
                        {# https://varvy.com/pagespeed/defer-images.html #}
-                        <img class="pure-img"
+                        <img class="pure-img" width="400" height="400"
                             src="data:image/png;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
                             data-src="//cdn.joeahand.com/{{row.S3_Image_URL }}">
                       {%- else -%}
@@ -208,15 +208,7 @@
                     ]]};
     {%- endif -%}
     </script>
-    <script>
-        function init() {
-        var imgDefer = document.getElementsByTagName('img');
-        for (var i=0; i<imgDefer.length; i++) {
-        if(imgDefer[i].getAttribute('data-src')) {
-        imgDefer[i].setAttribute('src',imgDefer[i].getAttribute('data-src'));
-        } } }
-        window.onload = init;
-    </script>
+    <script>function init(){for(var t=document.getElementsByTagName("img"),e=0;e<t.length;e++)t[e].getAttribute("data-src")&&t[e].setAttribute("src",t[e].getAttribute("data-src"))}window.onload=init;</script>
     {%- assets filters="rjsmin",
             depends=('**/*.js'), output="main.min.js",
             "external/chartist/dist/chartist.js","js/main.js" %}
