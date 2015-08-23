@@ -1,5 +1,1851 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="ClearType" content="true"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="dns-prefetch" href="//cdnjs.cloudflare.com"><link rel="dns-prefetch" href="//cdn.joeahand.com"><title>Filtering a Shapefile with Python - Joe Hand</title><meta name="description" content="Better cities with local data"><script data-cfasync="false">function loadFont(a,b,c,d){function e(){if(!window.FontFace)return!1;var a=new FontFace("t",'url("data:application/font-woff2,") format("woff2")',{}),b=a.load();try{b.then(null,function(){})}catch(c){}return"loading"===a.status}var f=navigator.userAgent,g=!window.addEventListener||f.match(/(Android (2|3|4.0|4.1|4.2|4.3))|(Opera (Mini|Mobi))/)&&!f.match(/Chrome/);if(!g){var h={};try{h=localStorage||{}}catch(i){}var j="x-font-"+a,k=j+"url",l=j+"css",m=h[k],n=h[l],o=document.createElement("style");if(o.rel="stylesheet",document.head.appendChild(o),!n||m!==b&&m!==c){var p=c&&e()?c:b,q=new XMLHttpRequest;q.open("GET",p),q.onload=function(){q.status>=200&&q.status<400&&(h[k]=p,h[l]=q.responseText,d||(o.textContent=q.responseText))},q.send()}else o.textContent=n}}</script><script data-cfasync="false">loadFont('joeFonts', " //joeahand.com/theme/fonts/fonts.woff.css " , " //joeahand.com/theme/fonts/fonts.woff2.css " )</script><link rel="stylesheet" href="//joeahand.com/theme/main.min.css?52ee37ed"></head><body class><div role="document" class="document"><div class="header"><div class="site-header pure-menu pure-menu-horizontal pure-menu-fixed"><a class="pure-menu-heading small-caps" href="https://joeahand.com">Joe Hand</a><ul role="navigation" class="pure-menu-list"><li class="pure-menu-item "><a class="pure-menu-link small" href="https://joeahand.com/about/">About Joe</a></li><li class="pure-menu-item "><a class="pure-menu-link small" href="https://joeahand.com/cv/">CV</a></li></ul></div></div><main role="main" class="main pure-g"><div class="pure-u-2-24 pure-u-lg-1-5"></div><div class="page-content pure-u-20-24 pure-u-lg-3-5"><section class="post-full"><header><h1 class="title"><a href="https://joeahand.com/archive/filtering-a-shapefile-with-python/">Filtering a Shapefile with Python</a></h1></header><article class="content"><p>Recently I've been using Python more to work with shapefiles. Frequently I have to create a shapefile by filtering a set of features of a larger shapefile, for instance I wanted to get a shapefile for blocks in New York City from a shapefile of the whole country. While this isn't very difficult in QGIS (and probably ArcGIS), it gets a bit annoying to do over and over. In the last project, I wanted to create files for over 900 cities in the US - so I definitely wasn't going to do that by hand.</p><h3>Quickstart</h3><p>I'll walk through the three main steps to do this in Python:</p><ol><li>Creating a shapefile when <code>my_field = my_value</code> from a large shapefile.</li><li>Finding all values in <code>my_field</code> from your large shapefile.</li><li>Putting 1 &amp; 2 together to create many shapefiles for every value in <code>my_field</code>.</li></ol><p><strong><em> If you want to see how it all comes together, <a href="https://gist.github.com/joehand/498a1656e028c6163aa9">see the full code here</a>.</em></strong></p><p>There are a few Python-based shapefile libraries. The most extensive is <a href="http://www.gdal.org/">GDAL</a> with <a href="https://pypi.python.org/pypi/GDAL/">Python bindings</a>. I decided to use GDAL because of the speed (some of the other libraries are pure Python, thus slower). The only downside is that it can be a pain to install (especially in a virtual environment).</p><h3>Command Line Filtering</h3><p>If you want to filter a shapefile by a specific field/value OGR has a attribute filter function. If you just need to do this once, I recommend using the command line:</p><div class="highlight"><pre>ogr2ogr -f <span class="s2">&quot;ESRI Shapefile&quot;</span> -where <span class="se">\</span>
+<html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="ClearType" content="true"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="dns-prefetch" href="//cdn.joeahand.com"><title>Filtering a Shapefile with Python - Joe Hand</title><meta name="description" content="Better cities with local data"><script>function loadFont(a,b,c,d){function e(){if(!window.FontFace)return!1;var a=new FontFace("t",'url("data:application/font-woff2,") format("woff2")',{}),b=a.load();try{b.then(null,function(){})}catch(c){}return"loading"===a.status}var f=navigator.userAgent,g=!window.addEventListener||f.match(/(Android (2|3|4.0|4.1|4.2|4.3))|(Opera (Mini|Mobi))/)&&!f.match(/Chrome/);if(!g){var h={};try{h=localStorage||{}}catch(i){}var j="x-font-"+a,k=j+"url",l=j+"css",m=h[k],n=h[l],o=document.createElement("style");if(o.rel="stylesheet",document.head.appendChild(o),!n||m!==b&&m!==c){var p=c&&e()?c:b,q=new XMLHttpRequest;q.open("GET",p),q.onload=function(){q.status>=200&&q.status<400&&(h[k]=p,h[l]=q.responseText,d||(o.textContent=q.responseText))},q.send()}else o.textContent=n}}</script><script>loadFont('joeFonts0.2', " https://joeahand.com/theme/fonts/fonts.woff.css " , " https://joeahand.com/theme/fonts/fonts.woff2.css " )</script><style>@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\000037}}
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000315}}
+  body {
+    margin: 0; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000335}}
+    article, aside, details, figcaption, figure, footer, header, hgroup, main,
+    menu, nav, section, summary {
+      display: block; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000344}}
+      audio, canvas, progress, video {
+        display: inline-block;
+        vertical-align: baseline; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000351}}
+        audio:not([controls]) {
+          display: none;
+          height: 0; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000359}}
+          [hidden], template {
+            display: none; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000367}}
+            a {
+              background-color: transparent; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000374}}
+              a:active, a:hover {
+                outline: 0; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000382}}
+                abbr[title] {
+                  border-bottom: 1px dotted; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000389}}
+                  b, strong {
+                    font-weight: bold; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\0000395}}
+                    dfn {
+                      font-style: italic; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003101}}
+                      h1 {
+                        font-size: 2em;
+                        margin: 0.67em 0; }
+
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003108}}
+                        mark {
+                          background: #ff0;
+                          color: #000; }
+
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003115}}
+                          small {
+                            font-size: 80%; }
+
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003122}}
+                            sub, sup {
+                              font-size: 75%;
+                              line-height: 0;
+                              position: relative;
+                              vertical-align: baseline; }
+
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003129}}
+                              sup {
+                                top: -0.5em; }
+
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003133}}
+                                sub {
+                                  bottom: -0.25em; }
+
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003141}}
+                                  img {
+                                    border: 0; }
+
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003147}}
+                                    svg:not(:root) {
+                                      overflow: hidden; }
+
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003155}}
+                                      figure {
+                                        margin: 1em 40px; }
+
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003161}}
+                                        hr {
+                                          -moz-box-sizing: content-box;
+                                          box-sizing: content-box;
+                                          height: 0; }
+
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003169}}
+                                          pre {
+                                            overflow: auto; }
+
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003178}}
+                                            code, kbd, pre, samp {
+                                              font-family: monospace, monospace;
+                                              font-size: 1em; }
+
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003193}}
+                                              button, input, optgroup, select, textarea {
+                                                color: inherit;
+                                                font: inherit;
+                                                margin: 0; }
+
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003201}}
+                                                button {
+                                                  overflow: visible; }
+
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003208}}
+                                                  button, select {
+                                                    text-transform: none; }
+
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003217}}
+                                                    button, html input[type="button"], input[type="reset"], input[type="submit"] {
+                                                      -webkit-appearance: button;
+                                                      cursor: pointer; }
+
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003225}}
+                                                      button[disabled], html input[disabled] {
+                                                        cursor: default; }
+
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003232}}
+                                                        button::-moz-focus-inner, input::-moz-focus-inner {
+                                                          border: 0;
+                                                          padding: 0; }
+
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003239}}
+                                                          input {
+                                                            line-height: normal; }
+
+                                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003246}}
+                                                            input[type="checkbox"], input[type="radio"] {
+                                                              box-sizing: border-box;
+                                                              padding: 0; }
+
+                                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003254}}
+                                                              input[type="number"]::-webkit-inner-spin-button,
+                                                              input[type="number"]::-webkit-outer-spin-button {
+                                                                height: auto; }
+
+                                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003260}}
+                                                                input[type="search"] {
+                                                                  -webkit-appearance: textfield;
+                                                                  -moz-box-sizing: content-box;
+                                                                  -webkit-box-sizing: content-box;
+                                                                  box-sizing: content-box; }
+
+                                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003270}}
+                                                                  input[type="search"]::-webkit-search-cancel-button,
+                                                                  input[type="search"]::-webkit-search-decoration {
+                                                                    -webkit-appearance: none; }
+
+                                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003276}}
+                                                                    fieldset {
+                                                                      border: 1px solid #c0c0c0;
+                                                                      margin: 0 2px;
+                                                                      padding: 0.35em 0.625em 0.75em; }
+
+                                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003284}}
+                                                                      legend {
+                                                                        border: 0;
+                                                                        padding: 0; }
+
+                                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003291}}
+                                                                        textarea {
+                                                                          overflow: auto; }
+
+                                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003297}}
+                                                                          optgroup {
+                                                                            font-weight: bold; }
+
+                                                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003305}}
+                                                                            table {
+                                                                              border-collapse: collapse;
+                                                                              border-spacing: 0; }
+
+                                                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003311}}
+                                                                              td, th {
+                                                                                padding: 0; }
+
+                                                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003324}}
+                                                                                .hidden, [hidden] {
+                                                                                  display: none !important; }
+
+                                                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/base\.css}line{font-family:\00003329}}
+                                                                                  .pure-img {
+                                                                                    max-width: 100%;
+                                                                                    height: auto;
+                                                                                    display: block; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-core\.css}line{font-family:\000033}}
+.pure-menu {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-core\.css}line{font-family:\000039}}
+  .pure-menu-fixed {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 3; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-core\.css}line{font-family:\0000317}}
+    .pure-menu-list, .pure-menu-item {
+      position: relative; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-core\.css}line{font-family:\0000321}}
+      .pure-menu-list {
+        list-style: none;
+        margin: 0;
+        padding: 0; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-core\.css}line{font-family:\0000327}}
+        .pure-menu-item {
+          padding: 0;
+          margin: 0;
+          height: 100%; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-core\.css}line{font-family:\0000334}}
+          .pure-menu-link, .pure-menu-heading {
+            display: block;
+            text-decoration: none;
+            white-space: nowrap; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-horizontal\.css}line{font-family:\000033}}
+.pure-menu-horizontal {
+  width: 100%;
+  white-space: nowrap; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-horizontal\.css}line{font-family:\000038}}
+  .pure-menu-horizontal .pure-menu-list {
+    display: inline-block; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-horizontal\.css}line{font-family:\0000315}}
+    .pure-menu-horizontal .pure-menu-item, .pure-menu-horizontal .pure-menu-heading,
+    .pure-menu-horizontal .pure-menu-separator {
+      display: inline-block;
+      *display: inline;
+      zoom: 1;
+      vertical-align: middle; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\000034}}
+.pure-menu-separator {
+  background-color: #ccc;
+  height: 1px;
+  margin: 0.3em 0; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000310}}
+  .pure-menu-horizontal .pure-menu-separator {
+    width: 1px;
+    height: 1.3em;
+    margin: 0 0.3em; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000316}}
+    .pure-menu-heading {
+      text-transform: uppercase;
+      color: #565d64; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000321}}
+      .pure-menu-link {
+        color: #777; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000325}}
+        .pure-menu-children {
+          background-color: #fff; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000331}}
+          .pure-menu-link, .pure-menu-disabled, .pure-menu-heading {
+            padding: 0.5em 1em; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000335}}
+            .pure-menu-disabled {
+              opacity: 0.5; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000339}}
+              .pure-menu-disabled .pure-menu-link:hover {
+                background-color: transparent; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000345}}
+                .pure-menu-active > .pure-menu-link, .pure-menu-link:hover, .pure-menu-link:focus {
+                  background-color: #eee; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/menus-skin\.css}line{font-family:\0000350}}
+                  .pure-menu-selected .pure-menu-link, .pure-menu-selected .pure-menu-link:visited {
+                    color: #000; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\000032}}
+.pure-table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  border: 1px solid #cbcbcb; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000310}}
+  .pure-table caption {
+    color: #000;
+    font: italic 85% / 1 arial, sans-serif;
+    padding: 1em 0;
+    text-align: center; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000318}}
+    .pure-table td, .pure-table th {
+      border-left: 1px solid #cbcbcb;
+      border-width: 0 0 0 1px;
+      font-size: inherit;
+      margin: 0;
+      overflow: visible;
+      padding: 0.5em 1em; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000329}}
+      .pure-table td:first-child, .pure-table th:first-child {
+        border-left-width: 0; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000333}}
+        .pure-table thead {
+          background-color: #e0e0e0;
+          color: #000;
+          text-align: left;
+          vertical-align: bottom; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000341}}
+          .pure-table td {
+            background-color: transparent; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000344}}
+            .pure-table-odd td {
+              background-color: #f2f2f2; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000349}}
+              .pure-table-striped tr:nth-child(2n-1) td {
+                background-color: #f2f2f2; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000354}}
+                .pure-table-bordered td {
+                  border-bottom: 1px solid #cbcbcb; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000357}}
+                  .pure-table-bordered tbody > tr:last-child > td {
+                    border-bottom-width: 0; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000365}}
+                    .pure-table-horizontal td, .pure-table-horizontal th {
+                      border-width: 0 0 1px 0;
+                      border-bottom: 1px solid #cbcbcb; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/tables\.css}line{font-family:\0000369}}
+                      .pure-table-horizontal tbody > tr:last-child > td {
+                        border-bottom-width: 0; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\000034}}
+.pure-g {
+  letter-spacing: -0.31em;
+  *letter-spacing: normal;
+  *word-spacing: -0.43em;
+  text-rendering: optimizespeed;
+  font-family: FreeSans, Arimo, "Droid Sans", Helvetica, Arial, sans-serif;
+  display: -webkit-flex;
+  -webkit-flex-flow: row wrap;
+  display: -ms-flexbox;
+  -ms-flex-flow: row wrap;
+  -ms-align-content: flex-start;
+  -webkit-align-content: flex-start;
+  align-content: flex-start; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\0000330}}
+  .opera-only :-o-prefocus, .pure-g {
+    word-spacing: -0.43em; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\0000334}}
+    .pure-u {
+      display: inline-block;
+      *display: inline;
+      zoom: 1;
+      letter-spacing: normal;
+      word-spacing: normal;
+      vertical-align: top;
+      text-rendering: auto; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\0000345}}
+      .pure-g [class *= "pure-u"] {
+        font-family: sans-serif; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\0000394}}
+        .pure-u-1, .pure-u-1-1, .pure-u-1-2, .pure-u-1-3, .pure-u-2-3, .pure-u-1-4,
+        .pure-u-3-4, .pure-u-1-5, .pure-u-2-5, .pure-u-3-5, .pure-u-4-5, .pure-u-5-5,
+        .pure-u-1-6, .pure-u-5-6, .pure-u-1-8, .pure-u-3-8, .pure-u-5-8, .pure-u-7-8,
+        .pure-u-1-12, .pure-u-5-12, .pure-u-7-12, .pure-u-11-12, .pure-u-1-24,
+        .pure-u-2-24, .pure-u-3-24, .pure-u-4-24, .pure-u-5-24, .pure-u-6-24, .pure-u-7-24,
+        .pure-u-8-24, .pure-u-9-24, .pure-u-10-24, .pure-u-11-24, .pure-u-12-24,
+        .pure-u-13-24, .pure-u-14-24, .pure-u-15-24, .pure-u-16-24, .pure-u-17-24,
+        .pure-u-18-24, .pure-u-19-24, .pure-u-20-24, .pure-u-21-24, .pure-u-22-24,
+        .pure-u-23-24, .pure-u-24-24 {
+          display: inline-block;
+          *display: inline;
+          zoom: 1;
+          letter-spacing: normal;
+          word-spacing: normal;
+          vertical-align: top;
+          text-rendering: auto; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003104}}
+          .pure-u-1-24 {
+            width: 4.1667%;
+            *width: 4.1357%; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003110}}
+            .pure-u-1-12, .pure-u-2-24 {
+              width: 8.3333%;
+              *width: 8.3023%; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003116}}
+              .pure-u-1-8, .pure-u-3-24 {
+                width: 12.5%;
+                *width: 12.469%; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003122}}
+                .pure-u-1-6, .pure-u-4-24 {
+                  width: 16.6667%;
+                  *width: 16.6357%; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003127}}
+                  .pure-u-1-5 {
+                    width: 20%;
+                    *width: 19.969%; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003132}}
+                    .pure-u-5-24 {
+                      width: 20.8333%;
+                      *width: 20.8023%; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003138}}
+                      .pure-u-1-4, .pure-u-6-24 {
+                        width: 25%;
+                        *width: 24.969%; }
+
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003143}}
+                        .pure-u-7-24 {
+                          width: 29.1667%;
+                          *width: 29.1357%; }
+
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003149}}
+                          .pure-u-1-3, .pure-u-8-24 {
+                            width: 33.3333%;
+                            *width: 33.3023%; }
+
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003155}}
+                            .pure-u-3-8, .pure-u-9-24 {
+                              width: 37.5%;
+                              *width: 37.469%; }
+
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003160}}
+                              .pure-u-2-5 {
+                                width: 40%;
+                                *width: 39.969%; }
+
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003166}}
+                                .pure-u-5-12, .pure-u-10-24 {
+                                  width: 41.6667%;
+                                  *width: 41.6357%; }
+
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003171}}
+                                  .pure-u-11-24 {
+                                    width: 45.8333%;
+                                    *width: 45.8023%; }
+
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003177}}
+                                    .pure-u-1-2, .pure-u-12-24 {
+                                      width: 50%;
+                                      *width: 49.969%; }
+
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003182}}
+                                      .pure-u-13-24 {
+                                        width: 54.1667%;
+                                        *width: 54.1357%; }
+
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003188}}
+                                        .pure-u-7-12, .pure-u-14-24 {
+                                          width: 58.3333%;
+                                          *width: 58.3023%; }
+
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003193}}
+                                          .pure-u-3-5 {
+                                            width: 60%;
+                                            *width: 59.969%; }
+
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003199}}
+                                            .pure-u-5-8, .pure-u-15-24 {
+                                              width: 62.5%;
+                                              *width: 62.469%; }
+
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003205}}
+                                              .pure-u-2-3, .pure-u-16-24 {
+                                                width: 66.6667%;
+                                                *width: 66.6357%; }
+
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003210}}
+                                                .pure-u-17-24 {
+                                                  width: 70.8333%;
+                                                  *width: 70.8023%; }
+
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003216}}
+                                                  .pure-u-3-4, .pure-u-18-24 {
+                                                    width: 75%;
+                                                    *width: 74.969%; }
+
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003221}}
+                                                    .pure-u-19-24 {
+                                                      width: 79.1667%;
+                                                      *width: 79.1357%; }
+
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003226}}
+                                                      .pure-u-4-5 {
+                                                        width: 80%;
+                                                        *width: 79.969%; }
+
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003232}}
+                                                        .pure-u-5-6, .pure-u-20-24 {
+                                                          width: 83.3333%;
+                                                          *width: 83.3023%; }
+
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003238}}
+                                                          .pure-u-7-8, .pure-u-21-24 {
+                                                            width: 87.5%;
+                                                            *width: 87.469%; }
+
+                                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003244}}
+                                                            .pure-u-11-12, .pure-u-22-24 {
+                                                              width: 91.6667%;
+                                                              *width: 91.6357%; }
+
+                                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003249}}
+                                                              .pure-u-23-24 {
+                                                                width: 95.8333%;
+                                                                *width: 95.8023%; }
+
+                                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids\.css}line{font-family:\00003257}}
+                                                                .pure-u-1, .pure-u-1-1, .pure-u-5-5, .pure-u-24-24 {
+                                                                  width: 100%; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000347}}
+@media screen and (min-width: 35.5em) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000347}}
+  .pure-u-sm-1, .pure-u-sm-1-1, .pure-u-sm-1-2, .pure-u-sm-1-3, .pure-u-sm-2-3,
+  .pure-u-sm-1-4, .pure-u-sm-3-4, .pure-u-sm-1-5, .pure-u-sm-2-5, .pure-u-sm-3-5,
+  .pure-u-sm-4-5, .pure-u-sm-5-5, .pure-u-sm-1-6, .pure-u-sm-5-6, .pure-u-sm-1-8,
+  .pure-u-sm-3-8, .pure-u-sm-5-8, .pure-u-sm-7-8, .pure-u-sm-1-12, .pure-u-sm-5-12,
+  .pure-u-sm-7-12, .pure-u-sm-11-12, .pure-u-sm-1-24, .pure-u-sm-2-24,
+  .pure-u-sm-3-24, .pure-u-sm-4-24, .pure-u-sm-5-24, .pure-u-sm-6-24,
+  .pure-u-sm-7-24, .pure-u-sm-8-24, .pure-u-sm-9-24, .pure-u-sm-10-24,
+  .pure-u-sm-11-24, .pure-u-sm-12-24, .pure-u-sm-13-24, .pure-u-sm-14-24,
+  .pure-u-sm-15-24, .pure-u-sm-16-24, .pure-u-sm-17-24, .pure-u-sm-18-24,
+  .pure-u-sm-19-24, .pure-u-sm-20-24, .pure-u-sm-21-24, .pure-u-sm-22-24,
+  .pure-u-sm-23-24, .pure-u-sm-24-24 {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;   }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000357}}
+    .pure-u-sm-1-24 {
+      width: 4.1667%;
+      *width: 4.1357%;   }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000363}}
+      .pure-u-sm-1-12, .pure-u-sm-2-24 {
+        width: 8.3333%;
+        *width: 8.3023%;   }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000369}}
+        .pure-u-sm-1-8, .pure-u-sm-3-24 {
+          width: 12.5%;
+          *width: 12.469%;   }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000375}}
+          .pure-u-sm-1-6, .pure-u-sm-4-24 {
+            width: 16.6667%;
+            *width: 16.6357%;   }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000380}}
+            .pure-u-sm-1-5 {
+              width: 20%;
+              *width: 19.969%;   }
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000385}}
+              .pure-u-sm-5-24 {
+                width: 20.8333%;
+                *width: 20.8023%;   }
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000391}}
+                .pure-u-sm-1-4, .pure-u-sm-6-24 {
+                  width: 25%;
+                  *width: 24.969%;   }
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\0000396}}
+                  .pure-u-sm-7-24 {
+                    width: 29.1667%;
+                    *width: 29.1357%;   }
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003102}}
+                    .pure-u-sm-1-3, .pure-u-sm-8-24 {
+                      width: 33.3333%;
+                      *width: 33.3023%;   }
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003108}}
+                      .pure-u-sm-3-8, .pure-u-sm-9-24 {
+                        width: 37.5%;
+                        *width: 37.469%;   }
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003113}}
+                        .pure-u-sm-2-5 {
+                          width: 40%;
+                          *width: 39.969%;   }
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003119}}
+                          .pure-u-sm-5-12, .pure-u-sm-10-24 {
+                            width: 41.6667%;
+                            *width: 41.6357%;   }
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003124}}
+                            .pure-u-sm-11-24 {
+                              width: 45.8333%;
+                              *width: 45.8023%;   }
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003130}}
+                              .pure-u-sm-1-2, .pure-u-sm-12-24 {
+                                width: 50%;
+                                *width: 49.969%;   }
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003135}}
+                                .pure-u-sm-13-24 {
+                                  width: 54.1667%;
+                                  *width: 54.1357%;   }
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003141}}
+                                  .pure-u-sm-7-12, .pure-u-sm-14-24 {
+                                    width: 58.3333%;
+                                    *width: 58.3023%;   }
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003146}}
+                                    .pure-u-sm-3-5 {
+                                      width: 60%;
+                                      *width: 59.969%;   }
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003152}}
+                                      .pure-u-sm-5-8, .pure-u-sm-15-24 {
+                                        width: 62.5%;
+                                        *width: 62.469%;   }
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003158}}
+                                        .pure-u-sm-2-3, .pure-u-sm-16-24 {
+                                          width: 66.6667%;
+                                          *width: 66.6357%;   }
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003163}}
+                                          .pure-u-sm-17-24 {
+                                            width: 70.8333%;
+                                            *width: 70.8023%;   }
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003169}}
+                                            .pure-u-sm-3-4, .pure-u-sm-18-24 {
+                                              width: 75%;
+                                              *width: 74.969%;   }
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003174}}
+                                              .pure-u-sm-19-24 {
+                                                width: 79.1667%;
+                                                *width: 79.1357%;   }
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003179}}
+                                                .pure-u-sm-4-5 {
+                                                  width: 80%;
+                                                  *width: 79.969%;   }
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003185}}
+                                                  .pure-u-sm-5-6, .pure-u-sm-20-24 {
+                                                    width: 83.3333%;
+                                                    *width: 83.3023%;   }
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003191}}
+                                                    .pure-u-sm-7-8, .pure-u-sm-21-24 {
+                                                      width: 87.5%;
+                                                      *width: 87.469%;   }
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003197}}
+                                                      .pure-u-sm-11-12, .pure-u-sm-22-24 {
+                                                        width: 91.6667%;
+                                                        *width: 91.6357%;   }
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003202}}
+                                                        .pure-u-sm-23-24 {
+                                                          width: 95.8333%;
+                                                          *width: 95.8023%;   }
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003210}}
+                                                          .pure-u-sm-1, .pure-u-sm-1-1, .pure-u-sm-5-5, .pure-u-sm-24-24 {
+                                                            width: 100%;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003261}}
+@media screen and (min-width: 48em) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003261}}
+  .pure-u-md-1, .pure-u-md-1-1, .pure-u-md-1-2, .pure-u-md-1-3, .pure-u-md-2-3,
+  .pure-u-md-1-4, .pure-u-md-3-4, .pure-u-md-1-5, .pure-u-md-2-5, .pure-u-md-3-5,
+  .pure-u-md-4-5, .pure-u-md-5-5, .pure-u-md-1-6, .pure-u-md-5-6, .pure-u-md-1-8,
+  .pure-u-md-3-8, .pure-u-md-5-8, .pure-u-md-7-8, .pure-u-md-1-12, .pure-u-md-5-12,
+  .pure-u-md-7-12, .pure-u-md-11-12, .pure-u-md-1-24, .pure-u-md-2-24,
+  .pure-u-md-3-24, .pure-u-md-4-24, .pure-u-md-5-24, .pure-u-md-6-24,
+  .pure-u-md-7-24, .pure-u-md-8-24, .pure-u-md-9-24, .pure-u-md-10-24,
+  .pure-u-md-11-24, .pure-u-md-12-24, .pure-u-md-13-24, .pure-u-md-14-24,
+  .pure-u-md-15-24, .pure-u-md-16-24, .pure-u-md-17-24, .pure-u-md-18-24,
+  .pure-u-md-19-24, .pure-u-md-20-24, .pure-u-md-21-24, .pure-u-md-22-24,
+  .pure-u-md-23-24, .pure-u-md-24-24 {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;   }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003271}}
+    .pure-u-md-1-24 {
+      width: 4.1667%;
+      *width: 4.1357%;   }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003277}}
+      .pure-u-md-1-12, .pure-u-md-2-24 {
+        width: 8.3333%;
+        *width: 8.3023%;   }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003283}}
+        .pure-u-md-1-8, .pure-u-md-3-24 {
+          width: 12.5%;
+          *width: 12.469%;   }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003289}}
+          .pure-u-md-1-6, .pure-u-md-4-24 {
+            width: 16.6667%;
+            *width: 16.6357%;   }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003294}}
+            .pure-u-md-1-5 {
+              width: 20%;
+              *width: 19.969%;   }
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003299}}
+              .pure-u-md-5-24 {
+                width: 20.8333%;
+                *width: 20.8023%;   }
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003305}}
+                .pure-u-md-1-4, .pure-u-md-6-24 {
+                  width: 25%;
+                  *width: 24.969%;   }
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003310}}
+                  .pure-u-md-7-24 {
+                    width: 29.1667%;
+                    *width: 29.1357%;   }
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003316}}
+                    .pure-u-md-1-3, .pure-u-md-8-24 {
+                      width: 33.3333%;
+                      *width: 33.3023%;   }
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003322}}
+                      .pure-u-md-3-8, .pure-u-md-9-24 {
+                        width: 37.5%;
+                        *width: 37.469%;   }
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003327}}
+                        .pure-u-md-2-5 {
+                          width: 40%;
+                          *width: 39.969%;   }
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003333}}
+                          .pure-u-md-5-12, .pure-u-md-10-24 {
+                            width: 41.6667%;
+                            *width: 41.6357%;   }
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003338}}
+                            .pure-u-md-11-24 {
+                              width: 45.8333%;
+                              *width: 45.8023%;   }
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003344}}
+                              .pure-u-md-1-2, .pure-u-md-12-24 {
+                                width: 50%;
+                                *width: 49.969%;   }
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003349}}
+                                .pure-u-md-13-24 {
+                                  width: 54.1667%;
+                                  *width: 54.1357%;   }
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003355}}
+                                  .pure-u-md-7-12, .pure-u-md-14-24 {
+                                    width: 58.3333%;
+                                    *width: 58.3023%;   }
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003360}}
+                                    .pure-u-md-3-5 {
+                                      width: 60%;
+                                      *width: 59.969%;   }
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003366}}
+                                      .pure-u-md-5-8, .pure-u-md-15-24 {
+                                        width: 62.5%;
+                                        *width: 62.469%;   }
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003372}}
+                                        .pure-u-md-2-3, .pure-u-md-16-24 {
+                                          width: 66.6667%;
+                                          *width: 66.6357%;   }
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003377}}
+                                          .pure-u-md-17-24 {
+                                            width: 70.8333%;
+                                            *width: 70.8023%;   }
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003383}}
+                                            .pure-u-md-3-4, .pure-u-md-18-24 {
+                                              width: 75%;
+                                              *width: 74.969%;   }
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003388}}
+                                              .pure-u-md-19-24 {
+                                                width: 79.1667%;
+                                                *width: 79.1357%;   }
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003393}}
+                                                .pure-u-md-4-5 {
+                                                  width: 80%;
+                                                  *width: 79.969%;   }
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003399}}
+                                                  .pure-u-md-5-6, .pure-u-md-20-24 {
+                                                    width: 83.3333%;
+                                                    *width: 83.3023%;   }
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003405}}
+                                                    .pure-u-md-7-8, .pure-u-md-21-24 {
+                                                      width: 87.5%;
+                                                      *width: 87.469%;   }
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003411}}
+                                                      .pure-u-md-11-12, .pure-u-md-22-24 {
+                                                        width: 91.6667%;
+                                                        *width: 91.6357%;   }
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003416}}
+                                                        .pure-u-md-23-24 {
+                                                          width: 95.8333%;
+                                                          *width: 95.8023%;   }
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003424}}
+                                                          .pure-u-md-1, .pure-u-md-1-1, .pure-u-md-5-5, .pure-u-md-24-24 {
+                                                            width: 100%;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003475}}
+@media screen and (min-width: 64em) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003475}}
+  .pure-u-lg-1, .pure-u-lg-1-1, .pure-u-lg-1-2, .pure-u-lg-1-3, .pure-u-lg-2-3,
+  .pure-u-lg-1-4, .pure-u-lg-3-4, .pure-u-lg-1-5, .pure-u-lg-2-5, .pure-u-lg-3-5,
+  .pure-u-lg-4-5, .pure-u-lg-5-5, .pure-u-lg-1-6, .pure-u-lg-5-6, .pure-u-lg-1-8,
+  .pure-u-lg-3-8, .pure-u-lg-5-8, .pure-u-lg-7-8, .pure-u-lg-1-12, .pure-u-lg-5-12,
+  .pure-u-lg-7-12, .pure-u-lg-11-12, .pure-u-lg-1-24, .pure-u-lg-2-24,
+  .pure-u-lg-3-24, .pure-u-lg-4-24, .pure-u-lg-5-24, .pure-u-lg-6-24,
+  .pure-u-lg-7-24, .pure-u-lg-8-24, .pure-u-lg-9-24, .pure-u-lg-10-24,
+  .pure-u-lg-11-24, .pure-u-lg-12-24, .pure-u-lg-13-24, .pure-u-lg-14-24,
+  .pure-u-lg-15-24, .pure-u-lg-16-24, .pure-u-lg-17-24, .pure-u-lg-18-24,
+  .pure-u-lg-19-24, .pure-u-lg-20-24, .pure-u-lg-21-24, .pure-u-lg-22-24,
+  .pure-u-lg-23-24, .pure-u-lg-24-24 {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;   }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003485}}
+    .pure-u-lg-1-24 {
+      width: 4.1667%;
+      *width: 4.1357%;   }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003491}}
+      .pure-u-lg-1-12, .pure-u-lg-2-24 {
+        width: 8.3333%;
+        *width: 8.3023%;   }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003497}}
+        .pure-u-lg-1-8, .pure-u-lg-3-24 {
+          width: 12.5%;
+          *width: 12.469%;   }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003503}}
+          .pure-u-lg-1-6, .pure-u-lg-4-24 {
+            width: 16.6667%;
+            *width: 16.6357%;   }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003508}}
+            .pure-u-lg-1-5 {
+              width: 20%;
+              *width: 19.969%;   }
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003513}}
+              .pure-u-lg-5-24 {
+                width: 20.8333%;
+                *width: 20.8023%;   }
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003519}}
+                .pure-u-lg-1-4, .pure-u-lg-6-24 {
+                  width: 25%;
+                  *width: 24.969%;   }
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003524}}
+                  .pure-u-lg-7-24 {
+                    width: 29.1667%;
+                    *width: 29.1357%;   }
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003530}}
+                    .pure-u-lg-1-3, .pure-u-lg-8-24 {
+                      width: 33.3333%;
+                      *width: 33.3023%;   }
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003536}}
+                      .pure-u-lg-3-8, .pure-u-lg-9-24 {
+                        width: 37.5%;
+                        *width: 37.469%;   }
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003541}}
+                        .pure-u-lg-2-5 {
+                          width: 40%;
+                          *width: 39.969%;   }
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003547}}
+                          .pure-u-lg-5-12, .pure-u-lg-10-24 {
+                            width: 41.6667%;
+                            *width: 41.6357%;   }
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003552}}
+                            .pure-u-lg-11-24 {
+                              width: 45.8333%;
+                              *width: 45.8023%;   }
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003558}}
+                              .pure-u-lg-1-2, .pure-u-lg-12-24 {
+                                width: 50%;
+                                *width: 49.969%;   }
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003563}}
+                                .pure-u-lg-13-24 {
+                                  width: 54.1667%;
+                                  *width: 54.1357%;   }
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003569}}
+                                  .pure-u-lg-7-12, .pure-u-lg-14-24 {
+                                    width: 58.3333%;
+                                    *width: 58.3023%;   }
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003574}}
+                                    .pure-u-lg-3-5 {
+                                      width: 60%;
+                                      *width: 59.969%;   }
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003580}}
+                                      .pure-u-lg-5-8, .pure-u-lg-15-24 {
+                                        width: 62.5%;
+                                        *width: 62.469%;   }
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003586}}
+                                        .pure-u-lg-2-3, .pure-u-lg-16-24 {
+                                          width: 66.6667%;
+                                          *width: 66.6357%;   }
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003591}}
+                                          .pure-u-lg-17-24 {
+                                            width: 70.8333%;
+                                            *width: 70.8023%;   }
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003597}}
+                                            .pure-u-lg-3-4, .pure-u-lg-18-24 {
+                                              width: 75%;
+                                              *width: 74.969%;   }
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003602}}
+                                              .pure-u-lg-19-24 {
+                                                width: 79.1667%;
+                                                *width: 79.1357%;   }
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003607}}
+                                                .pure-u-lg-4-5 {
+                                                  width: 80%;
+                                                  *width: 79.969%;   }
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003613}}
+                                                  .pure-u-lg-5-6, .pure-u-lg-20-24 {
+                                                    width: 83.3333%;
+                                                    *width: 83.3023%;   }
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003619}}
+                                                    .pure-u-lg-7-8, .pure-u-lg-21-24 {
+                                                      width: 87.5%;
+                                                      *width: 87.469%;   }
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003625}}
+                                                      .pure-u-lg-11-12, .pure-u-lg-22-24 {
+                                                        width: 91.6667%;
+                                                        *width: 91.6357%;   }
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003630}}
+                                                        .pure-u-lg-23-24 {
+                                                          width: 95.8333%;
+                                                          *width: 95.8023%;   }
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003638}}
+                                                          .pure-u-lg-1, .pure-u-lg-1-1, .pure-u-lg-5-5, .pure-u-lg-24-24 {
+                                                            width: 100%;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003689}}
+@media screen and (min-width: 80em) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003689}}
+  .pure-u-xl-1, .pure-u-xl-1-1, .pure-u-xl-1-2, .pure-u-xl-1-3, .pure-u-xl-2-3,
+  .pure-u-xl-1-4, .pure-u-xl-3-4, .pure-u-xl-1-5, .pure-u-xl-2-5, .pure-u-xl-3-5,
+  .pure-u-xl-4-5, .pure-u-xl-5-5, .pure-u-xl-1-6, .pure-u-xl-5-6, .pure-u-xl-1-8,
+  .pure-u-xl-3-8, .pure-u-xl-5-8, .pure-u-xl-7-8, .pure-u-xl-1-12, .pure-u-xl-5-12,
+  .pure-u-xl-7-12, .pure-u-xl-11-12, .pure-u-xl-1-24, .pure-u-xl-2-24,
+  .pure-u-xl-3-24, .pure-u-xl-4-24, .pure-u-xl-5-24, .pure-u-xl-6-24,
+  .pure-u-xl-7-24, .pure-u-xl-8-24, .pure-u-xl-9-24, .pure-u-xl-10-24,
+  .pure-u-xl-11-24, .pure-u-xl-12-24, .pure-u-xl-13-24, .pure-u-xl-14-24,
+  .pure-u-xl-15-24, .pure-u-xl-16-24, .pure-u-xl-17-24, .pure-u-xl-18-24,
+  .pure-u-xl-19-24, .pure-u-xl-20-24, .pure-u-xl-21-24, .pure-u-xl-22-24,
+  .pure-u-xl-23-24, .pure-u-xl-24-24 {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+    text-rendering: auto;   }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003699}}
+    .pure-u-xl-1-24 {
+      width: 4.1667%;
+      *width: 4.1357%;   }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003705}}
+      .pure-u-xl-1-12, .pure-u-xl-2-24 {
+        width: 8.3333%;
+        *width: 8.3023%;   }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003711}}
+        .pure-u-xl-1-8, .pure-u-xl-3-24 {
+          width: 12.5%;
+          *width: 12.469%;   }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003717}}
+          .pure-u-xl-1-6, .pure-u-xl-4-24 {
+            width: 16.6667%;
+            *width: 16.6357%;   }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003722}}
+            .pure-u-xl-1-5 {
+              width: 20%;
+              *width: 19.969%;   }
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003727}}
+              .pure-u-xl-5-24 {
+                width: 20.8333%;
+                *width: 20.8023%;   }
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003733}}
+                .pure-u-xl-1-4, .pure-u-xl-6-24 {
+                  width: 25%;
+                  *width: 24.969%;   }
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003738}}
+                  .pure-u-xl-7-24 {
+                    width: 29.1667%;
+                    *width: 29.1357%;   }
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003744}}
+                    .pure-u-xl-1-3, .pure-u-xl-8-24 {
+                      width: 33.3333%;
+                      *width: 33.3023%;   }
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003750}}
+                      .pure-u-xl-3-8, .pure-u-xl-9-24 {
+                        width: 37.5%;
+                        *width: 37.469%;   }
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003755}}
+                        .pure-u-xl-2-5 {
+                          width: 40%;
+                          *width: 39.969%;   }
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003761}}
+                          .pure-u-xl-5-12, .pure-u-xl-10-24 {
+                            width: 41.6667%;
+                            *width: 41.6357%;   }
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003766}}
+                            .pure-u-xl-11-24 {
+                              width: 45.8333%;
+                              *width: 45.8023%;   }
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003772}}
+                              .pure-u-xl-1-2, .pure-u-xl-12-24 {
+                                width: 50%;
+                                *width: 49.969%;   }
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003777}}
+                                .pure-u-xl-13-24 {
+                                  width: 54.1667%;
+                                  *width: 54.1357%;   }
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003783}}
+                                  .pure-u-xl-7-12, .pure-u-xl-14-24 {
+                                    width: 58.3333%;
+                                    *width: 58.3023%;   }
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003788}}
+                                    .pure-u-xl-3-5 {
+                                      width: 60%;
+                                      *width: 59.969%;   }
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003794}}
+                                      .pure-u-xl-5-8, .pure-u-xl-15-24 {
+                                        width: 62.5%;
+                                        *width: 62.469%;   }
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003800}}
+                                        .pure-u-xl-2-3, .pure-u-xl-16-24 {
+                                          width: 66.6667%;
+                                          *width: 66.6357%;   }
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003805}}
+                                          .pure-u-xl-17-24 {
+                                            width: 70.8333%;
+                                            *width: 70.8023%;   }
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003811}}
+                                            .pure-u-xl-3-4, .pure-u-xl-18-24 {
+                                              width: 75%;
+                                              *width: 74.969%;   }
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003816}}
+                                              .pure-u-xl-19-24 {
+                                                width: 79.1667%;
+                                                *width: 79.1357%;   }
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003821}}
+                                                .pure-u-xl-4-5 {
+                                                  width: 80%;
+                                                  *width: 79.969%;   }
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003827}}
+                                                  .pure-u-xl-5-6, .pure-u-xl-20-24 {
+                                                    width: 83.3333%;
+                                                    *width: 83.3023%;   }
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003833}}
+                                                    .pure-u-xl-7-8, .pure-u-xl-21-24 {
+                                                      width: 87.5%;
+                                                      *width: 87.469%;   }
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003839}}
+                                                      .pure-u-xl-11-12, .pure-u-xl-22-24 {
+                                                        width: 91.6667%;
+                                                        *width: 91.6357%;   }
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003844}}
+                                                        .pure-u-xl-23-24 {
+                                                          width: 95.8333%;
+                                                          *width: 95.8023%;   }
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/external\/pure\/grids-responsive\.css}line{font-family:\00003852}}
+                                                          .pure-u-xl-1, .pure-u-xl-1-1, .pure-u-xl-5-5, .pure-u-xl-24-24 {
+                                                            width: 100%;   }
+}
+
+/* 0 selectors generated from '/home/pelican_blog/joeahand/themes/joe/static/critical_blog.scss' add up to a total of 0 selectors accumulated */
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8";
+@charset "UTF-8"; 
+/* 4 selectors generated from '/home/pelican_blog/joeahand/themes/joe/static/scss/_icons.scss' add up to a total of 4 selectors accumulated */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_icons\.scss}line{font-family:\0000311}}
+.useicons, span.useicons {
+  font-family: 'icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_icons\.scss}line{font-family:\0000326}}
+  a.useicons.twitter:hover {
+    color: #14b0f2 !important; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_icons\.scss}line{font-family:\0000329}}
+    a.useicons.github:hover {
+      color: #5590c9 !important; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_icons\.scss}line{font-family:\0000332}}
+      a.useicons.instagram:hover {
+        color: #517fa4 !important; }
+/* 10 selectors generated from '/home/pelican_blog/joeahand/themes/joe/static/scss/_utils.scss' add up to a total of 14 selectors accumulated */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000315}}
+.red {
+  color: #c0392b; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000319}}
+  .small-caps {
+    text-transform: uppercase;
+    letter-spacing: 0.125rem;
+    font-family: inherit;
+    line-height: inherit; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000326}}
+    small {
+      display: inline-block;
+      font-size: 0.875rem;
+      line-height: 1.333; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000332}}
+      .is-center {
+        text-align: center; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000336}}
+        .justify {
+          text-align: justify; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000344}}
+          [data-tooltip] {
+            position: relative;
+            z-index: 2;
+            cursor: pointer; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000352}}
+            [data-tooltip]:before, [data-tooltip]:after {
+              visibility: hidden;
+              opacity: 0;
+              pointer-events: none; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000359}}
+              [data-tooltip]:before {
+                position: absolute;
+                bottom: 150%;
+                left: 50%;
+                margin-bottom: 5px;
+                margin-left: -30px;
+                padding: 5px;
+                width: 50px;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+                background-color: #000;
+                background-color: rgba(51, 51, 51, 0.9);
+                color: #fff;
+                content: attr(data-tooltip);
+                text-align: center;
+                font-size: 14px;
+                line-height: 1.2;
+                font-variant: small-caps; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000381}}
+                [data-tooltip]:after {
+                  position: absolute;
+                  bottom: 150%;
+                  left: 50%;
+                  margin-left: -5px;
+                  width: 0;
+                  border-top: 5px solid #000;
+                  border-top: 5px solid rgba(51, 51, 51, 0.9);
+                  border-right: 5px solid transparent;
+                  border-left: 5px solid transparent;
+                  content: " ";
+                  font-size: 0;
+                  line-height: 0; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_utils\.scss}line{font-family:\0000398}}
+                  [data-tooltip]:hover:before, [data-tooltip]:hover:after {
+                    visibility: visible;
+                    opacity: 1 !important; }
+/* 20 selectors generated from '/home/pelican_blog/joeahand/themes/joe/static/scss/_critical_common.scss' add up to a total of 34 selectors accumulated */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000317}}
+html {
+  overflow-y: scroll;
+  min-height: 100%;
+  font-size: 100%;
+  -webkit-font-smoothing: antialiased; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000324}}
+  body {
+    font-family: "Open Sans", sans-serif;
+    color: #2c3e50;
+    font-size: 14px;
+    line-height: 1.7em; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000332}}
+    html, button, input, select, textarea, .pure-g [class *= "pure-u"] {
+      font-family: "Open Sans", sans-serif; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000336}}
+      .document {
+        border-bottom: 3px solid #222; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000342}}
+        a {
+          color: #2c3e50;
+          -webkit-transition: 0.5s ease-in-out;
+          -moz-transition: 0.5s ease-in-out;
+          transition: 0.5s ease-in-out;
+          text-decoration: none; }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000346}}
+          p a, ul a {
+            text-decoration: underline; }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000350}}
+            a:hover {
+              color: #c0392b;
+              text-decoration: none; }
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000355}}
+              a:focus {
+                outline: 1px dotted #222; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000374}}
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  color: #222;
+  font-weight: 700;
+  font-family: "EB Garamond", serif; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000383}}
+  .site-header {
+    font-family: "EB Garamond", serif;
+    padding: 0.5em;
+    text-align: center;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    border-top: 3px solid #222;
+    background: #fff; }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000390}}
+    .site-header .pure-menu-heading {
+      color: #222;
+      font-weight: 400;
+      font-size: 120%; }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000396}}
+      .site-header .pure-menu-selected a {
+        color: #c0392b; }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\0000399}}
+        .site-header a {
+          color: #222; }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003100}}
+          .site-header a:hover {
+            color: #c0392b; }
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003114}}
+.pure-menu.pure-menu-fixed {
+  border-bottom: none;
+  z-index: 4; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003121}}
+  .main {
+    padding-top: 86px; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003126}}
+    @media (min-width: 48em) {
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003126}}
+      body {
+        font-size: 16px;   }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003130}}
+        .page-content {
+          padding: 1em;   }
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003135}}
+          .site-header {
+            text-align: left;   }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_critical_common\.scss}line{font-family:\00003136}}
+            .site-header ul {
+              float: right;   }
+}
+/* 87 selectors generated from '/home/pelican_blog/joeahand/themes/joe/static/scss/_blog.scss' add up to a total of 121 selectors accumulated */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000320}}
+blockquote {
+  padding-left: 1.125rem;
+  border-left: 0.375rem solid #ecf0f1;
+  font-style: italic;
+  font-size: 1.333rem;
+  font-family: "Times New Roman", serif; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000327}}
+  blockquote p {
+    margin: 0; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000330}}
+    blockquote p + p {
+      margin-top: 1.125rem; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000333}}
+      blockquote cite {
+        color: #34495e;
+        font-style: italic;
+        font-size: 0.75rem;
+        font-family: "Open Sans", sans-serif; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000339}}
+        blockquote cite:before {
+          content: "— "; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000342}}
+          blockquote cite a {
+            color: #34495e; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000345}}
+            .crossbars {
+              position: relative;
+              display: table;
+              margin: 0 auto 0.75rem;
+              padding: 0 1.125rem;
+              width: auto;
+              text-align: center;
+              text-transform: uppercase;
+              letter-spacing: 0.125rem;
+              font-size: 1.125rem;
+              line-height: 1.125; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000358}}
+              .crossbars:before, .crossbars:after {
+                position: absolute;
+                top: 50%;
+                display: block;
+                overflow: hidden;
+                margin-top: -0.5rem;
+                width: 9999%;
+                height: 1.125rem;
+                background: #bdc3c7;
+                content: " "; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000369}}
+                .crossbars:before {
+                  left: -9999%; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000372}}
+                  .crossbars:after {
+                    right: -9999%; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000375}}
+                    ol {
+                      list-style: decimal; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000378}}
+                      ol ol {
+                        list-style: upper-alpha; }
+
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000381}}
+                        ol ol ol {
+                          list-style: lower-roman; }
+
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000384}}
+                          ol ol ol ol {
+                            list-style: lower-alpha; }
+
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000390}}
+                            ol ol, ol ul, ul ul, ul ol {
+                              margin-bottom: 0; }
+
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\0000393}}
+                              .run-in {
+                                float: left;
+                                margin: 0;
+                                margin-right: 0.317rem;
+                                color: #222;
+                                text-transform: uppercase;
+                                letter-spacing: 0.125rem;
+                                font-weight: 700;
+                                font-size: 1.125rem; }
+
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003103}}
+                                small {
+                                  display: inline-block;
+                                  font-size: 0.875rem;
+                                  line-height: 1.333; }
+
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003108}}
+                                  .small-caps {
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.125rem;
+                                    font-weight: 700;
+                                    font-size: 1.125rem;
+                                    font-family: inherit;
+                                    line-height: inherit; }
+
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003117}}
+                                    sub, sup {
+                                      font-size: 0.75rem; }
+
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003120}}
+                                      sup {
+                                        top: -0.475rem; }
+
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003123}}
+                                        sub {
+                                          bottom: -0.238rem; }
+
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003126}}
+                                          .text-left {
+                                            text-align: left; }
+
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003129}}
+                                            .text-right {
+                                              text-align: right; }
+
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003132}}
+                                              .text-center {
+                                                text-align: center; }
+
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003135}}
+                                                .text-justify {
+                                                  text-align: justify; }
+
+                                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003138}}
+                                                  @media only screen and (min-width: 600px) {
+                                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003138}}
+                                                    .medium-text-left {
+                                                      text-align: left;   }
+                                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003141}}
+                                                      .medium-text-right {
+                                                        text-align: right;   }
+                                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003144}}
+                                                        .medium-text-center {
+                                                          text-align: center;   }
+                                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003147}}
+                                                          .medium-text-justify {
+                                                            text-align: justify;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003152}}
+@media only screen and (min-width: 960px) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003152}}
+  .large-text-left {
+    text-align: left;   }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003155}}
+    .large-text-right {
+      text-align: right;   }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003158}}
+      .large-text-center {
+        text-align: center;   }
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003161}}
+        .large-text-justify {
+          text-align: justify;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003166}}
+.strip {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  list-style: none; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003172}}
+  .strip .wrapper {
+    padding: 1rem 0; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003175}}
+    .strip .wrapper > *:last-child {
+      margin-bottom: 0; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003178}}
+      @media only screen and (min-width: 600px) {
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003178}}
+        .strip .wrapper {
+          padding: 2rem 0;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003183}}
+.wrapper {
+  margin: 0 auto;
+  max-width: 64rem;
+  width: 90%; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003188}}
+  .float-left {
+    float: left; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003191}}
+    .float-right {
+      float: right; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003194}}
+      .float-none {
+        float: none; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003197}}
+        @media only screen and (min-width: 600px) {
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003197}}
+          .medium-float-left {
+            float: left;   }
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003200}}
+            .medium-float-right {
+              float: right;   }
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003203}}
+              .medium-float-none {
+                float: none;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003208}}
+@media only screen and (min-width: 960px) {
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003208}}
+  .large-float-left {
+    float: left;   }
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003211}}
+    .large-float-right {
+      float: right;   }
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003214}}
+      .large-float-none {
+        float: none;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003219}}
+.clear {
+  display: block;
+  visibility: hidden;
+  clear: both;
+  overflow: hidden;
+  width: 0;
+  height: 0; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003228}}
+  .cf:before, .cf:after {
+    display: table;
+    content: " "; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003232}}
+    .cf:after {
+      clear: both; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003235}}
+      .visuallyhidden {
+        position: absolute;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        margin: -0.0625rem;
+        padding: 0;
+        width: 0.0625rem;
+        height: 0.0625rem;
+        border: 0; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003246}}
+        .visuallyhidden.focusable:active, .visuallyhidden.focusable:focus {
+          position: static;
+          overflow: visible;
+          clip: auto;
+          margin: 0;
+          width: auto;
+          height: auto; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003254}}
+          blockquote {
+            border-color: #c0392b; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003257}}
+            p a, li a {
+              text-decoration: underline; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003260}}
+              .post-full {
+                position: relative;
+                max-width: 700px;
+                margin: 0 auto; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003265}}
+                .post-full header {
+                  margin-bottom: 2rem; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003268}}
+                  .post-full .title {
+                    line-height: 1; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003271}}
+                    .post-full .title a {
+                      color: #222; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003274}}
+                      .post-full .category {
+                        font-size: 1.125rem; }
+
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003277}}
+                        .post-full .category a {
+                          color: #bdc3c7; }
+
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003280}}
+                          .post-full .link_url {
+                            font-size: 1rem; }
+
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003283}}
+                            .post-full .link_url a {
+                              color: #bdc3c7; }
+
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003286}}
+                              .post-full .link_url .useicons {
+                                font-size: 75%;
+                                vertical-align: middle;
+                                padding-right: 0.5rem; }
+
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003291}}
+                                .post-full img {
+                                  margin: 1rem auto;
+                                  border-radius: 5px;
+                                  display: block;
+                                  max-width: 600px; }
+
+                                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003297}}
+                                  .post-full figure img {
+                                    margin-top: 0.5rem; }
+
+                                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003300}}
+                                    .post-full .post-footer {
+                                      margin: 1rem 0 4rem; }
+
+                                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003303}}
+                                      .post-full .post-footer a {
+                                        font-size: 0.844rem;
+                                        text-decoration: none; }
+
+                                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003307}}
+                                        .post-full .post-footer a .useicons {
+                                          padding-right: 0.5rem;
+                                          vertical-align: middle;
+                                          color: #c0392b; }
+
+                                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003312}}
+                                          .post-full .post-footer a .pub_date {
+                                            transition: all 150ms ease-out;
+                                            color: #95a5a6;
+                                            font-family: "EB Garamond", serif; }
+
+                                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003317}}
+                                            .post-full .post-footer a:hover .pub_date {
+                                              color: #c0392b; }
+
+                                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003320}}
+                                              @media only screen and (min-width: 960px) {
+                                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003320}}
+                                                .post-full .category {
+                                                  position: absolute;
+                                                  right: 100%;
+                                                  top: 0;
+                                                  margin-right: 1rem;   }
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003328}}
+.pagination {
+  text-align: center; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003331}}
+  .pagination .page-link {
+    color: #222;
+    padding: 0 1rem; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003335}}
+    .pagination .disabled {
+      padding: 0 0.5rem;
+      color: #ecf0f1; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003339}}
+      .post-archive {
+        position: relative;
+        overflow: hidden; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003343}}
+        .post-archive .post-list {
+          margin: 0 0 2rem 0; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003348}}
+          .post-archive .year, .post-archive .pub_date, .post-archive .category {
+            text-transform: uppercase;
+            letter-spacing: 0.125rem; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003352}}
+            .post-archive .category {
+              font-weight: bold;
+              color: #95a5a6; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003357}}
+              .post-archive .category, .post-archive .pub_date {
+                font-size: 0.844rem; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003361}}
+                .post-archive .pub_date, .post-archive .year {
+                  font-family: "EB Garamond", serif; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003364}}
+                  .post-archive .pub_date {
+                    color: #95a5a6;
+                    font-weight: bold; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003368}}
+                    .post-archive .title {
+                      margin: 0;
+                      max-width: 500px; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003372}}
+                      .post-archive .title a {
+                        color: #222; }
+
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003375}}
+                        .post-archive .year {
+                          font-size: 1.777rem;
+                          margin-top: 4rem;
+                          margin-bottom: 2rem;
+                          color: #222; }
+
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003381}}
+                          .post-archive .year:first-child {
+                            margin-top: 0; }
+
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003385}}
+                            .post-archive .crossbars:before, .post-archive .crossbars:after {
+                              background-color: #c0392b;
+                              height: 2px;
+                              margin-top: 0; }
+
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_blog\.scss}line{font-family:\00003390}}
+                              .category-header {
+                                margin-bottom: 2rem;
+                                color: #bdc3c7; }
+/* 17 selectors generated from '/home/pelican_blog/joeahand/themes/joe/static/scss/_code.scss' add up to a total of 138 selectors accumulated */
+@media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000323}}
+code, pre, .highlight pre {
+  font-family: 'Roboto Mono', monospace; }
+
+  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000326}}
+  .highlight {
+    font-family: 'Roboto Mono', monospace;
+    white-space: pre;
+    overflow: auto;
+    word-wrap: normal;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    padding: 20px;
+    background: #343642;
+    color: #C1C2C3; }
+
+    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000338}}
+    .highlight .hll {
+      background-color: #ffc; }
+
+      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000339}}
+      .highlight .gd {
+        color: #2e3436;
+        background-color: #0e1416; }
+
+        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000340}}
+        .highlight .gr {
+          color: #eeeeec;
+          background-color: #c00; }
+
+          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000341}}
+          .highlight .gi {
+            color: #babdb6;
+            background-color: #1f2b2d; }
+
+            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000342}}
+            .highlight .go {
+              color: #2c3032;
+              background-color: #2c3032; }
+
+              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000343}}
+              .highlight .kt {
+                color: #e3e7df; }
+
+                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000344}}
+                .highlight .ni {
+                  color: #888a85; }
+
+                  @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000345}}
+                  .highlight .s {
+                    color: #989DAA; }
+
+                    @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000346}}
+                    .highlight .c, .highlight .cm, .highlight .c1, .highlight .cs {
+                      color: #8D9684; }
+
+                      @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000351}}
+                      .highlight .err, .highlight .g, .highlight .l, .highlight .n, .highlight .x,
+                      .highlight .p, .highlight .ge, .highlight .gp, .highlight .gs, .highlight .gt,
+                      .highlight .ld, .highlight .nc, .highlight .nd, .highlight .ne, .highlight .nl,
+                      .highlight .nn, .highlight .nx, .highlight .py, .highlight .ow, .highlight .w,
+                      .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .se,
+                      .highlight .sh, .highlight .si, .highlight .sx, .highlight .sr, .highlight .s1,
+                      .highlight .ss, .highlight .bp {
+                        color: #C1C2C3; }
+
+                        @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000353}}
+                        .highlight .k, .highlight .kc, .highlight .kd, .highlight .kn, .highlight .kp,
+                        .highlight .kr, .highlight .nt {
+                          color: #729fcf; }
+
+                          @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000354}}
+                          .highlight .cp, .highlight .gh, .highlight .gu, .highlight .na, .highlight .nf {
+                            color: #E9A94B; }
+
+                            @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000356}}
+                            .highlight .m, .highlight .nb, .highlight .no, .highlight .mf, .highlight .mh,
+                            .highlight .mi, .highlight .mo, .highlight .il {
+                              color: #8ae234; }
+
+                              @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000357}}
+                              .highlight .o {
+                                color: #989DAA; }
+
+                                @media -sass-debug-info{filename{font-family:file\:\/\/\/home\/pelican_blog\/joeahand\/themes\/joe\/static\/scss\/_code\.scss}line{font-family:\0000358}}
+                                .highlight .nv, .highlight .vc, .highlight .vg, .highlight .vi {
+                                  color: #fff; }        </style><script id="loadcss">
+function loadCSS(e,n,o,t){"use strict";var d=window.document.createElement("link"),l=n||window.document.getElementsByTagName("script")[0],s=window.document.styleSheets;return d.rel="stylesheet",d.href=e,d.media="only x",t&&(d.onload=t),l.parentNode.insertBefore(d,l),d.onloadcssdefined=function(e){for(var n,o=0;o<s.length;o++)s[o].href&&s[o].href===d.href&&(n=!0);n?e():setTimeout(function(){d.onloadcssdefined(e)})},d.onloadcssdefined(function(){d.media=o||"all"}),d}loadCSS("https://joeahand.com/theme/non_critical.min.css?8d2ca06c",document.getElementById("loadcss"));
+</script><noscript><link href="https://joeahand.com/theme/non_critical.min.css?8d2ca06c" rel="stylesheet"></noscript></head><body class><div role="document" class="document"><div class="header"><div class="site-header pure-menu pure-menu-horizontal pure-menu-fixed"><a class="pure-menu-heading small-caps" href="https://joeahand.com">Joe Hand</a><ul role="navigation" class="pure-menu-list"><li class="pure-menu-item "><a class="pure-menu-link small" href="https://joeahand.com/about/">About Joe</a></li><li class="pure-menu-item "><a class="pure-menu-link small" href="https://joeahand.com/cv/">CV</a></li></ul></div></div><main role="main" class="main pure-g"><div class="pure-u-2-24 pure-u-lg-1-5"></div><div class="page-content pure-u-20-24 pure-u-lg-3-5"><section class="post-full"><header><h1 class="title"><a href="https://joeahand.com/archive/filtering-a-shapefile-with-python/">Filtering a Shapefile with Python</a></h1></header><article class="content"><p>Recently I've been using Python more to work with shapefiles. Frequently I have to create a shapefile by filtering a set of features of a larger shapefile, for instance I wanted to get a shapefile for blocks in New York City from a shapefile of the whole country. While this isn't very difficult in QGIS (and probably ArcGIS), it gets a bit annoying to do over and over. In the last project, I wanted to create files for over 900 cities in the US - so I definitely wasn't going to do that by hand.</p><h3>Quickstart</h3><p>I'll walk through the three main steps to do this in Python:</p><ol><li>Creating a shapefile when <code>my_field = my_value</code> from a large shapefile.</li><li>Finding all values in <code>my_field</code> from your large shapefile.</li><li>Putting 1 &amp; 2 together to create many shapefiles for every value in <code>my_field</code>.</li></ol><p><strong><em> If you want to see how it all comes together, <a href="https://gist.github.com/joehand/498a1656e028c6163aa9">see the full code here</a>.</em></strong></p><p>There are a few Python-based shapefile libraries. The most extensive is <a href="http://www.gdal.org/">GDAL</a> with <a href="https://pypi.python.org/pypi/GDAL/">Python bindings</a>. I decided to use GDAL because of the speed (some of the other libraries are pure Python, thus slower). The only downside is that it can be a pain to install (especially in a virtual environment).</p><h3>Command Line Filtering</h3><p>If you want to filter a shapefile by a specific field/value OGR has a attribute filter function. If you just need to do this once, I recommend using the command line:</p><div class="highlight"><pre>ogr2ogr -f <span class="s2">&quot;ESRI Shapefile&quot;</span> -where <span class="se">\</span>
     <span class="s2">&quot;my_field = some_value&quot;</span> new_shapefile.shp source_shapefile.shp
 </pre></div><p>But I needed to filter many times and in the context of another program, so let's look at the Python version of this command.</p><h2>Creating a Single Shapefile for a Known Filter Value</h2><p>In this case, we know our field and know the value we want to filter. We just need to create a single shapefile from the larger one. First, we will open our larger input file and use OGR's filter function to get the filtered features. Then we can create a new shapefile by copying the filtered input file:</p><div class="highlight"><pre><span class="kn">from</span> <span class="nn">osgeo</span> <span class="kn">import</span> <span class="n">ogr</span>
 
@@ -45,7 +1891,7 @@
             <span class="n">out_file</span> <span class="o">=</span> <span class="n">create_filtered_shapefile</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">filter_field</span><span class="p">,</span> <span class="n">in_shapefile</span><span class="p">)</span>
         <span class="n">out_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_file</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">out_files</span>
-</pre></div><p>That's it! We now have a shapefile for each value in <code>my_field</code>. I've written this up as a full Python <code>class</code> you can plug into your own projects. <strong><em><a href="https://gist.github.com/joehand/498a1656e028c6163aa9">Check that code out here</a>.</em></strong></p><p>Let me know if you have questions or found this useful! You can <a href="http://twitter.com/joeahand">find me on Twitter</a>.</p></article><footer class="post-footer"><a class="small-caps" rel="bookmark" title="Permalink to Filtering a Shapefile with Python" href="https://joeahand.com/archive/filtering-a-shapefile-with-python/"><span class="useicons">&#58882;</span><span class="pub_date"><abbr class="published" title="2015-08-11T19:39:12-06:00"> August 2015 </abbr></span></a></footer></section></div><div class="pure-u-2-24 pure-u-lg-1-5"></div></main><footer role="contentinfo" class="site-footer l-box pure-g is-center"><div class="pure-u-2-5 pure-u-md-1-3"><span class="copyright"> Joe Hand &nbsp;·&nbsp;<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">© 2015</a></span></div><div class="pure-u-1-5 pure-u-md-1-3"><div class="s-icons"><a class="mail useicons" href="mailto:joe@joeahand.com" rel="me">&#58885;</a><a class="twitter useicons" href="http://twitter.com/joeahand/" rel="me">&#58886;</a><a class="instagram useicons" href="http://instagram.com/joeahand" rel="me">&#58884;</a><a class="github useicons" href="https://github.com/joehand" rel="me">&#58887;</a></div></div><div class="pure-u-2-5 pure-u-md-1-3"><span><a href="https://joeahand.com/about/#about-site">Made By <span class="useicons hand">&#58883;</span></a></span></div></footer></div><script type="text/javascript" data-cfasync="false">
+</pre></div><p>That's it! We now have a shapefile for each value in <code>my_field</code>. I've written this up as a full Python <code>class</code> you can plug into your own projects. <strong><em><a href="https://gist.github.com/joehand/498a1656e028c6163aa9">Check that code out here</a>.</em></strong></p><p>Let me know if you have questions or found this useful! You can <a href="http://twitter.com/joeahand">find me on Twitter</a>.</p></article><footer class="post-footer"><a class="small-caps" rel="bookmark" title="Permalink to Filtering a Shapefile with Python" href="https://joeahand.com/archive/filtering-a-shapefile-with-python/"><span class="useicons">&#58882;</span><span class="pub_date"><abbr class="published" title="2015-08-11T19:39:12-06:00"> August 2015 </abbr></span></a></footer></section></div><div class="pure-u-2-24 pure-u-lg-1-5"></div></main><footer role="contentinfo" class="site-footer l-box pure-g is-center"><div class="pure-u-2-5 pure-u-md-1-3"><span class="copyright"> Joe Hand &nbsp;·&nbsp;<a href="http://creativecommons.org/licenses/by-nc-nd/4.0/">© 2015</a></span></div><div class="pure-u-1-5 pure-u-md-1-3"><div class="s-icons"><a class="mail useicons" href="mailto:joe@joeahand.com" rel="me">&#58885;</a><a class="twitter useicons" href="http://twitter.com/joeahand/" rel="me">&#58886;</a><a class="instagram useicons" href="http://instagram.com/joeahand" rel="me">&#58884;</a><a class="github useicons" href="https://github.com/joehand" rel="me">&#58887;</a></div></div><div class="pure-u-2-5 pure-u-md-1-3"><span><a href="https://joeahand.com/about/#about-site">Made By <span class="useicons hand">&#58883;</span></a></span></div></footer></div><script type="text/javascript">
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
