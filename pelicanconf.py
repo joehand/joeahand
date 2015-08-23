@@ -3,6 +3,8 @@
 import time
 from urllib.parse import urlparse
 
+VERSION = 0.2
+
 ############################
 ##### Pelican Settings #####
 ############################
