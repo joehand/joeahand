@@ -21,11 +21,33 @@
         color: $mediumgrey;
         letter-spacing: 1px;
     }
+
     .hand {
         font-size: 2em;
         line-height: 1rem;
         vertical-align: text-bottom;
+        display: inline-block;
+        @include transition(0.7s ease-in-out);
+        @include animation(bounce 2s infinite);
     }
+    @include keyframes(bounce) {
+        0%, 20%, 50%, 80%, 100% {
+        @include transform(translateY(0));
+        }
+        40% {
+        @include transform(translateY(-30px));
+        }
+        60% {
+        @include transform(translateY(-15px));
+        }
+    }
+
+    &:hover {
+        .hand {
+            color:$red;
+        }
+    }
+
     .s-icons {
         font-size: 1.5em;
         line-height: 1em;

@@ -34,8 +34,12 @@ html, button, input, select, textarea,
 
 a {
     color: $primary-color;
-    transition: all 150ms ease-out;
+    @include transition(0.5s ease-in-out);
     text-decoration: none;
+
+    p &, ul & {
+        text-decoration: underline;
+    }
 
     &:hover {
         color: $red;
