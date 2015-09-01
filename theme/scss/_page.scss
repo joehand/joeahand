@@ -1,5 +1,4 @@
 .page {
-
     .main {
         ul, ol {
             a {
@@ -42,5 +41,19 @@
             border-radius: 100px;
           }
         }
+    }
+}
+
+.about-img {
+  padding:10px;
+  margin:0 auto;
+  display: block;
+}
+/*
+ * -- TABLET (AND UP) MEDIA QUERIES --
+ */
+@media (min-width: 35.5em) {
+    .about-img {
+      float:right;
     }
 }
