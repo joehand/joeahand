@@ -1,4 +1,5 @@
-<ul role="navigation" class="pure-menu-list">
+<nav>
+   <ul class="pure-menu-list">
     {% for p in PAGES %}
         {% if p.slug in NAV_PAGES %}
         <li class="pure-menu-item {% if p == page %}pure-menu-selected{% endif %}">
@@ -6,4 +7,5 @@
         </li>
         {% endif %}
     {% endfor %}
-</ul>
+    </ul>
+</nav>
