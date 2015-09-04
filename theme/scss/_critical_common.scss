@@ -125,6 +125,14 @@ h6,
     padding-top:86px;
 }
 
+.external-link.small-caps {
+    //font-weight:600;
+    font-size:1em;
+    line-height:2em;
+    font-family: "EB Garamond", serif;
+    text-align: center;
+}
+
 /*
  * -- TABLET (AND UP) MEDIA QUERIES --
  * On tablets and other medium-sized devices, we want to customize some
