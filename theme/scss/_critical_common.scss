@@ -89,6 +89,13 @@ h6,
         display:inline;
     }
 
+    h1 {
+        display:inline;
+        font-size:inherit;
+        font-weight: inherit;
+        margin:inherit;
+    }
+
     .pure-menu-heading {
         color: $black;
         font-weight: 400;
