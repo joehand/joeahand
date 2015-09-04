@@ -85,6 +85,17 @@ h6,
     border-top: 3px solid $black;
     background:#fff;
 
+    nav {
+        display:inline;
+    }
+
+    h1 {
+        display:inline;
+        font-size:inherit;
+        font-weight: inherit;
+        margin:inherit;
+    }
+
     .pure-menu-heading {
         color: $black;
         font-weight: 400;
@@ -119,6 +130,14 @@ h6,
 **********************/
 .main {
     padding-top:86px;
+}
+
+.external-link.small-caps {
+    //font-weight:600;
+    font-size:1em;
+    line-height:2em;
+    font-family: "EB Garamond", serif;
+    text-align: center;
 }
 
 /*

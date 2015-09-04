@@ -77,6 +77,7 @@ AUTHOR_LINKS = {
 }
 SITENAME = u'Joe Hand'
 SITESUBTITLE = u'Better cities with local data'
+SITEDESCRIPTION = u'Joe Hand is a developer, researcher, and open data enthusiast.'
 
 PLUGIN_PATHS = ["plugins", 'plugins/pelican-plugins']
 PLUGINS = [

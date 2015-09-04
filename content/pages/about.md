@@ -8,13 +8,19 @@ Hi there! Glad you made it. Want to get in touch? Send me a message: joe @ this 
 
 <img class="about-img" src="//cdn.joeahand.com/joe_hand_headshot.png" alt="Joe Hand headshot" title="Joe Hand" width=200 height=200/>
 
-* I am interested in the overlap of social systems, math/technology/data, and urban environments. 
-* I hope to help communities (especially in cities of the Global South) solve local problems with technology & data. 
-* I think we can do a better job of creating global/open/free resources to help solve those problems (e.g. Wikipedia, OpenStreetMap). 
-* I enjoy playing with data (census, quantified self, basketball). 
+* I am interested in the overlap of social systems, math/technology/data, and urban environments.
+* I hope to help communities (especially in cities of the Global South) solve local problems with technology & data.
+* I think we can do a better job of creating global/open/free resources to help solve those problems (e.g. Wikipedia, OpenStreetMap).
+* I enjoy playing with data (census, quantified self, basketball).
 * I'd like to be better at Python, and am working on it.
 
-***Denver > Portland > Santa Fe > Denver***
+<div class="pure-g">
+<div class="small-caps external-link pure-u-1-3 pure-u-sm-1-5"><a href="mailto:&#106;&#111;&#101;&#064;&#106;&#111;&#101;&#097;&#104;&#097;&#110;&#100;&#046;&#099;&#111;&#109;" rel="me">Email</a></div>
+<div class="small-caps external-link pure-u-1-3 pure-u-sm-1-5"><a href="http://twitter.com/joeahand" rel="me">Twitter</a></div>
+<div class="small-caps external-link pure-u-1-3 pure-u-sm-1-5"><a href="https://instagram.com/joeahand/" rel="me">Instagram</a></div>
+<div class="small-caps external-link pure-u-1-2 pure-u-sm-1-5"><a href="http://github.com/joehand" rel="me">GitHub</a></div>
+<div class="small-caps external-link pure-u-1-2 pure-u-sm-1-5"><a href="https://www.linkedin.com/in/joeahand" rel="me">LinkedIn</a></div>
+</div>
 
 <hr>
 
