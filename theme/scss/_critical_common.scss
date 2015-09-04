@@ -85,6 +85,10 @@ h6,
     border-top: 3px solid $black;
     background:#fff;
 
+    nav {
+        display:inline;
+    }
+
     .pure-menu-heading {
         color: $black;
         font-weight: 400;
