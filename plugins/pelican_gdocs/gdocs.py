@@ -114,7 +114,11 @@ class Gdocs_Coffee(Gdocs_Sheet):
         clean_data = {}
         for item in data:
             date_fmt = "%B %d, %Y at %I:%M%p"
-            date_time = time.strptime(item['Date_Time'], date_fmt)
+            try:
+                date_time = time.strptime(item['Date_Time'], date_fmt)
+            except ValueError:
+                logging.warning('Badly formatted date at {}'.format(item['Date_Time']))
+                continue
             delta = date.today() - \
                 datetime.strptime(item['Date_Time'], date_fmt).date()
             days_ago = delta.days
