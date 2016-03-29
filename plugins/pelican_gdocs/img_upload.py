@@ -36,7 +36,7 @@ def thumbnail_s3(original_url, bucket_name,
     scheme = 'http'
     img_folder = 'imgs'
 
-    thumb_name = original_url.split('/')[::-1][0]
+    thumb_name = original_url.split('/')[::-1][0].split('?')[0]
 
     thumb_url_full = url_for_s3(
         img_folder,
