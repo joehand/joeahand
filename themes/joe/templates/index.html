@@ -1,8 +1,11 @@
 {% extends "_base.html" %}
 
+{% block body_class %}blog{% endblock body_class %}
+
 {% block content %}
     {% block content_title %}
-    <h2 class="small-caps">Blog</h2>
+    <h2 class="blog-title">Blog</h2>
+    <h4 class=""><a href="{{ SITEURL }}/archives/">View By Date</a></h4>
     {% endblock content_title %}
     {% block article_list %}
         {% for article in articles_page.object_list %}
