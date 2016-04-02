@@ -76,8 +76,8 @@ AUTHOR_LINKS = {
     'EMAIL': '&#106;&#111;&#101;&#064;&#106;&#111;&#101;&#097;&#104;&#097;&#110;&#100;&#046;&#099;&#111;&#109;'
 }
 SITENAME = u'Joe Hand'
-SITESUBTITLE = u'Better cities with local data'
-SITEDESCRIPTION = u'Joe Hand is a developer, researcher, and open data enthusiast.'
+SITESUBTITLE = u'Better communities with open data'
+SITEDESCRIPTION = u'Joe Hand is a product lead, developer, researcher, and open data enthusiast. Joe works with international communities, open source developers, scientists, and data visualization & mapping experts to enable communities to solve problems.'
 
 PLUGIN_PATHS = ["plugins", 'plugins/pelican-plugins']
 PLUGINS = [

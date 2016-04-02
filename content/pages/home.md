@@ -6,7 +6,7 @@ body_class: home
 Template: home
 save_as: index.html
 
-I am a developer, researcher, and open data enthusiast.
+I am a developer, product lead, researcher, and open data enthusiast.
 I work with international communities, open source developers, scientists, and data visualization & mapping experts to enable communities to solve problems.
 
 Over the last several years with the [Santa Fe Institute](http://santafe.edu/research/informal-settlements/), I organized an effort to transform the data collection practices of [Slum/Shack Dwellers International](http://www.sdinet.org/).
