@@ -1,0 +1,80 @@
+==================================================================
+https://keybase.io/jhand
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://joeahand.com
+  * I am jhand (https://keybase.io/jhand) on keybase.
+  * I have a public key with fingerprint 0DCA 20C9 50DB D73A A63C  DCFF 2232 4E3F 975F BBE6
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "01015f2ff473037b5b9d763dca4e17f7a5f04d6ec58dd6bbd041706bccd915e37b2d0a",
+            "fingerprint": "0dca20c950dbd73aa63cdcff22324e3f975fbbe6",
+            "host": "keybase.io",
+            "key_id": "22324e3f975fbbe6",
+            "kid": "01015f2ff473037b5b9d763dca4e17f7a5f04d6ec58dd6bbd041706bccd915e37b2d0a",
+            "uid": "eaa56c0c3d2f554cdb96967bcd78af19",
+            "username": "jhand"
+        },
+        "revoke": {
+            "sig_ids": [
+                "1022171da9d3428ddc3c50e3f5a0f4aa57ff13377eaf0c35abae3c640a2908fb0f"
+            ]
+        },
+        "service": {
+            "hostname": "joeahand.com",
+            "protocol": "https:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1467124858,
+    "expire_in": 157680000,
+    "prev": "80794ea18457e6c091d311047f5c29ad9b509eed705ba6ab414f23effe23c492",
+    "seqno": 8,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.53
+Comment: https://keybase.io/crypto
+
+yMN9AnicrZJtUFRVHMYXAlleR8pwYDTghpFFcN/v3jXkS8L4ApjZ0Bi2nnvPObAg
+u8veZV3kRUbNGUZ8gQLCKW0wwmEYoXQMYSaiHEOwF5lR22yqlVYQnNIEHBSwc5n8
+1sfOlzPnnOf/e57zP+dC5FOGsACKzclotvTdChgeuFtmyHPW7a6gFDssp8wVVDFa
+nNBOiDSXpdgKKTNFMzQjYBZjXuJoTlIERYaSyEEV8IiRsAQETPNQRKpgglBUFEjz
+jESLiqpCmREQqWAhDagUClttBcjpcFptLh1LACytygINFShxAIicClWMWZZjecRh
+WRKwoiCRFBbaNb2ChFOAhlKtdrJHFpbFeP+h/59zly3iEACCqNIqB1ksCLwKFVmU
+RUlRoWQCmJF1oYacNlCCiLqoENggVZVCOZHbXoz0pmrWApJYo8xvUwzNsozEQCBD
+jmeJvcqpAk0uIQAa88RIwpjhOElCABNHASgAcarI04CVaRNWaExtJ2xi57aqi3C9
+RU+s7Qjo7qmqvYSEcjjtLrtq30lOCl0uh2bWU7nKHbp0F1Is/0IsitUGyQORCjdy
+ala7jTIzRKm6rDqV4UWJYXmTYEqhkMdhdSKLVVcIkmiiydB9kJsgTbQk8wgwJl6Q
+EOmXzECOYWhewoLKygDKikDLCEGJFhQgAoVneMxyCGPEciovs5R+rVKbnTITJxco
+IEjSOBtwlTkRVfX1QH6QISDMsCQ4UP+4hrDQpU++825lqaGpsPFwfU1CrqmJ6Xzl
+zOOXSvtHDMa46WeDs745+2P2uNbySaQtjAqZ2nIp+lqtf/3jgk0LolcJqG6fnd/X
+sCs8ztPVX7wtouZU0/47x38+Xn31/WL3uf4HvVGelrKtmQb5zWTneEnv+JGTRV3X
+beXHDhi75opq3uodGVM9eeeGW47Mnjzvt/wx90Xafb9x8ma7786Oj6Mys+NrC99p
+ouPN289Up96Pmd3xqrfuXtvn8L2wT4X0R+vyF+o9f35gnMzy3k3YsKzRsLLOsDmY
+pdKn46KX3ZvH+Te+jLBkHX7ZJwYxf+9/mJQzdn3oxfOtVxqr9t7IqZzydq7ypf0a
+fznvWvRZ58Wy4aE1yLU1feWHrWM1gRNJvsGkS1WuXGqgm0He29HZaeqaTRtP9Jxa
+3Tc6L8TjteKoiicfxho4KTYn9CvL0Uee6sas53M3tmVs2OPrWx1Ykl3Tv1l2L1n+
+oNNxSJ4vHUyqz6xseGbZL+O3byUmL9dara/76q920BU3jbHNl2d+eNcfMzw5OvmR
+nPnXgZkgsSO8b93vK2BI656DL3TEJE7tK3i6fqHB/P1pcW6VoCVcyUicuNgTSWvp
+EZ3Md0PJJ1xd3Rdap+qmo346uCK9LTjmtW9Dfys5emgmZ8vpHN8b7c8dG6xdC/Zq
+SSNDE8bKbWxIUGd5cpHc7e8Rsj/zhvtLZ5v/Aaas2xc=
+=AuVi
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/jhand
+
+==================================================================
