@@ -32,7 +32,8 @@ STATIC_PATHS = [
     'extra/favicon-32x32.png',
     'extra/favicon-96x96.png',
     'extra/robots.txt',
-    'extra/humans.txt'
+    'extra/humans.txt',
+    'extra/keybase.txt'
 ]
 EXTRA_PATH_METADATA = {
         'extra/CNAME': {'path': 'CNAME'},
@@ -42,6 +43,7 @@ EXTRA_PATH_METADATA = {
         'extra/favicon-96x96.png': {'path': 'favicon-96x96.png'},
         'extra/robots.txt': {'path': 'robots.txt'},
         'extra/humans.txt': {'path': 'humans.txt'},
+        'extra/keybase.txt': {'path': 'keybase.txt'},
 }
 
 # Following items are often useful when publishing
