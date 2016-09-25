@@ -41,7 +41,7 @@ For a more organized and in depth history of Joe, please see my [CV]({filename}/
 
 This site runs on the [Python](https://www.python.org/)-Powered [Pelican](http://docs.getpelican.com) static site generator. Read about how I built the website [in this post]({filename}/dynamic-static-pelican.md).
 You can explore the code [on GitHub](https://github.com/joehand/joeahand).
-It is served on [GitHub Pages](https://pages.github.com/), via [CloudFare](https://www.cloudflare.com/) ([with easy & free SSL](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)).
+It is served on [GitHub Pages](https://pages.github.com/), via [CloudFlare](https://www.cloudflare.com/) ([with easy & free SSL](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)).
 
 **Homepage**:
 The homepage data is stored in Google Docs (via [IFTTT](http://ifttt.com)) and visualized with Python ([my Pelican gdocs plugin](https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs) and [similar tutorial](http://jlord.us/blog/your-own-instagram.html) for JS version).
