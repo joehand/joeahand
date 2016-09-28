@@ -6,11 +6,12 @@ body_class: home
 Template: home
 save_as: index.html
 
-I am a developer, product lead, researcher, and open data enthusiast.
-I work with international communities, open source developers, scientists, and data visualization & mapping experts to enable communities to solve problems.
+I am a full stack developer, product manager, researcher, and open data enthusiast.
+I work with scientists, local governments, international communities, and open source developers to enable local communities to solve problems with a global impact.
 
-Over the last several years with the [Santa Fe Institute](http://santafe.edu/research/informal-settlements/), I organized an effort to transform the data collection practices of [Slum/Shack Dwellers International](http://www.sdinet.org/).
-Now, slum communities worldwide are collecting census data about themselves to help drive development and inform global knowledge through research.
+Currently, I am developer with [the Dat project](http://dat-data.com) building decentralized data sharing infrastructure to improve reproducibility in science.
+Previously, with the [Santa Fe Institute](http://santafe.edu/research/informal-settlements/), I organized an effort to transform the data collection practices of [Slum/Shack Dwellers International](http://www.sdinet.org/).
+Through this work, slum communities worldwide are collecting census data about themselves to help drive local development and inform global knowledge through research.
 
 
 <div class="pure-g">

@@ -4,7 +4,7 @@ Date: 2014-02-09T00:00:00
 Slug: about
 Title: About Joe
 
-Hi there! Glad you made it. Want to get in touch? Send me a message: joe @ this website.
+Hi there! Glad you made it. Want to get in touch? Send me a message: joe @ this website or click email/twitter below. You know the drill.
 
 <img class="about-img" src="//cdn.joeahand.com/joe_hand_headshot.png" alt="Joe Hand headshot" title="Joe Hand" width=200 height=200/>
 
@@ -12,7 +12,7 @@ Hi there! Glad you made it. Want to get in touch? Send me a message: joe @ this 
 * I hope to help communities (especially in cities of the Global South) solve local problems with technology & data.
 * I think we can do a better job of creating global/open/free resources to help solve those problems (e.g. Wikipedia, OpenStreetMap).
 * I enjoy playing with data (census, quantified self, basketball).
-* I'd like to be better at Python, and am working on it.
+* I'd like to be better at node ~~Python~~, and am working on it.
 
 <div class="pure-g">
 <div class="small-caps external-link pure-u-1-3 pure-u-sm-1-5"><a href="mailto:&#106;&#111;&#101;&#064;&#106;&#111;&#101;&#097;&#104;&#097;&#110;&#100;&#046;&#099;&#111;&#109;" rel="me">Email</a></div>
@@ -24,7 +24,7 @@ Hi there! Glad you made it. Want to get in touch? Send me a message: joe @ this 
 
 <hr>
 
-Things I've done (*somewhat*) recently:
+Things I've done *somewhat* recently:
 
 * Worked at [Santa Fe Institute](http://santafe.edu/) to bring census-like data collection tools to slum dwellers worldwide, gather worldwide census data, and conduct research to understand cities (project in partnership with [Slum/Shack Dwellers International](http://www.sdinet.org/), funded by the Bill & Melinda Gates Foundation and the MacArthur Foundation).
 * Managed projects at [Periscopic](http://www.periscopic.com/), a data visualization company with the aim to "do good with data", for clients including Unicef, Yahoo!, GE, the Economic Policy Institute, and the Hewlett Foundation.
@@ -41,7 +41,7 @@ For a more organized and in depth history of Joe, please see my [CV]({filename}/
 
 This site runs on the [Python](https://www.python.org/)-Powered [Pelican](http://docs.getpelican.com) static site generator. Read about how I built the website [in this post]({filename}/dynamic-static-pelican.md).
 You can explore the code [on GitHub](https://github.com/joehand/joeahand).
-It is served on [GitHub Pages](https://pages.github.com/), via [CloudFare](https://www.cloudflare.com/) ([with easy & free SSL](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)).
+It is served on [GitHub Pages](https://pages.github.com/), via [CloudFlare](https://www.cloudflare.com/) ([with easy & free SSL](https://sheharyar.me/blog/free-ssl-for-github-pages-with-custom-domains/)).
 
 **Homepage**:
 The homepage data is stored in Google Docs (via [IFTTT](http://ifttt.com)) and visualized with Python ([my Pelican gdocs plugin](https://github.com/joehand/joeahand/tree/master/plugins/pelican_gdocs) and [similar tutorial](http://jlord.us/blog/your-own-instagram.html) for JS version).
