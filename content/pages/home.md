@@ -6,7 +6,7 @@ body_class: home
 Template: home
 save_as: index.html
 
-I am a full stack developer, product manager, researcher, and open data enthusiast.
+I am a developer, product manager, researcher, and open data enthusiast.
 I work with scientists, local governments, international communities, and open source developers to enable local communities to solve problems with a global impact.
 
 Currently, I am developer with [the Dat project](http://dat-data.com) building decentralized data sharing infrastructure to improve reproducibility in science.
