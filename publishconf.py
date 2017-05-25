@@ -49,4 +49,4 @@ EXTRA_PATH_METADATA = {
 # Following items are often useful when publishing
 
 #DISQUS_SITENAME = ""
-GOOGLE_ANALYTICS = "UA-37465100-3"
+#GOOGLE_ANALYTICS = "UA-37465100-3"
