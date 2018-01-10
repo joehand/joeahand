@@ -6,13 +6,9 @@ body_class: home
 Template: home
 save_as: index.html
 
-I am a developer, product manager, researcher, and open data enthusiast.
-I work with scientists, local governments, international communities, and open source developers to enable local communities to solve problems with a global impact.
+Joe Hand helps researchers, international organizations, and communities address structural problems using data and technology. He is co-Executive Director and Director of Operations at [Code for Science & Society](http://codeforscience.org/) and a core developer on [Dat project](https://datproject.org/). 
 
-Currently, I am developer with the [Dat project](http://dat-data.com) building decentralized data sharing infrastructure for researchers, civic institutions, and journalists.
-Previously, with the [Santa Fe Institute](http://santafe.edu/research/informal-settlements/), I organized an effort to transform the data collection practices of [Slum/Shack Dwellers International](http://www.sdinet.org/).
-Through this work, slum communities worldwide are self-collecting census data to help solve local development problems and inform global knowledge through research.
-
+Joe previously led a global project to transform data collection practices of a community-driven organization, operating in slums across 30 countries. He has managed data-oriented projects for research groups, Fortune 500 companies, and international NGOs. He works at the intersection of communities and technology to make data accessible and usable for all. Joe is experienced at managing projects across disciplines and cultures to educate about technology and advance practical and ethical uses of data. He has a track record of identifying and improving organizational processes, especially around communication and data. Joe jumps between developing core Dat tools and prototypes, writing blog posts on nonprofit business practices, and improving team and open source management processes.
 
 <div class="pure-g">
 <div class="small-caps external-link pure-u-1-3 pure-u-sm-1-5"><a href="mailto:&#106;&#111;&#101;&#064;&#106;&#111;&#101;&#097;&#104;&#097;&#110;&#100;&#046;&#099;&#111;&#109;" rel="me">Email</a></div>
